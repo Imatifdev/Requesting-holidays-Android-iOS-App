@@ -4,11 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:holidays/userauth/signup.dart';
+import 'package:holidays/screens/userauth/signup.dart';
 
-import '../adminauth/userauth/forgotpass.dart';
-import '../models/loginviewmodel.dart';
-import '../screens/home.dart';
+import '../../models/loginviewmodel.dart';
+import '../../widget/constants.dart';
+import '../home.dart';
+import 'forgotpass.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = "login";
@@ -22,7 +24,6 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoggingIn = false;
-  final LoginViewModel _loginVM = LoginViewModel();
 
   @override
   void dispose() {
@@ -34,6 +35,10 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        leading: Icon(CupertinoIcons.left_chevron, color: red),
+      ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -43,26 +48,17 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Column(
-                    children: [
-                      Image.asset(
-                        "assets/images/logo.png",
-                        width: 85,
-                        height: 85,
-                      ),
-                    ],
-                  ),
                   const Text(
                     "Sign in",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
+                    style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                  ).pSymmetric(h: 20),
                   const SizedBox(
                     height: 10,
                   ),
                   const Text(
                     "Welcome Back",
-                    style: TextStyle(color: Colors.grey),
-                  ),
+                    style: TextStyle(color: Colors.black, fontSize: 18),
+                  ).pSymmetric(h: 20),
                   const SizedBox(
                     height: 44,
                   ),
@@ -79,7 +75,10 @@ class _LoginPageState extends State<LoginPage> {
                                     BorderSide(width: 1.0, color: Colors.black),
                               ),
                             ),
-                            child: const Icon(Icons.email_outlined)),
+                            child: const Icon(
+                              Icons.email_outlined,
+                              color: red,
+                            )),
                       ),
                       labelText: 'Email Address',
                     ),
@@ -105,7 +104,10 @@ class _LoginPageState extends State<LoginPage> {
                                       width: 1.0, color: Colors.black),
                                 ),
                               ),
-                              child: Icon(Icons.lock_open_rounded)),
+                              child: Icon(
+                                Icons.lock_open_rounded,
+                                color: red,
+                              )),
                         ),
                         labelText: 'Password',
                         suffixIcon: IconButton(
@@ -114,9 +116,12 @@ class _LoginPageState extends State<LoginPage> {
                                 obsCheck = !obsCheck;
                               });
                             },
-                            icon: Icon(obsCheck
-                                ? Icons.visibility
-                                : Icons.visibility_off))),
+                            icon: Icon(
+                              obsCheck
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.black,
+                            ))),
                     obscureText: !obsCheck,
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -128,7 +133,10 @@ class _LoginPageState extends State<LoginPage> {
                   Align(
                       alignment: Alignment.bottomRight,
                       child: TextButton(
-                        child: Text("Forgot Password?"),
+                        child: Text(
+                          "Forgot Password?",
+                          style: TextStyle(color: Colors.black),
+                        ),
                         onPressed: () {
                           Navigator.of(context)
                               .pushNamed(ForgitPassword.idScreen);
@@ -145,10 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                                 setState(() {
                                   _isLoggingIn = true;
                                 });
-                                bool isLoggedIn = await _loginVM.login(
-                                    _emailController.text,
-                                    _passwordController.text);
-
+                                bool isLoggedIn;
                                 Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
@@ -157,11 +162,10 @@ class _LoginPageState extends State<LoginPage> {
                               }
                             },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
+                        backgroundColor: red,
                         padding: EdgeInsets.fromLTRB(100, 20, 100, 20),
                         shape: RoundedRectangleBorder(
-                            //to set border radius to button
-                            borderRadius: BorderRadius.circular(50)),
+                            borderRadius: BorderRadius.circular(10)),
                       ),
                       child: _isLoggingIn
                           ? const CircularProgressIndicator()
@@ -179,11 +183,14 @@ class _LoginPageState extends State<LoginPage> {
                         MaterialPageRoute(builder: (context) => SignupPage()),
                       );
                     },
-                    child: const Text('Don\'t have an account? Sign up here'),
+                    child: const Text(
+                      'Don\'t have an account? Sign up here',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
                 ],
               ),
-            ),
+            ).pSymmetric(h: 10),
           ),
         ),
       ),

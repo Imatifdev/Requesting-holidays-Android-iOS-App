@@ -2,9 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:holidays/screens/home.dart';
-import 'package:holidays/userauth/forgotpass.dart';
-import 'package:holidays/userauth/login.dart';
-import 'package:holidays/userauth/signup.dart';
+import 'package:holidays/screens/splashscreen.dart';
+import 'package:holidays/screens/userauth/forgotpass.dart';
+import 'package:holidays/screens/userauth/login.dart';
+import 'package:holidays/screens/userauth/signup.dart';
 import 'firebase_options.dart';
 
 // ...
@@ -30,8 +31,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:
-          FirebaseAuth.instance.currentUser != null ? HomePage() : LoginPage(),
+      home: FirebaseAuth.instance.currentUser != null
+          ? HomePage()
+          : SplashScreen(),
       routes: {
         ForgitPassword.idScreen: (context) => ForgitPassword(),
         LoginPage.routeName: (context) => LoginPage(),

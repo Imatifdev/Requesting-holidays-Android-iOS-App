@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:holidays/userauth/updateprofile.dart';
+import 'package:holidays/screens/userauth/updateprofile.dart';
 
-import '../userauth/profile.dart';
+import 'userauth/profile.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "signup-up";

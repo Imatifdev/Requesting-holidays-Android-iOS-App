@@ -9,9 +9,9 @@ import 'package:holidays/screens/home.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:get/get.dart';
 
-import '../widget/constants.dart';
-import '../widget/custombutton.dart';
-import '../widget/textinput.dart';
+import '../../widget/constants.dart';
+import '../../widget/custombutton.dart';
+import '../../widget/textinput.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -21,7 +21,6 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  final userId = FirebaseAuth.instance.currentUser!.uid;
   final TextEditingController _emailController = TextEditingController();
 
   final TextEditingController _passController = TextEditingController();
@@ -29,21 +28,6 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _lastnameController = TextEditingController();
   final TextEditingController _mobilecontroller = TextEditingController();
-  Future<void> updateUserData(String uid, String newUsername, String newEmail,
-      String phoneNumber) async {
-    try {
-      await FirebaseFirestore.instance.collection('UsersData').doc(uid).update(
-          {'First Name': newUsername, 'Email': newEmail, "Phone": phoneNumber});
-      print('Document updated successfully.');
-    } catch (e) {
-      print('Error updating document: $e');
-    }
-    await FirebaseFirestore.instance
-        .collection('UsersData')
-        .doc(uid)
-        .set({'First Name': newUsername}, SetOptions(merge: true));
-  }
-
   late StreamSubscription subscription;
   bool isDeviceConnected = false;
   bool isAlertSet = false;
@@ -183,8 +167,6 @@ class _EditProfileState extends State<EditProfile> {
                         title: "Save",
                         borderrad: 25,
                         onaction: () {
-                          updateUserData(userId, _nameController.text,
-                              _emailController.text, _mobilecontroller.text);
                           {
                             Navigator.push(
                                 context,

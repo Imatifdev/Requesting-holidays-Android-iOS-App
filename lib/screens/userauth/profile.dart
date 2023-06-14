@@ -8,16 +8,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:holidays/userauth/updateprofile.dart';
+import 'package:holidays/screens/userauth/updateprofile.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-import '../../models/usermodel.dart';
+import '../../../models/usermodel.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../widget/constants.dart';
-import '../widget/custombutton.dart';
+import '../../widget/constants.dart';
+import '../../widget/custombutton.dart';
 import 'login.dart';
 
 class ProfileView extends StatefulWidget {
@@ -26,42 +26,6 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  signOut() async {
-    print('object');
-    await auth.signOut();
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LoginPage()));
-  }
-
-  final userId = FirebaseAuth.instance.currentUser!.uid;
-  int check = 0;
-  String name = "loading....";
-
-  String lname = "loading....";
-  String email = "loading....";
-  String phone = 'loading....';
-
-  void getInfo() async {
-    var collection = FirebaseFirestore.instance.collection('UsersData');
-    var docSnapshot = await collection.doc(userId).get();
-    if (docSnapshot.exists) {
-      print("ok");
-      Map<String, dynamic>? data = docSnapshot.data();
-      setState(() {
-        name = data?["First Name"];
-        lname = data?["Last Name"];
-
-        email = data?["Email"];
-
-        //phone = data?["Phone"];
-      });
-    }
-    print(userId);
-    print(name);
-    print(email);
-  }
-
   late StreamSubscription subscription;
   bool isDeviceConnected = false;
   bool isAlertSet = false;
@@ -91,11 +55,6 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    if (check == 0) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => getInfo());
-      check++;
-    }
-    // final controller = Get.put(ProfileController());
     return Scaffold(
       backgroundColor: appbar,
       appBar: AppBar(
@@ -108,7 +67,7 @@ class _ProfileViewState extends State<ProfileView> {
               color: Colors.black,
             )),
         title: Text(
-          name,
+          "Muhammad",
           style: TextStyle(fontSize: 26, color: appbartitle),
         ),
         actions: [
@@ -143,7 +102,7 @@ class _ProfileViewState extends State<ProfileView> {
                     child: ListTile(
                       leading: Icon(Icons.mark_email_read_sharp),
                       title: Text(
-                        email,
+                        "abc@gmail.com",
                         style: TextStyle(fontSize: 14),
                       ),
                     )),
@@ -158,7 +117,7 @@ class _ProfileViewState extends State<ProfileView> {
                     child: ListTile(
                       leading: Icon(Icons.person_2),
                       title: Text(
-                        '${name + lname}',
+                        'Muhammad Atif',
                         style: TextStyle(fontSize: 14),
                       ),
                     )),
@@ -169,7 +128,7 @@ class _ProfileViewState extends State<ProfileView> {
             ),
             MyCustomButton(
                 title: "Edit Profile",
-                borderrad: 50,
+                borderrad: 10,
                 onaction: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (ctx) => EditProfile()));
@@ -182,7 +141,8 @@ class _ProfileViewState extends State<ProfileView> {
             ),
             InkWell(
               onTap: () {
-                signOut();
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (ctx) => LoginPage()));
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

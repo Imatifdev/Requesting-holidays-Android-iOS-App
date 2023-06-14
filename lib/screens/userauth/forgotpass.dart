@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../widget/constants.dart';
-import '../widget/custombutton.dart';
-import '../widget/textinput.dart';
+import '../../widget/constants.dart';
+import '../../widget/custombutton.dart';
+import '../../widget/textinput.dart';
 
 class ForgitPassword extends StatefulWidget {
   static const String idScreen = 'forgotpass';
