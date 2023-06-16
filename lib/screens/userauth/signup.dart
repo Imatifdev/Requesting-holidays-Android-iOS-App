@@ -55,7 +55,7 @@ class _SignupPageState extends State<SignupPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   const Text(
-                    "Sign up",
+                    "Sign Up",
                     style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                   ).pSymmetric(h: 20),
                   const SizedBox(

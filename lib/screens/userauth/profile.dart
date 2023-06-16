@@ -13,9 +13,6 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import '../../../models/usermodel.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../widget/constants.dart';
 import '../../widget/custombutton.dart';
 import 'login.dart';
@@ -66,109 +63,90 @@ class _ProfileViewState extends State<ProfileView> {
               CupertinoIcons.left_chevron,
               color: Colors.black,
             )),
-        title: Text(
-          "Muhammad",
-          style: TextStyle(fontSize: 26, color: appbartitle),
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.all(12.0),
-            child: IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  CupertinoIcons.left_chevron,
-                  color: Colors.black,
-                )),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height / 3.5,
-              child: Image.asset("assets/images/logo.png"),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(children: [
-                Container(
-                    height: MediaQuery.of(context).size.height / 14,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: appbg, borderRadius: BorderRadius.circular(50)),
-                    child: ListTile(
-                      leading: Icon(Icons.mark_email_read_sharp),
-                      title: Text(
-                        "abc@gmail.com",
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    )),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 50,
-                ),
-                Container(
-                    height: MediaQuery.of(context).size.height / 14,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: appbg, borderRadius: BorderRadius.circular(50)),
-                    child: ListTile(
-                      leading: Icon(Icons.person_2),
-                      title: Text(
-                        'Muhammad Atif',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    )),
-              ]),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height / 20,
-            ),
-            MyCustomButton(
-                title: "Edit Profile",
-                borderrad: 10,
-                onaction: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (ctx) => EditProfile()));
-                },
-                color1: red,
-                color2: red,
-                width: MediaQuery.of(context).size.width - 40),
-            const SizedBox(
-              height: 30,
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (ctx) => LoginPage()));
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        //signOut();
-                      },
-                      icon: Icon(
-                        Icons.logout_rounded,
-                        color: red,
-                        size: 40,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 13),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Muhammad Atif",
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                        CircleAvatar(
+                          radius: 20,
+                          child: Icon(CupertinoIcons.person),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 26,
+                  ),
+                  Container(
+                      height: MediaQuery.of(context).size.height / 14,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListTile(
+                        leading: Icon(Icons.mark_email_read_sharp),
+                        title: Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: Text(
+                            "abc@gmail.com",
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ),
                       )),
                   SizedBox(
-                    width: 10,
+                    height: MediaQuery.of(context).size.height / 50,
                   ),
-                  const Text(
-                    "Log out",
-                    style: TextStyle(
-                        color: red, fontSize: 20, fontWeight: FontWeight.bold),
-                  )
-                ],
+                  Container(
+                      height: MediaQuery.of(context).size.height / 14,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListTile(
+                        leading: Icon(CupertinoIcons.person_alt_circle),
+                        title: Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: Text(
+                            "your name",
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ),
+                      )),
+                ]),
               ),
-            ),
-          ],
-        ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 4,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: MyCustomButton(
+                    title: "Edit Profile",
+                    borderrad: 10,
+                    buttontextcolr: Colors.white,
+                    onaction: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (ctx) => EditProfile()));
+                    },
+                    color1: red,
+                    color2: red,
+                    width: MediaQuery.of(context).size.width - 40),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+            ]),
       ),
     );
   }

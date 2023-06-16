@@ -19,15 +19,6 @@ class _ForgitPasswordState extends State<ForgitPassword> {
   final TextEditingController _email = TextEditingController();
   //key for handling Auth
   final GlobalKey<FormState> formGlobalKey = GlobalKey<FormState>();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  Future<void> resetPassword(String email) async {
-    try {
-      await _auth.sendPasswordResetEmail(email: email);
-      print("Password reset email sent successfully");
-    } catch (e) {
-      print("Failed to send password reset email: $e");
-    }
-  }
 
   void _showetoast(String message) {
     Fluttertoast.showToast(
@@ -79,11 +70,11 @@ class _ForgitPasswordState extends State<ForgitPassword> {
                   height: 30,
                 ),
                 MyCustomButton(
+                    buttontextcolr: Colors.white,
                     title: "Save",
                     borderrad: 25,
                     onaction: () {
                       if (formGlobalKey.currentState!.validate()) {
-                        resetPassword(_email.text);
                         _showetoast("Details Send to your email");
                       } else
                         _showetoast("Please a valid email address");

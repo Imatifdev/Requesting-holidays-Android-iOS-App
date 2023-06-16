@@ -9,15 +9,18 @@ class MyCustomButton extends StatelessWidget {
   final Color color1;
   final Color color2;
   final double width;
+  final Color buttontextcolr;
 
-  const MyCustomButton(
-      {super.key,
-      required this.title,
-      required this.borderrad,
-      required this.onaction,
-      required this.color1,
-      required this.color2,
-      required this.width});
+  const MyCustomButton({
+    super.key,
+    required this.buttontextcolr,
+    required this.title,
+    required this.borderrad,
+    required this.onaction,
+    required this.color1,
+    required this.color2,
+    required this.width,
+  });
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -29,7 +32,9 @@ class MyCustomButton extends StatelessWidget {
           child: Text(
             title,
             style: TextStyle(
-                fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
+                fontSize: 16,
+                color: buttontextcolr,
+                fontWeight: FontWeight.bold),
           ),
         ),
         decoration: BoxDecoration(

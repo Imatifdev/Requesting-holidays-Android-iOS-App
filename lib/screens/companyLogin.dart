@@ -4,22 +4,23 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:holidays/screens/companyLogin.dart';
+import 'package:holidays/screens/userauth/forgotpass.dart';
 import 'package:holidays/screens/userauth/signup.dart';
 
 import '../../models/loginviewmodel.dart';
 import '../../widget/constants.dart';
-import '../home.dart';
-import 'forgotpass.dart';
+
 import 'package:velocity_x/velocity_x.dart';
 
-class LoginPage extends StatefulWidget {
+import 'home.dart';
+
+class CompanyLoginPage extends StatefulWidget {
   static const routeName = "login";
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _CompanyLoginPageState createState() => _CompanyLoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _CompanyLoginPageState extends State<CompanyLoginPage> {
   bool obsCheck = false;
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
@@ -52,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   const Text(
-                    "Sign In",
+                    " Sign In",
                     style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
                   ).pSymmetric(h: 20),
                   const SizedBox(
@@ -183,17 +184,12 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => CompanyLoginPage()),
+                        MaterialPageRoute(builder: (context) => SignupPage()),
                       );
                     },
                     child: const Text(
-                      'Login as Company',
-                      style: TextStyle(
-                          decorationColor: Colors.red,
-                          decoration: TextDecoration.underline,
-                          color: Colors.red,
-                          fontStyle: FontStyle.italic),
+                      'Don\'t have an account? Sign up here',
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                 ],

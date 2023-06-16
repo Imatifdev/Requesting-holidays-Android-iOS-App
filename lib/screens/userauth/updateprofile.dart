@@ -1,33 +1,28 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, prefer_const_constructors, curly_braces_in_flow_control_structures, unused_import, duplicate_import
+
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:holidays/screens/home.dart';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:holidays/screens/userauth/updateprofile.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:get/get.dart';
+
+import '../../../models/usermodel.dart';
 
 import '../../widget/constants.dart';
 import '../../widget/custombutton.dart';
-import '../../widget/textinput.dart';
+import 'login.dart';
 
 class EditProfile extends StatefulWidget {
-  const EditProfile({super.key});
-
   @override
   State<EditProfile> createState() => _EditProfileState();
 }
 
 class _EditProfileState extends State<EditProfile> {
-  final TextEditingController _emailController = TextEditingController();
-
-  final TextEditingController _passController = TextEditingController();
-
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _lastnameController = TextEditingController();
-  final TextEditingController _mobilecontroller = TextEditingController();
   late StreamSubscription subscription;
   bool isDeviceConnected = false;
   bool isAlertSet = false;
@@ -58,136 +53,124 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: appbar,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: appbar,
         leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
+            onPressed: () {},
+            icon: Icon(
               CupertinoIcons.left_chevron,
               color: Colors.black,
-              size: 30,
             )),
-        title: const Text(
-          "Hi, Abc",
-          style: TextStyle(fontSize: 26, color: appbartitle),
-        ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.all(12.0),
-            child: Icon(
-              Icons.settings,
-              color: Colors.black,
-              size: 30,
-            ),
-          ),
-        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: SingleChildScrollView(
-          child: Column(
+      body: SingleChildScrollView(
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(
-                height: 130,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 13),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Settings",
+                          style: TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 26,
+                  ),
+                  Container(
+                      height: MediaQuery.of(context).size.height / 14,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListTile(
+                        leading: Icon(Icons.mark_email_read_sharp),
+                        title: Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: Text(
+                            "email",
+                            style: TextStyle(fontSize: 14, color: Colors.grey),
+                          ),
+                        ),
+                      )),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 50,
+                  ),
+                  Container(
+                      height: MediaQuery.of(context).size.height / 14,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListTile(
+                        leading: Icon(CupertinoIcons.person_alt_circle),
+                        title: Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: Text(
+                            "your name",
+                            style: TextStyle(fontSize: 14, color: Colors.grey),
+                          ),
+                        ),
+                      )),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 50,
+                  ),
+                  Container(
+                      height: MediaQuery.of(context).size.height / 14,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListTile(
+                        leading: Icon(CupertinoIcons.phone),
+                        title: Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: Text(
+                            "contact",
+                            style: TextStyle(fontSize: 14, color: Colors.grey),
+                          ),
+                        ),
+                      )),
+                ]),
               ),
-              const SizedBox(
-                height: 40,
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 4,
               ),
-              TextFieldInput(
-                validator: (value) {
-                  if (value.length < 2) {
-                    return 'Enter a valid name';
-                  }
-                  return null;
-                },
-                textEditingController: _nameController,
-                hintText: "Abc",
-                textInputType: TextInputType.emailAddress,
-                action: TextInputAction.next,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextFieldInput(
-                validator: (value) {
-                  if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
-                      .hasMatch(value)) {
-                    return 'Please enter a valid email address';
-                  }
-                  return null;
-                },
-                textEditingController: _emailController,
-                hintText: "mail",
-                textInputType: TextInputType.emailAddress,
-                action: TextInputAction.next,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextFieldInput(
-                validator: (value) {
-                  if (value.length < 11) {
-                    return 'Enter a valid phone num';
-                  }
-                  return null;
-                },
-                textEditingController: _mobilecontroller,
-                hintText: "2567388929",
-                textInputType: TextInputType.emailAddress,
-                action: TextInputAction.next,
-              ),
-              const SizedBox(
-                height: 20,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: Row(
+                  children: [
+                    MyCustomButton(
+                        title: "Cancel",
+                        borderrad: 10,
+                        buttontextcolr: Colors.white,
+                        onaction: () {},
+                        color1: red,
+                        color2: red,
+                        width: 120),
+                    SizedBox(
+                      width: 50,
+                    ),
+                    MyCustomButton(
+                        title: "Update",
+                        borderrad: 10,
+                        buttontextcolr: Colors.black,
+                        onaction: () {},
+                        color1: Colors.grey.shade200,
+                        color2: Colors.grey.shade200,
+                        width: 120),
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 30,
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: MyCustomButton(
-                        title: "Cancel",
-                        borderrad: 25,
-                        onaction: () {
-                          Navigator.pop(context);
-                        },
-                        color1: red,
-                        color2: red,
-                        width: MediaQuery.of(context).size.width),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Expanded(
-                    child: MyCustomButton(
-                        title: "Save",
-                        borderrad: 25,
-                        onaction: () {
-                          {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (ctx) => HomePage()));
-                          }
-                          ;
-                          Get.snackbar("Message", "Your has has been updated",
-                              snackPosition: SnackPosition.BOTTOM,
-                              colorText: Colors.black,
-                              backgroundColor: appbg);
-                        },
-                        color1: green,
-                        color2: green,
-                        width: MediaQuery.of(context).size.width),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
+            ]),
       ),
     );
   }
