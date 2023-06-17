@@ -9,7 +9,7 @@ import 'package:holidays/screens/userauth/forgotpass.dart';
 import 'package:holidays/screens/userauth/login.dart';
 import 'package:holidays/screens/userauth/profile.dart';
 import 'package:holidays/screens/userauth/signup.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 // ...
 
 void main() async {
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(),
+      theme: ThemeData(fontFamily: GoogleFonts.poppins().fontFamily),
       home: LeaveScreen(),
       routes: {
         ForgitPassword.idScreen: (context) => ForgitPassword(),

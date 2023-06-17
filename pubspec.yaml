@@ -59,6 +59,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   velocity_x: ^4.1.0
   flutter_date_pickers: ^0.4.2
+  google_fonts: ^5.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
