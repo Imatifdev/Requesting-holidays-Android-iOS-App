@@ -8,25 +8,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:holidays/screens/userauth/updateprofile.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:holidays/screens/companyauth/companyLogin.dart';
+import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-
-import '../../../models/usermodel.dart';
+import 'package:provider/provider.dart';
 
 import '../../widget/constants.dart';
 import '../../widget/custombutton.dart';
-import 'login.dart';
+import '../userauth/login.dart';
+import 'package:hive/hive.dart';
 
-class ProfileView extends StatefulWidget {
+class EmpProfileView extends StatefulWidget {
   @override
-  State<ProfileView> createState() => _ProfileViewState();
+  State<EmpProfileView> createState() => _EmpProfileViewState();
 }
 
-class _ProfileViewState extends State<ProfileView> {
+class _EmpProfileViewState extends State<EmpProfileView> {
   late StreamSubscription subscription;
+
   bool isDeviceConnected = false;
   bool isAlertSet = false;
-
   @override
   void initState() {
     getConnectivity();
@@ -52,6 +57,9 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
+    final companyViewModel = Provider.of<CompanyViewModel>(context);
+    final user = companyViewModel.user;
+
     return Scaffold(
       backgroundColor: appbar,
       appBar: AppBar(
@@ -81,7 +89,7 @@ class _ProfileViewState extends State<ProfileView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Muhammad Atif",
+                          '${user?.firstName} ${user?.lastName}',
                           style: TextStyle(
                               fontSize: 24, fontWeight: FontWeight.bold),
                         ),
@@ -103,7 +111,7 @@ class _ProfileViewState extends State<ProfileView> {
                         title: Padding(
                           padding: const EdgeInsets.only(left: 30),
                           child: Text(
-                            "abc@gmail.com",
+                            '${user?.email}',
                             style: TextStyle(fontSize: 14),
                           ),
                         ),
@@ -119,7 +127,7 @@ class _ProfileViewState extends State<ProfileView> {
                         title: Padding(
                           padding: const EdgeInsets.only(left: 30),
                           child: Text(
-                            "your name",
+                            '${user?.phone}',
                             style: TextStyle(fontSize: 14),
                           ),
                         ),
@@ -135,16 +143,55 @@ class _ProfileViewState extends State<ProfileView> {
                     title: "Edit Profile",
                     borderrad: 10,
                     buttontextcolr: Colors.white,
-                    onaction: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (ctx) => EditProfile()));
-                    },
+                    onaction: () {},
                     color1: red,
                     color2: red,
                     width: MediaQuery.of(context).size.width - 40),
               ),
               const SizedBox(
                 height: 30,
+              ),
+              InkWell(
+                onTap: () {
+                  Hive.box('box').clear();
+                  Fluttertoast.showToast(
+                      msg: "User LogOut",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.green,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                  Get.offAll(() => CompanyLoginPage());
+                },
+                child: Container(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width * .70,
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Colors.red),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.logout_outlined,
+                        color: red,
+                        size: 30,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Sign Out",
+                        style: TextStyle(color: red),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
               ),
             ]),
       ),

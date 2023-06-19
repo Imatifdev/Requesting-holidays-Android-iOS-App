@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:holidays/screens/userauth/updateprofile.dart';
+import 'package:holidays/screens/userauth/profile.dart';
 
-import 'userauth/profile.dart';
+import 'companyauth/profile.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "signup-up";
@@ -22,8 +22,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   final List<Widget> pages = [
-    ProfileView(),
-    EditProfile(),
+    EmpProfileView(),
+    EmpProfileView(),
   ];
   List<int> listofpages = [];
   @override

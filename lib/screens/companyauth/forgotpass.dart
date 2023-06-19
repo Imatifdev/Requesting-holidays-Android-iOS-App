@@ -6,16 +6,16 @@ import '../../widget/constants.dart';
 import '../../widget/custombutton.dart';
 import '../../widget/textinput.dart';
 
-class EmpForgitPassword extends StatefulWidget {
+class CompanyForgitPassword extends StatefulWidget {
   static const String idScreen = 'forgotpass';
 
-  const EmpForgitPassword({super.key});
+  const CompanyForgitPassword({super.key});
 
   @override
-  State<EmpForgitPassword> createState() => _EmpForgitPasswordState();
+  State<CompanyForgitPassword> createState() => _CompanyForgitPasswordState();
 }
 
-class _EmpForgitPasswordState extends State<EmpForgitPassword> {
+class _CompanyForgitPasswordState extends State<CompanyForgitPassword> {
   final TextEditingController _email = TextEditingController();
   //key for handling Auth
   final GlobalKey<FormState> formGlobalKey = GlobalKey<FormState>();

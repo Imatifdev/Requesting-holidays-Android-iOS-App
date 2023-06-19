@@ -8,25 +8,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:holidays/screens/userauth/updateprofile.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:holidays/screens/companyauth/companyLogin.dart';
+import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-
-import '../../../models/usermodel.dart';
+import 'package:provider/provider.dart';
 
 import '../../widget/constants.dart';
 import '../../widget/custombutton.dart';
-import 'login.dart';
+import '../userauth/login.dart';
+import 'package:hive/hive.dart';
 
-class EditProfile extends StatefulWidget {
+class CompanyProfileView extends StatefulWidget {
   @override
-  State<EditProfile> createState() => _EditProfileState();
+  State<CompanyProfileView> createState() => _CompanyProfileViewState();
 }
 
-class _EditProfileState extends State<EditProfile> {
+class _CompanyProfileViewState extends State<CompanyProfileView> {
   late StreamSubscription subscription;
+
   bool isDeviceConnected = false;
   bool isAlertSet = false;
-
   @override
   void initState() {
     getConnectivity();
@@ -52,6 +57,9 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+    final companyViewModel = Provider.of<CompanyViewModel>(context);
+    final user = companyViewModel.user;
+
     return Scaffold(
       backgroundColor: appbar,
       appBar: AppBar(
@@ -81,10 +89,14 @@ class _EditProfileState extends State<EditProfile> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Settings",
+                          '${user?.firstName} ${user?.lastName}',
                           style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold),
+                              fontSize: 24, fontWeight: FontWeight.bold),
                         ),
+                        CircleAvatar(
+                          radius: 20,
+                          child: Icon(CupertinoIcons.person),
+                        )
                       ],
                     ),
                   ),
@@ -99,8 +111,8 @@ class _EditProfileState extends State<EditProfile> {
                         title: Padding(
                           padding: const EdgeInsets.only(left: 30),
                           child: Text(
-                            "email",
-                            style: TextStyle(fontSize: 14, color: Colors.grey),
+                            '${user?.email}',
+                            style: TextStyle(fontSize: 14),
                           ),
                         ),
                       )),
@@ -115,24 +127,8 @@ class _EditProfileState extends State<EditProfile> {
                         title: Padding(
                           padding: const EdgeInsets.only(left: 30),
                           child: Text(
-                            "your name",
-                            style: TextStyle(fontSize: 14, color: Colors.grey),
-                          ),
-                        ),
-                      )),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 50,
-                  ),
-                  Container(
-                      height: MediaQuery.of(context).size.height / 14,
-                      width: MediaQuery.of(context).size.width,
-                      child: ListTile(
-                        leading: Icon(CupertinoIcons.phone),
-                        title: Padding(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: Text(
-                            "contact",
-                            style: TextStyle(fontSize: 14, color: Colors.grey),
+                            '${user?.phone}',
+                            style: TextStyle(fontSize: 14),
                           ),
                         ),
                       )),
@@ -143,32 +139,60 @@ class _EditProfileState extends State<EditProfile> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 50),
-                child: Row(
-                  children: [
-                    MyCustomButton(
-                        title: "Cancel",
-                        borderrad: 10,
-                        buttontextcolr: Colors.white,
-                        onaction: () {},
-                        color1: red,
-                        color2: red,
-                        width: 120),
-                    SizedBox(
-                      width: 50,
-                    ),
-                    MyCustomButton(
-                        title: "Update",
-                        borderrad: 10,
-                        buttontextcolr: Colors.black,
-                        onaction: () {},
-                        color1: Colors.grey.shade200,
-                        color2: Colors.grey.shade200,
-                        width: 120),
-                  ],
-                ),
+                child: MyCustomButton(
+                    title: "Edit Profile",
+                    borderrad: 10,
+                    buttontextcolr: Colors.white,
+                    onaction: () {},
+                    color1: red,
+                    color2: red,
+                    width: MediaQuery.of(context).size.width - 40),
               ),
               const SizedBox(
                 height: 30,
+              ),
+              InkWell(
+                onTap: () {
+                  companyViewModel.signOut();
+                  Fluttertoast.showToast(
+                      msg: "User LogOut",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.green,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (ctx) => CompanyLoginPage()));
+                },
+                child: Container(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width * .70,
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Colors.red),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.logout_outlined,
+                        color: red,
+                        size: 30,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Sign Out",
+                        style: TextStyle(color: red),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
               ),
             ]),
       ),

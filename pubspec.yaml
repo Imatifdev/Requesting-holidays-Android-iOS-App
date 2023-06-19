@@ -46,6 +46,9 @@ dependencies:
   easy_splash_screen: ^1.0.4
   flutter_calendar_carousel: ^2.4.2
   table_calendar: ^3.0.9
+  flutter_easyloading: ^3.0.5
+  hive_flutter: ^1.1.0
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +63,7 @@ dev_dependencies:
   velocity_x: ^4.1.0
   flutter_date_pickers: ^0.4.2
   google_fonts: ^5.0.0
+  shared_preferences: ^2.1.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -117,7 +117,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed(LoginPage.routeName);
+                  Navigator.of(context).pushNamed(EmpLoginPage.routeName);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: red,
