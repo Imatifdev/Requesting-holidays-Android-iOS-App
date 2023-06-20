@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, unused_field, prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:convert';
-import 'package:holidays/screens/userauth/profile.dart';
-import 'package:holidays/viewmodel/emp/empuserviewmodel.dart';
+import 'package:holidays/screens/empauth/profile.dart';
+import 'package:holidays/viewmodel/employee/empuserviewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';

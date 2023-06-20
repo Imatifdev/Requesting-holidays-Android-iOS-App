@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:holidays/screens/userauth/login.dart';
-import 'package:holidays/screens/userauth/profile.dart';
+import 'package:holidays/screens/empauth/login.dart';
+import 'package:holidays/screens/empauth/profile.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 

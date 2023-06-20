@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:holidays/screens/userauth/login.dart';
+import 'package:holidays/screens/empauth/login.dart';
 import 'package:holidays/widget/constants.dart';
 
 import '../models/contentmodel.dart';

@@ -10,7 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:holidays/screens/companyauth/forgotpass.dart';
-import 'package:holidays/screens/userauth/signup.dart';
+import 'package:holidays/screens/empauth/signup.dart';
 import 'package:provider/provider.dart';
 import '../../../widget/constants.dart';
 

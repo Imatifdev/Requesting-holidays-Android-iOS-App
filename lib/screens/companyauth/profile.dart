@@ -19,7 +19,7 @@ import 'package:provider/provider.dart';
 
 import '../../widget/constants.dart';
 import '../../widget/custombutton.dart';
-import '../userauth/login.dart';
+import '../empauth/login.dart';
 import 'package:hive/hive.dart';
 
 class CompanyProfileView extends StatefulWidget {
