@@ -1,35 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:holidays/widget/constants.dart';
+import 'package:http/http.dart' as http;
 
-class CompanyOTPScreen extends StatefulWidget {
+class OTPVerificationPage extends StatefulWidget {
   @override
-  _CompanyOTPScreenState createState() => _CompanyOTPScreenState();
+  _OTPVerificationPageState createState() => _OTPVerificationPageState();
 }
 
-class _CompanyOTPScreenState extends State<CompanyOTPScreen> {
-  List<FocusNode>? focusNodes;
-  List<TextEditingController>? otpControllers;
+class _OTPVerificationPageState extends State<OTPVerificationPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _otpController = TextEditingController();
+  String _otpStatus = '';
 
-  @override
-  void initState() {
-    super.initState();
-    focusNodes = List.generate(4, (index) => FocusNode());
-    otpControllers = List.generate(4, (index) => TextEditingController());
-  }
+  Future<void> sendOTP() async {
+    final String email = _emailController.text;
+    final String apiUrl = 'http://jporter.ezeelogix.com/public/api/send-otp';
 
-  @override
-  void dispose() {
-    for (var controller in otpControllers!) {
-      controller.dispose();
+    final http.Response response = await http.post(
+      Uri.parse(apiUrl),
+      body: {'email': email, 'user_type': '1'},
+    );
+
+    if (response.statusCode == 200) {
+      // OTP sent successfully
+      setState(() {
+        _otpStatus = 'OTP sent successfully. Please check your email.';
+      });
+    } else {
+      // Failed to send OTP
+      setState(() {
+        _otpStatus = 'Failed to send OTP. Please try again...';
+      });
     }
-    super.dispose();
   }
 
-  void _otpNextField(String value, int index) {
-    if (value.length == 1 && index < 3) {
-      FocusScope.of(context).requestFocus(focusNodes![index + 1]);
-    } else if (value.length == 0 && index > 0) {
-      FocusScope.of(context).requestFocus(focusNodes![index - 1]);
+  Future<void> verifyOTP() async {
+    final String otp = _otpController.text;
+    final String apiUrl = 'http://jporter.ezeelogix.com/public/api/verify-otp';
+
+    final http.Response response = await http.post(
+      Uri.parse(apiUrl),
+      body: {'otp': otp, 'user_type': '1'},
+    );
+
+    if (response.statusCode == 200) {
+      // OTP verification successful
+      setState(() {
+        _otpStatus = 'OTP verification successful!';
+      });
+      // Proceed with password reset or other actions
+    } else {
+      // OTP verification failed
+      setState(() {
+        _otpStatus = 'OTP verification failed. Please try again.';
+      });
     }
   }
 
@@ -37,60 +60,43 @@ class _CompanyOTPScreenState extends State<CompanyOTPScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: red,
-        title: Text('OTP Screen'),
+        title: Text('OTP Verification'),
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Enter OTP',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            TextField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                labelText: 'Enter Email',
               ),
             ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(4, (index) {
-                return Container(
-                  width: 50,
-                  height: 50,
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  child: TextFormField(
-                    controller: otpControllers![index],
-                    focusNode: focusNodes![index],
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
-                    maxLength: 1,
-                    obscureText: true,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    decoration: InputDecoration(
-                      counterText: '',
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (value) {
-                      _otpNextField(value, index);
-                    },
-                  ),
-                );
-              }),
-            ),
-            SizedBox(height: 20),
+            SizedBox(height: 16.0),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: red),
-              onPressed: () {
-                String otp =
-                    otpControllers!.map((controller) => controller.text).join();
-                // Perform your OTP verification logic here
-                print('Entered OTP: $otp');
-              },
-              child: Text('Verify'),
+              onPressed: sendOTP,
+              child: Text('Send OTP'),
+            ),
+            SizedBox(height: 16.0),
+            TextField(
+              controller: _otpController,
+              decoration: InputDecoration(
+                labelText: 'Enter OTP',
+              ),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: verifyOTP,
+              child: Text('Verify OTP'),
+            ),
+            SizedBox(height: 16.0),
+            Text(
+              _otpStatus,
+              style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),

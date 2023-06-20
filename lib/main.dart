@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:holidays/screens/companyauth/companyLogin.dart';
+import 'package:holidays/screens/companyauth/otp.dart';
 import 'package:holidays/screens/dashboard.dart';
 
 import 'package:holidays/screens/home.dart';
 import 'package:holidays/screens/companyauth/forgotpass.dart';
 import 'package:holidays/screens/userauth/forgotpass.dart';
 import 'package:holidays/screens/userauth/login.dart';
+import 'package:holidays/screens/userauth/otpscreen.dart';
 import 'package:holidays/screens/userauth/signup.dart';
 import 'package:google_fonts/google_fonts.dart';
 // ...
@@ -14,6 +16,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:holidays/tst.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
+import 'package:holidays/viewmodel/emp/empuserviewmodel.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -36,6 +39,9 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(
             create: (context) => CompanyViewModel(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => EmpViewModel(),
           )
         ],
         child: MaterialApp(
@@ -44,7 +50,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             fontFamily: GoogleFonts.poppins().fontFamily,
           ),
-          home: CompanyLoginPage(),
+          home: EmpLoginPage(),
           routes: {
             EmpForgitPassword.idScreen: (context) => EmpForgitPassword(),
             EmpLoginPage.routeName: (context) => EmpLoginPage(),

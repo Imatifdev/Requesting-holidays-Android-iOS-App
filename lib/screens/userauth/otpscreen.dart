@@ -1,34 +1,73 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:holidays/screens/userauth/login.dart';
+import 'package:holidays/screens/userauth/profile.dart';
+import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
 
-class OTPScreen extends StatefulWidget {
+final String baseUrl = 'https://jporter.ezeelogix.com/public/api';
+final String resendOtpEndpoint = '/resend-otp';
+final String verifyOtpEndpoint = '/verify-otp';
+
+class EmpOtpScreen extends StatefulWidget {
+  final String email;
+
+  const EmpOtpScreen({super.key, required this.email});
   @override
-  _OTPScreenState createState() => _OTPScreenState();
+  _EmpOtpScreenState createState() => _EmpOtpScreenState();
 }
 
-class _OTPScreenState extends State<OTPScreen> {
-  List<FocusNode>? focusNodes;
-  List<TextEditingController>? otpControllers;
-
-  @override
-  void initState() {
-    super.initState();
-    focusNodes = List.generate(4, (index) => FocusNode());
-    otpControllers = List.generate(4, (index) => TextEditingController());
-  }
+class _EmpOtpScreenState extends State<EmpOtpScreen> {
+  TextEditingController otpController = TextEditingController();
 
   @override
   void dispose() {
-    for (var controller in otpControllers!) {
-      controller.dispose();
-    }
+    otpController.dispose();
     super.dispose();
   }
 
-  void _otpNextField(String value, int index) {
-    if (value.length == 1 && index < 3) {
-      FocusScope.of(context).requestFocus(focusNodes![index + 1]);
-    } else if (value.length == 0 && index > 0) {
-      FocusScope.of(context).requestFocus(focusNodes![index - 1]);
+  Future<void> resendOtp(String userType, String email) async {
+    try {
+      final response = await http.post(
+        Uri.parse(baseUrl + resendOtpEndpoint),
+        headers: {'Accept': 'application/json'},
+        body: {'user_type': userType, 'email': widget.email},
+      );
+
+      if (response.statusCode == 200) {
+        // Success
+        Fluttertoast.showToast(msg: 'OTP resend successful');
+      } else {
+        // Error
+        Fluttertoast.showToast(msg: 'Failed to resend OTP');
+      }
+    } catch (e) {
+      // Exception
+      Fluttertoast.showToast(msg: 'Exception: $e');
+    }
+  }
+
+  Future<void> verifyOtp(String userType, String otp) async {
+    try {
+      final response = await http.post(
+        Uri.parse(baseUrl + verifyOtpEndpoint),
+        headers: {'Accept': 'application/json'},
+        body: {'user_type': userType, 'otp': otp},
+      );
+
+      if (response.statusCode == 200) {
+        // Success
+        Fluttertoast.showToast(
+            msg: 'OTP verification successful, You can login now');
+        Navigator.push(
+            context, MaterialPageRoute(builder: (ctx) => EmpLoginPage()));
+      } else {
+        // Error
+        Fluttertoast.showToast(msg: 'OTP verification failed');
+      }
+    } catch (e) {
+      // Exception
+      Fluttertoast.showToast(msg: 'Exception: $e');
     }
   }
 
@@ -36,58 +75,31 @@ class _OTPScreenState extends State<OTPScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('OTP Screen'),
+        title: Text('OTP Example'),
       ),
-      body: Center(
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Enter OTP',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+          children: <Widget>[
+            TextField(
+              controller: otpController,
+              decoration: InputDecoration(
+                labelText: 'OTP',
               ),
             ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(4, (index) {
-                return Container(
-                  width: 50,
-                  height: 50,
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  child: TextFormField(
-                    controller: otpControllers![index],
-                    focusNode: focusNodes![index],
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
-                    maxLength: 1,
-                    obscureText: true,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    decoration: InputDecoration(
-                      counterText: '',
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (value) {
-                      _otpNextField(value, index);
-                    },
-                  ),
-                );
-              }),
-            ),
-            SizedBox(height: 20),
+            SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                String otp =
-                    otpControllers!.map((controller) => controller.text).join();
-                // Perform your OTP verification logic here
-                print('Entered OTP: $otp');
+                resendOtp('2', widget.email);
               },
-              child: Text('Verify'),
+              child: Text('Resend OTP'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                verifyOtp('2', otpController.text);
+              },
+              child: Text('Verify OTP'),
             ),
           ],
         ),

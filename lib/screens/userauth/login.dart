@@ -1,15 +1,18 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, unused_field, prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:convert';
+import 'package:holidays/screens/userauth/profile.dart';
+import 'package:holidays/viewmodel/emp/empuserviewmodel.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:holidays/screens/companyauth/companyLogin.dart';
 import 'package:http/http.dart' as http;
+import '../../viewmodel/company/compuserviewmodel.dart';
 import '../../widget/constants.dart';
 import '../../widget/popuploader.dart';
-import '../companyauth/forgotpass.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'forgotpass.dart';
@@ -61,6 +64,9 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
 
         // Token
         print('Token: $token');
+        Navigator.push(
+            context, MaterialPageRoute(builder: (ctx) => EmpProfileView()));
+        print('');
 
         // Navigate to the next screen or perform any desired action
         print(jsonData);
@@ -75,7 +81,11 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
             textColor: Colors.white,
             fontSize: 16.0);
         Navigator.push(
-            context, MaterialPageRoute(builder: (ctx) => OTPScreen()));
+            context,
+            MaterialPageRoute(
+                builder: (ctx) => EmpOtpScreen(
+                      email: _emailController.text,
+                    )));
         print('');
       }
     } else {
@@ -229,7 +239,13 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                     child: ElevatedButton(
-                      onPressed: performLogin,
+                      onPressed: () {
+                        final email = _emailController.text;
+                        final password = _passwordController.text;
+
+                        Provider.of<EmpViewModel>(context, listen: false)
+                            .performLogin(email, password, context);
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: red,
                         padding: EdgeInsets.fromLTRB(100, 20, 100, 20),

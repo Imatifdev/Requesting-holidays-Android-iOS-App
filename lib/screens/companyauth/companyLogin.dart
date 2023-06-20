@@ -34,60 +34,6 @@ class _CompanyLoginPageState extends State<CompanyLoginPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  Future<void> performLogin() async {
-    final String apiUrl = 'https://jporter.ezeelogix.com/public/api/login';
-    PopupLoader.show();
-
-    final response = await http.post(Uri.parse(apiUrl), body: {
-      'email': _emailController.text,
-      'password': _passwordController.text,
-      'user_type': '1'
-    });
-    PopupLoader.hide();
-
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-
-      if (jsonData['status'] == 'Success') {
-        final user = jsonData['data']['user'];
-        final token = jsonData['data']['token'];
-
-        // User data
-        final userId = user['id'];
-        final firstName = user['first_name'];
-        final lastName = user['last_name'];
-        final phone = user['phone'];
-        final email = user['email'];
-
-        // Store user data in shared preferences
-        final prefs = await SharedPreferences.getInstance();
-        prefs.setString('userId', userId.toString());
-        prefs.setString('firstName', firstName);
-        prefs.setString('lastName', lastName);
-        prefs.setString('phone', phone);
-        prefs.setString('email', email);
-
-        // Token
-        print('Token: $token');
-
-        // Navigate to the next screen or perform any desired action
-        print(jsonData);
-      } else {
-        // Login failed
-        print('Login failed');
-      }
-    } else {
-      Fluttertoast.showToast(
-          msg: "wrong userCridentials ",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      print('Error: ${response.reasonPhrase}');
-    }
-  }
 
   @override
   void dispose() {
@@ -270,43 +216,5 @@ class _CompanyLoginPageState extends State<CompanyLoginPage> {
         ),
       ),
     );
-  }
-}
-
-class ApiService {
-  static const String baseUrl = 'https://jporter.ezeelogix.com';
-  static const String loginUrl = '/public/api/login';
-
-  Future<bool> login(
-    String email,
-    String password,
-  ) async {
-    final response = await http.post(
-      Uri.parse(baseUrl + loginUrl),
-      body: {'email': email, 'password': password, 'user_type': '1'},
-    );
-
-    if (response.statusCode == 200) {
-      final responseBody = json.decode(response.body);
-      final token = responseBody['token'];
-
-      // Save token to shared preferences
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString('token', token);
-
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token');
-  }
-
-  Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.remove('token');
   }
 }

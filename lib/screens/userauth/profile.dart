@@ -14,6 +14,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:holidays/screens/companyauth/companyLogin.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
+import 'package:holidays/viewmodel/emp/empuserviewmodel.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 
@@ -57,8 +58,8 @@ class _EmpProfileViewState extends State<EmpProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    final companyViewModel = Provider.of<CompanyViewModel>(context);
-    final user = companyViewModel.user;
+    final empViewModel = Provider.of<EmpViewModel>(context);
+    final user = empViewModel.user;
 
     return Scaffold(
       backgroundColor: appbar,
@@ -162,7 +163,10 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                       backgroundColor: Colors.green,
                       textColor: Colors.white,
                       fontSize: 16.0);
-                  Get.offAll(() => CompanyLoginPage());
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (ctx) => EmpLoginPage()),
+                      (route) => false);
                 },
                 child: Container(
                   height: 50,

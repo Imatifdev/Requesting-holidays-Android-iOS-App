@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -59,7 +59,7 @@ class CompanyViewModel extends ChangeNotifier {
             fontSize: 16.0);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CompanyOTPScreen()),
+          MaterialPageRoute(builder: (context) => OTPVerificationPage()),
         );
         print('');
 
