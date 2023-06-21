@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:holidays/screens/companyauth/resetpass.dart';
 
 import '../../widget/constants.dart';
 import '../../widget/custombutton.dart';
@@ -71,11 +72,17 @@ class _CompanyForgitPasswordState extends State<CompanyForgitPassword> {
                 ),
                 MyCustomButton(
                     buttontextcolr: Colors.white,
-                    title: "Save",
+                    title: "Send Email Request",
                     borderrad: 25,
                     onaction: () {
                       if (formGlobalKey.currentState!.validate()) {
                         _showetoast("Details Send to your email");
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (ctx) => ForgotPasswordScreen(
+                                      email: _email.text,
+                                    )));
                       } else
                         _showetoast("Please a valid email address");
                     },

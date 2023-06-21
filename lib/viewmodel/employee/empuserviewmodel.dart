@@ -76,6 +76,60 @@ class EmpViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> requestLeave(
+    String employeeId,
+    String leaveType,
+    String startDate,
+    String endDate,
+    String totalLeaveCount,
+    String comment,
+  ) async {
+    final String apiUrl =
+        'https://jporter.ezeelogix.com/public/api/employee-request-leave';
+    final token = _token;
+
+    if (token == null) {
+      // Token not available, handle the error
+      return;
+    }
+
+    final headers = {
+      'Accept': 'application/json',
+      'Authorization': token,
+    };
+
+    final body = {
+      'employee_id': employeeId,
+      'leave_type': leaveType,
+      'start_date': startDate,
+      'end_date': endDate,
+      'total_leave_count': totalLeaveCount,
+      'comment': comment,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers,
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        // Handle the response as needed
+        print(jsonData);
+      } else {
+        // Handle the error
+        print(_token);
+
+        print(response.statusCode);
+      }
+    } catch (e) {
+      // Handle any exceptions
+      print('Error: $e');
+    }
+  }
+
   Future<void> retrieveUserDataFromSharedPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _token = prefs.getString('token');

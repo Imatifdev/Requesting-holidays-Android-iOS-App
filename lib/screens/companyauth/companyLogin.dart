@@ -169,8 +169,10 @@ class _CompanyLoginPageState extends State<CompanyLoginPage> {
                           style: TextStyle(color: Colors.black),
                         ),
                         onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed(CompanyForgitPassword.idScreen);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (ctx) => CompanyForgitPassword()));
                         },
                       )),
                   const SizedBox(height: 16.0),

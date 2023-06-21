@@ -22,6 +22,7 @@ import '../../widget/constants.dart';
 import '../../widget/custombutton.dart';
 import 'package:hive/hive.dart';
 
+import 'leaverequest.dart';
 import 'login.dart';
 
 class EmpProfileView extends StatefulWidget {
@@ -122,6 +123,20 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                     height: MediaQuery.of(context).size.height / 50,
                   ),
                   Container(
+                    height: MediaQuery.of(context).size.height / 14,
+                    width: MediaQuery.of(context).size.width,
+                    child: ListTile(
+                      leading: Icon(CupertinoIcons.person_alt_circle),
+                      title: Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: Text(
+                          '${user?.phone}',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
                       height: MediaQuery.of(context).size.height / 14,
                       width: MediaQuery.of(context).size.width,
                       child: ListTile(
@@ -129,7 +144,7 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                         title: Padding(
                           padding: const EdgeInsets.only(left: 30),
                           child: Text(
-                            '${user?.phone}',
+                            '${user?.id}',
                             style: TextStyle(fontSize: 14),
                           ),
                         ),
@@ -146,6 +161,25 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                     borderrad: 10,
                     buttontextcolr: Colors.white,
                     onaction: () {},
+                    color1: red,
+                    color2: red,
+                    width: MediaQuery.of(context).size.width - 40),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: MyCustomButton(
+                    title: "Request leave ",
+                    borderrad: 10,
+                    buttontextcolr: Colors.white,
+                    onaction: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (ctx) => EmpProfileViewreq()));
+                    },
                     color1: red,
                     color2: red,
                     width: MediaQuery.of(context).size.width - 40),

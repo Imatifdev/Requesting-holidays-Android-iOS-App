@@ -140,7 +140,7 @@ class _CompanyProfileViewState extends State<CompanyProfileView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 50),
                 child: MyCustomButton(
-                    title: "Edit Profile",
+                    title: "Reset Password",
                     borderrad: 10,
                     buttontextcolr: Colors.white,
                     onaction: () {},

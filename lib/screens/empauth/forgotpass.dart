@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../../widget/constants.dart';
 import '../../widget/custombutton.dart';
 import '../../widget/textinput.dart';
+import 'empresetpass.dart';
 
 class EmpForgitPassword extends StatefulWidget {
   static const String idScreen = 'forgotpass';
@@ -71,11 +72,17 @@ class _EmpForgitPasswordState extends State<EmpForgitPassword> {
                 ),
                 MyCustomButton(
                     buttontextcolr: Colors.white,
-                    title: "Save",
+                    title: "Send Request",
                     borderrad: 25,
                     onaction: () {
                       if (formGlobalKey.currentState!.validate()) {
                         _showetoast("Details Send to your email");
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (ctx) => EmpForgotPasswordScreen(
+                                      email: _email.text,
+                                    )));
                       } else
                         _showetoast("Please a valid email address");
                     },

@@ -2,9 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:holidays/screens/companyauth/changepass.dart';
 import 'package:holidays/screens/companyauth/companyLogin.dart';
 import 'package:holidays/screens/companyauth/otp.dart';
 import 'package:holidays/screens/dashboard.dart';
+import 'package:holidays/screens/companyauth/resetpass.dart';
+import 'package:holidays/screens/empauth/leaverequest.dart';
+import 'package:holidays/screens/empauth/profile.dart';
 
 import 'package:holidays/screens/home.dart';
 import 'package:holidays/screens/companyauth/forgotpass.dart';
@@ -52,7 +56,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             fontFamily: GoogleFonts.poppins().fontFamily,
           ),
-          home: CompanyLoginPage(),
+          home: EmpLoginPage(),
           routes: {
             EmpForgitPassword.idScreen: (context) => EmpForgitPassword(),
             EmpLoginPage.routeName: (context) => EmpLoginPage(),
