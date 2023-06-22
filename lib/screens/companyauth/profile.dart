@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:holidays/screens/companyauth/companyLogin.dart';
+import 'package:holidays/screens/companyauth/resetpass.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,8 @@ import '../../widget/constants.dart';
 import '../../widget/custombutton.dart';
 import '../empauth/login.dart';
 import 'package:hive/hive.dart';
+
+import 'changepass.dart';
 
 class CompanyProfileView extends StatefulWidget {
   @override
@@ -143,7 +146,12 @@ class _CompanyProfileViewState extends State<CompanyProfileView> {
                     title: "Reset Password",
                     borderrad: 10,
                     buttontextcolr: Colors.white,
-                    onaction: () {},
+                    onaction: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (ctx) => ResetPasswordScreen()));
+                    },
                     color1: red,
                     color2: red,
                     width: MediaQuery.of(context).size.width - 40),

@@ -9,6 +9,7 @@ import 'package:holidays/screens/dashboard.dart';
 import 'package:holidays/screens/companyauth/resetpass.dart';
 import 'package:holidays/screens/empauth/leaverequest.dart';
 import 'package:holidays/screens/empauth/profile.dart';
+import 'package:holidays/screens/empauth/test1.dart';
 
 import 'package:holidays/screens/home.dart';
 import 'package:holidays/screens/companyauth/forgotpass.dart';
@@ -20,6 +21,7 @@ import 'package:google_fonts/google_fonts.dart';
 // ...
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:holidays/screens/testingscreen.dart';
 import 'package:holidays/tst.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
 import 'package:holidays/viewmodel/employee/empuserviewmodel.dart';
@@ -56,7 +58,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             fontFamily: GoogleFonts.poppins().fontFamily,
           ),
-          home: EmpLoginPage(),
+          home: CompanyLoginPage(),
           routes: {
             EmpForgitPassword.idScreen: (context) => EmpForgitPassword(),
             EmpLoginPage.routeName: (context) => EmpLoginPage(),
