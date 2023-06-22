@@ -52,6 +52,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           },
         );
       } else {
+        print(jsonResponse);
         // OTP sending failed, show error message or handle accordingly
         showDialog(
           context: context,

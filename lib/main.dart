@@ -21,6 +21,7 @@ import 'package:google_fonts/google_fonts.dart';
 // ...
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:holidays/screens/onboarding.dart';
 import 'package:holidays/screens/testingscreen.dart';
 import 'package:holidays/tst.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
           )
         ],
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           builder: EasyLoading.init(),
           title: 'Flutter Demo',
           theme: ThemeData(

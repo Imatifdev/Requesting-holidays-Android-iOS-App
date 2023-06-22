@@ -16,7 +16,6 @@ class _RequestLeaveScreenState extends State<RequestLeaveScreen> {
   String _leaveType = '';
   String _totalLeaveCount = '';
   String _comment = '';
-
   Future<void> _submitLeaveRequest(String token) async {
     final String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/employee-request-leave';
@@ -32,6 +31,43 @@ class _RequestLeaveScreenState extends State<RequestLeaveScreen> {
       'total_leave_count': _totalLeaveCount,
       'comment': _comment,
     });
+    String _displayedLeaveType = '';
+    String _displayedStartDate = '';
+    String _displayedEndDate = '';
+    if (response.statusCode == 200) {
+      // Leave request successful
+      final jsonData = json.decode(response.body);
+      final leaveRequest = LeaveRequest.fromJson(jsonData);
+      print(leaveRequest); // Print the leave request data
+
+      // Update the UI with the leave request data
+      setState(() {
+        // Store the leave request data in your Flutter widget's state variables
+        // and use them to display the data on the screen.
+        // For example:
+        _displayedLeaveType = leaveRequest.leaveType;
+        _displayedStartDate = leaveRequest.startDate;
+        _displayedEndDate = leaveRequest.endDate;
+      });
+
+      // Handle success scenario
+    } else {
+      // Error occurred
+      print('Error: ${response.reasonPhrase}');
+      // Handle error scenario
+    }
+  }
+
+  Future<void> _getallLeaveRequest(String token) async {
+    final String requestLeaveUrl =
+        'https://jporter.ezeelogix.com/public/api/employee-get-all-requested-leaves';
+
+    final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    }, body: {
+      'employee_id': '1',
+    });
 
     if (response.statusCode == 200) {
       // Leave request successful
@@ -45,9 +81,55 @@ class _RequestLeaveScreenState extends State<RequestLeaveScreen> {
     }
   }
 
-  Future<void> _getallLeaveRequest(String token) async {
+  Future<void> _getallpendingLeaveRequest(String token) async {
     final String requestLeaveUrl =
-        'https://jporter.ezeelogix.com/public/api/employee-get-all-requested-leaves';
+        'https://jporter.ezeelogix.com/public/api/employee-get-all-pending-leaves';
+
+    final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    }, body: {
+      'employee_id': '1',
+    });
+
+    if (response.statusCode == 200) {
+      // Leave request successful
+      final jsonData = json.decode(response.body);
+      print(jsonData);
+      // Handle success scenario
+    } else {
+      // Error occurred
+      print('Error: ${response.reasonPhrase}');
+      // Handle error scenario
+    }
+  }
+
+  Future<void> _getallapprovedLeaveRequest(String token) async {
+    final String requestLeaveUrl =
+        'https://jporter.ezeelogix.com/public/api/employee-get-all-approved-leaves';
+
+    final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    }, body: {
+      'employee_id': '1',
+    });
+
+    if (response.statusCode == 200) {
+      // Leave request successful
+      final jsonData = json.decode(response.body);
+      print(jsonData);
+      // Handle success scenario
+    } else {
+      // Error occurred
+      print('Error: ${response.reasonPhrase}');
+      // Handle error scenario
+    }
+  }
+
+  Future<void> _getallrejectedLeaveRequest(String token) async {
+    final String requestLeaveUrl =
+        'https://jporter.ezeelogix.com/public/api/employee-get-all-rejected-leaves';
 
     final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
       'Authorization': 'Bearer $token',
@@ -124,23 +206,29 @@ class _RequestLeaveScreenState extends State<RequestLeaveScreen> {
             ),
             SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: () => _submitLeaveRequest(token!),
-              child: Text('Submit'),
+              onPressed: () {
+                print("object,s,");
+                _submitLeaveRequest(token!);
+                print("object");
+              },
+              child: Text('leave request'),
+            ),
+            ElevatedButton(
+              onPressed: () => _getallapprovedLeaveRequest(token!),
+              child: Text('Approved'),
+            ),
+            ElevatedButton(
+              onPressed: () => _getallpendingLeaveRequest(token!),
+              child: Text('Pending'),
+            ),
+            ElevatedButton(
+              onPressed: () => _getallrejectedLeaveRequest(token!),
+              child: Text('rejected'),
             ),
             SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () => _getallLeaveRequest(token!),
               child: Text('Submit'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => LeaveRequestListScreen()),
-                );
-              },
-              child: Text('View Leave Requests'),
             ),
           ],
         ),
@@ -149,58 +237,56 @@ class _RequestLeaveScreenState extends State<RequestLeaveScreen> {
   }
 }
 
-class LeaveRequestListScreen extends StatefulWidget {
-  @override
-  _LeaveRequestListScreenState createState() => _LeaveRequestListScreenState();
+class LeaveRequest {
+  final int id;
+  final String leaveType;
+  final String startDate;
+  final String endDate;
+  final int totalLeaveCount;
+  final String comment;
+
+  LeaveRequest({
+    required this.id,
+    required this.leaveType,
+    required this.startDate,
+    required this.endDate,
+    required this.totalLeaveCount,
+    required this.comment,
+  });
+
+  factory LeaveRequest.fromJson(Map<String, dynamic> json) {
+    return LeaveRequest(
+      id: json['id'],
+      leaveType: json['leave_type'],
+      startDate: json['start_date'],
+      endDate: json['end_date'],
+      totalLeaveCount: json['total_leave_count'],
+      comment: json['comment'],
+    );
+  }
 }
 
-class _LeaveRequestListScreenState extends State<LeaveRequestListScreen> {
-  List<dynamic> _requestedLeaves = [];
-
-  Future<void> _fetchRequestedLeaves() async {
-    final String apiUrl =
-        'https://jporter.ezeelogix.com/public/api/get-requested-leaves';
-
-    final response = await http.get(Uri.parse(apiUrl));
-
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      if (jsonData['status'] == 'Success') {
-        setState(() {
-          _requestedLeaves = jsonData['data']['requested_leaves'];
-        });
-      } else {
-        // Error occurred
-        print('Error: ${jsonData['message']}');
-      }
-    } else {
-      // Error occurred
-      print('Error: ${response.reasonPhrase}');
-    }
-  }
-
+class YourWidget extends StatefulWidget {
   @override
-  void initState() {
-    super.initState();
-    _fetchRequestedLeaves();
-  }
+  _YourWidgetState createState() => _YourWidgetState();
+}
+
+class _YourWidgetState extends State<YourWidget> {
+  String _displayedLeaveType = '';
+  String _displayedStartDate = '';
+  String _displayedEndDate = '';
+
+  // Rest of your widget code and the _submitLeaveRequest function
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Leave Requests'),
-      ),
-      body: ListView.builder(
-        itemCount: _requestedLeaves.length,
-        itemBuilder: (context, index) {
-          final requestedLeave = _requestedLeaves[index];
-          return ListTile(
-            title: Text(requestedLeave['leave_type']),
-            subtitle: Text('Start Date: ${requestedLeave['start_date']}'),
-          );
-        },
-      ),
+    return Column(
+      children: [
+        Text('Leave Type: $_displayedLeaveType'),
+        Text('Start Date: $_displayedStartDate'),
+        Text('End Date: $_displayedEndDate'),
+        // Display other leave request data as needed
+      ],
     );
   }
 }

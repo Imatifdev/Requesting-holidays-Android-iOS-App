@@ -152,6 +152,8 @@ import 'package:holidays/screens/companyauth/companyLogin.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../../widget/constants.dart';
+
 class ForgotPasswordScreen extends StatefulWidget {
   final String email;
 
@@ -244,16 +246,21 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: red,
         title: Text('Forgot Password'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(height: 16.0),
             if (!_isOTPSent)
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: red,
+                ),
                 onPressed: _sendOTP,
                 child: Text('Send OTP'),
               ),
@@ -276,6 +283,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                   SizedBox(height: 16.0),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: red,
+                    ),
                     onPressed: _verifyOTP,
                     child: Text('Reset Password'),
                   ),

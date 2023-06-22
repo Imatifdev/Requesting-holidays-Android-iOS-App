@@ -58,11 +58,11 @@ class _OnboardScreenState extends State<OnboardScreen> {
                       children: [
                         Image.asset(
                           "assets/images/logo.png",
-                          height: 100,
+                          height: 90,
                         ),
                         Image.asset(
                           contents[i].image,
-                          height: 400,
+                          height: 330,
                         ),
                         Text(
                           contents[i].title,
