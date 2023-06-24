@@ -4,8 +4,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart' as dp;
 import 'package:flutter_date_pickers/flutter_date_pickers.dart';
+import 'package:holidays/screens/request_leave.dart';
 import 'package:intl/intl.dart';
 
+import '../models/leave.dart';
+
+
+  List<LeaveItem> allLeaves = [
+    LeaveItem(id:"ujdncm5415sd" ,leaveType: "Sick", fromDate: DateTime(2023,2,12), toDate: DateTime(2023,2,14), cause: "Need time to help others", numberOfDays: 3),
+    LeaveItem(id:"dc5d15c1dc1d" ,leaveType: "Casual", fromDate: DateTime(2023,2,15), toDate: DateTime(2023,2,18), cause: "Need time to heal", numberOfDays: 3),
+    LeaveItem(id:"fv6e25cs51c5" ,leaveType: "Casual", fromDate: DateTime(2023,2,17), toDate: DateTime(2023,2,19), cause: "Need time for holidays", numberOfDays: 3),
+    LeaveItem(id:"5d1f6e8f45f1" ,leaveType: "Casual", fromDate: DateTime(2023,2,21), toDate: DateTime(2023,2,24), cause: "Need time for health issues", numberOfDays: 3),
+    LeaveItem(id:"98d4fv651v6r" ,leaveType: "Sick", fromDate: DateTime(2023,2,25), toDate: DateTime(2023,2,27), cause: "Need time visit my grandmother", numberOfDays: 3),
+    LeaveItem(id:"7d51fvfv51fv" ,leaveType: "Casual", fromDate: DateTime(2023,3,1), toDate: DateTime(2023,3,4), cause: "Need time to go to college", numberOfDays: 3),
+  ];
+  List<LeaveItem> sickLeaves = [];
+  List<LeaveItem> casualLeaves = [];
 class LeaveScreen extends StatefulWidget {
   @override
   _LeaveScreenState createState() => _LeaveScreenState();
@@ -14,25 +28,21 @@ class LeaveScreen extends StatefulWidget {
 class _LeaveScreenState extends State<LeaveScreen>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
-  List<LeaveItem> _allLeaves = [];
-  List<LeaveItem> _sickLeaves = [];
-  List<LeaveItem> _casualLeaves = [];
   DateTime? _firstDate;
   DateTime? _lastDate;
-  DateTimeRange? _selectedDateRange;
-  int? _numberOfDays;
-  @override
-  void initState() {
-    super.initState();
-    _firstDate = DateTime.now().subtract(Duration(days: 365));
-    _lastDate = DateTime.now().add(Duration(days: 365));
-    _selectedDateRange = DateTimeRange(
+  DateTimeRange   _selectedDateRange = DateTimeRange(
       start: DateTime.now(),
       end: DateTime.now().add(Duration(days: 1)),
     );
-    _numberOfDays =
-        _selectedDateRange!.end.difference(_selectedDateRange!.start).inDays +
-            1;
+  @override
+  void initState() {
+    super.initState();
+    // _firstDate = DateTime.now().subtract(Duration(days: 365));
+    // _lastDate = DateTime.now().add(Duration(days: 365));
+  
+    // _numberOfDays =
+    //     _selectedDateRange!.end.difference(_selectedDateRange!.start).inDays +
+    //        1;
     _tabController = TabController(length: 3, vsync: this);
   }
 
@@ -60,17 +70,17 @@ class _LeaveScreenState extends State<LeaveScreen>
       },
     );
 
-    if (dateRange != null) {
-      setState(() {
-        _selectedDateRange = dateRange;
-        _numberOfDays = _selectedDateRange!.end
-                .difference(_selectedDateRange!.start)
-                .inDays +
-            1;
-      });
-    }
+    // if (dateRange != null) {
+    //   setState(() {
+    //     _selectedDateRange = dateRange;
+    //     _numberOfDays = _selectedDateRange!.end
+    //             .difference(_selectedDateRange!.start)
+    //             .inDays +
+    //         1;
+    //   });
+    // }
   }
-
+/* 
   void _openLeaveDialog() {
     final startDateFormatted =
         DateFormat('EEE, MMM d, yyyy').format(_selectedDateRange!.start);
@@ -81,8 +91,6 @@ class _LeaveScreenState extends State<LeaveScreen>
       context: context,
       builder: (BuildContext context) {
         String? selectedLeaveType;
-        DateTime? leaveFromDate;
-        DateTime? leaveToDate;
         TextEditingController causeController = TextEditingController();
 
         return AlertDialog(
@@ -135,7 +143,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 4),
                           child: Text(
-                            '${startDateFormatted}',
+                            startDateFormatted,
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -166,7 +174,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 4),
                           child: Text(
-                            '${endDateFormatted}',
+                            endDateFormatted,
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -230,16 +238,16 @@ class _LeaveScreenState extends State<LeaveScreen>
                     leaveType: selectedLeaveType!,
                     fromDate: _selectedDateRange!.start,
                     toDate: _selectedDateRange!.end,
-                    cause: causeController.text,
+                    cause: causeController.text, numberOfDays: 5,
                   );
 
                   setState(() {
-                    _allLeaves.add(leaveItem);
+                    allLeaves.add(leaveItem);
 
                     if (selectedLeaveType == 'Sick') {
-                      _sickLeaves.add(leaveItem);
+                      sickLeaves.add(leaveItem);
                     } else if (selectedLeaveType == 'Casual') {
-                      _casualLeaves.add(leaveItem);
+                      casualLeaves.add(leaveItem);
                     }
 
                     Navigator.of(context).pop();
@@ -252,7 +260,7 @@ class _LeaveScreenState extends State<LeaveScreen>
       },
     );
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -280,7 +288,10 @@ class _LeaveScreenState extends State<LeaveScreen>
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                     InkWell(
-                      onTap: _openLeaveDialog,
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => RequestLeave(),));
+                      },
+                      //_openLeaveDialog,
                       child: Container(
                         decoration: BoxDecoration(
                             color: Colors.red,
@@ -350,31 +361,23 @@ class _LeaveScreenState extends State<LeaveScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          _buildLeaveList(_allLeaves),
-          _buildLeaveList(_sickLeaves),
-          _buildLeaveList(_casualLeaves),
+          _buildLeaveList(allLeaves),
+          _buildLeaveList(sickLeaves),
+          _buildLeaveList(casualLeaves),
         ],
       ),
     );
   }
 
   Widget _buildLeaveList(List<LeaveItem> leaves) {
-    final startDateFormatted =
-        DateFormat('EEE, MMM d,').format(_selectedDateRange!.start);
-    final endDateFormatted =
-        DateFormat('EEE, MMM d, yyyy').format(_selectedDateRange!.end);
-
-    if (leaves.isEmpty) {
-      return Center(
-        child: Text('No leaves to display'),
-      );
-    }
-
     return ListView.builder(
       itemCount: leaves.length,
       itemBuilder: (context, index) {
-        final leaveItem = leaves[index];
-
+        final leave = leaves[index];
+        String fromDate =
+        DateFormat('EEE, MMM d, yyyy').format(leave.fromDate);
+        String toDate = 
+        DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
         return Padding(
           padding: const EdgeInsets.all(13.0),
           child: Container(
@@ -396,7 +399,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '$_numberOfDays Day Application',
+                        '${leave.numberOfDays} Day Application',
                         style: TextStyle(fontSize: 16, color: Colors.grey),
                       ),
                       Container(
@@ -413,11 +416,11 @@ class _LeaveScreenState extends State<LeaveScreen>
                     ],
                   ),
                   Text(
-                    'From: ${startDateFormatted}',
+                    'From: $fromDate',
                     style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
-                        color: leaveItem.leaveType == 'Sick'
+                        color: leave.leaveType == 'Sick'
                             ? Colors.red
                             : Colors.blue),
                   ),
@@ -425,7 +428,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                     height: 10,
                   ),
                   Text(
-                    'To: ${endDateFormatted},',
+                    'To: $toDate,',
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
                   ),
@@ -433,7 +436,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${leaveItem.leaveType}',
+                        leave.leaveType,
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -462,18 +465,4 @@ class _LeaveScreenState extends State<LeaveScreen>
       },
     );
   }
-}
-
-class LeaveItem {
-  final String leaveType;
-  final DateTime fromDate;
-  final DateTime toDate;
-  final String cause;
-
-  LeaveItem({
-    required this.leaveType,
-    required this.fromDate,
-    required this.toDate,
-    required this.cause,
-  });
 }

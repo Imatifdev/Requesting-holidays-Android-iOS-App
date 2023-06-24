@@ -6,7 +6,7 @@ import 'package:holidays/screens/empauth/profile.dart';
 import 'companyauth/profile.dart';
 
 class HomePage extends StatefulWidget {
-  static const routeName = "signup-up";
+  static const routeName = "home";
 
   const HomePage({super.key});
 
