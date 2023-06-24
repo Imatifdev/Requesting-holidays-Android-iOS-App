@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:holidays/screens/companyauth/companyLogin.dart';
+import 'package:holidays/screens/empauth/testscreen.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
 import 'package:holidays/viewmodel/employee/empuserviewmodel.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -22,6 +23,7 @@ import '../../widget/constants.dart';
 import '../../widget/custombutton.dart';
 import 'package:hive/hive.dart';
 
+import '../testingscreen.dart';
 import 'leaverequest.dart';
 import 'login.dart';
 
@@ -136,19 +138,6 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                       ),
                     ),
                   ),
-                  Container(
-                      height: MediaQuery.of(context).size.height / 14,
-                      width: MediaQuery.of(context).size.width,
-                      child: ListTile(
-                        leading: Icon(CupertinoIcons.person_alt_circle),
-                        title: Padding(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: Text(
-                            '${user?.id}',
-                            style: TextStyle(fontSize: 14),
-                          ),
-                        ),
-                      )),
                 ]),
               ),
               SizedBox(
@@ -160,7 +149,14 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                     title: "Reset Password",
                     borderrad: 10,
                     buttontextcolr: Colors.white,
-                    onaction: () {},
+                    onaction: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (ctx) => EmpForgotResetPasswordScreen(
+                                    email: user!.email.toString(),
+                                  )));
+                    },
                     color1: red,
                     color2: red,
                     width: MediaQuery.of(context).size.width - 40),
@@ -178,7 +174,7 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (ctx) => EmpProfileViewreq()));
+                              builder: (ctx) => RequestLeaveScreen()));
                     },
                     color1: red,
                     color2: red,

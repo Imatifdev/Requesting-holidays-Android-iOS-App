@@ -111,6 +111,8 @@ import 'package:holidays/screens/empauth/profile.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../widget/constants.dart';
+
 final String baseUrl = 'https://jporter.ezeelogix.com/public/api';
 final String resendOtpEndpoint = '/resend-otp';
 final String verifyOtpEndpoint = '/verify-otp';
@@ -181,7 +183,8 @@ class _CompanyOtpScreenState extends State<CompanyOtpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('OTP Example'),
+        backgroundColor: red,
+        title: Text('OTP'),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -195,17 +198,28 @@ class _CompanyOtpScreenState extends State<CompanyOtpScreen> {
               ),
             ),
             SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                resendOtp('1', widget.email);
-              },
-              child: Text('Resend OTP'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                verifyOtp('1', otpController.text);
-              },
-              child: Text('Verify OTP'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: red,
+                  ),
+                  onPressed: () {
+                    resendOtp('1', widget.email);
+                  },
+                  child: Text('Resend OTP'),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: red,
+                  ),
+                  onPressed: () {
+                    verifyOtp('1', otpController.text);
+                  },
+                  child: Text('Verify OTP'),
+                ),
+              ],
             ),
           ],
         ),
