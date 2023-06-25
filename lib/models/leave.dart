@@ -1,17 +1,43 @@
-class LeaveItem {
-  final String id;
-  final String leaveType;
-  final DateTime fromDate;
-  final DateTime toDate;
-  final String cause;
-  final int numberOfDays;
+class LeaveRequest {
+  int id;
+  int employeeId;
+  String leaveType;
+  String startDate;
+  String endDate;
+  int totalRequestLeave;
+  String comment;
+  String status;
+  DateTime createdAt;
+  DateTime updatedAt;
+  String leaveCurrentStatus;
 
-  LeaveItem({
+  LeaveRequest({
     required this.id,
+    required this.employeeId,
     required this.leaveType,
-    required this.fromDate,
-    required this.toDate,
-    required this.cause,
-    required this.numberOfDays, 
+    required this.startDate,
+    required this.endDate,
+    required this.totalRequestLeave,
+    required this.comment,
+    required this.status,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.leaveCurrentStatus,
   });
+
+  factory LeaveRequest.fromJson(Map<String, dynamic> json) {
+    return LeaveRequest(
+      id: json['id'],
+      employeeId: json['employee_id'],
+      leaveType: json['leave_type'],
+      startDate: json['start_date'],
+      endDate: json['end_date'],
+      totalRequestLeave: json['total_request_leave'],
+      comment: json['comment'],
+      status: json['status'],
+      createdAt: DateTime.parse(json['created_at']),
+      updatedAt: DateTime.parse(json['updated_at']),
+      leaveCurrentStatus: json['leave_current_status'],
+    );
+  }
 }

@@ -1,25 +1,19 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_final_fields
 
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart' as dp;
 import 'package:flutter_date_pickers/flutter_date_pickers.dart';
 import 'package:holidays/screens/request_leave.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../models/leave.dart';
+import '../viewmodel/employee/empuserviewmodel.dart';
 
 
-  List<LeaveItem> allLeaves = [
-    LeaveItem(id:"ujdncm5415sd" ,leaveType: "Sick", fromDate: DateTime(2023,2,12), toDate: DateTime(2023,2,14), cause: "Need time to help others", numberOfDays: 3),
-    LeaveItem(id:"dc5d15c1dc1d" ,leaveType: "Casual", fromDate: DateTime(2023,2,15), toDate: DateTime(2023,2,18), cause: "Need time to heal", numberOfDays: 3),
-    LeaveItem(id:"fv6e25cs51c5" ,leaveType: "Casual", fromDate: DateTime(2023,2,17), toDate: DateTime(2023,2,19), cause: "Need time for holidays", numberOfDays: 3),
-    LeaveItem(id:"5d1f6e8f45f1" ,leaveType: "Casual", fromDate: DateTime(2023,2,21), toDate: DateTime(2023,2,24), cause: "Need time for health issues", numberOfDays: 3),
-    LeaveItem(id:"98d4fv651v6r" ,leaveType: "Sick", fromDate: DateTime(2023,2,25), toDate: DateTime(2023,2,27), cause: "Need time visit my grandmother", numberOfDays: 3),
-    LeaveItem(id:"7d51fvfv51fv" ,leaveType: "Casual", fromDate: DateTime(2023,3,1), toDate: DateTime(2023,3,4), cause: "Need time to go to college", numberOfDays: 3),
-  ];
-  List<LeaveItem> sickLeaves = [];
-  List<LeaveItem> casualLeaves = [];
 class LeaveScreen extends StatefulWidget {
   @override
   _LeaveScreenState createState() => _LeaveScreenState();
@@ -34,15 +28,13 @@ class _LeaveScreenState extends State<LeaveScreen>
       start: DateTime.now(),
       end: DateTime.now().add(Duration(days: 1)),
     );
+  int check = 0;
+  List<LeaveRequest> leaveRequests = [];
+  List<LeaveRequest> approvedLeaves = [];
+  List<LeaveRequest> rejectedLeaves = [];   
   @override
   void initState() {
     super.initState();
-    // _firstDate = DateTime.now().subtract(Duration(days: 365));
-    // _lastDate = DateTime.now().add(Duration(days: 365));
-  
-    // _numberOfDays =
-    //     _selectedDateRange!.end.difference(_selectedDateRange!.start).inDays +
-    //        1;
     _tabController = TabController(length: 3, vsync: this);
   }
 
@@ -80,189 +72,118 @@ class _LeaveScreenState extends State<LeaveScreen>
     //   });
     // }
   }
-/* 
-  void _openLeaveDialog() {
-    final startDateFormatted =
-        DateFormat('EEE, MMM d, yyyy').format(_selectedDateRange!.start);
-    final endDateFormatted =
-        DateFormat('EEE, MMM d, yyyy').format(_selectedDateRange!.end);
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        String? selectedLeaveType;
-        TextEditingController causeController = TextEditingController();
+  Future<void> _getallLeaveRequest(String token) async {
+    final String requestLeaveUrl =
+        'https://jporter.ezeelogix.com/public/api/employee-get-all-requested-leaves';
 
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Text('New Leave'),
-          content: Container(
-            height: 400,
-            width: 300,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 16),
-                DropdownButtonFormField<String>(
-                  value: selectedLeaveType,
-                  hint: Text(
-                    'Type',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  items: [
-                    DropdownMenuItem<String>(
-                      value: 'Sick',
-                      child: Text('Sick'),
-                    ),
-                    DropdownMenuItem<String>(
-                      value: 'Casual',
-                      child: Text('Casual'),
-                    ),
-                  ],
-                  onChanged: (value) {
-                    setState(() {
-                      selectedLeaveType = value;
-                    });
-                  },
-                ),
-                SizedBox(height: 16),
-                Row(
-                  children: [
-                    Text(
-                      "Start:",
-                      style: TextStyle(fontSize: 17, color: Colors.red),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Expanded(
-                      child: Container(
-                        height: 30,
-                        color: Colors.grey.shade200,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 4),
-                          child: Text(
-                            startDateFormatted,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "To:    ",
-                      style: TextStyle(fontSize: 17, color: Colors.red),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Expanded(
-                      child: Container(
-                        height: 30,
-                        color: Colors.grey.shade200,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 4),
-                          child: Text(
-                            endDateFormatted,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Cause:",
-                      style: TextStyle(fontSize: 17, color: Colors.red),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Expanded(
-                      child: TextField(
-                        controller: causeController,
-                        decoration: InputDecoration(
-                          fillColor: Colors.grey.shade200,
-                          filled: true,
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                          hintText: 'Enter Cause',
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 30),
-                Center(
-                  child: ElevatedButton(
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                    onPressed: () => _selectDateRange(context),
-                    child: Text('Select Date'),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            MaterialButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            MaterialButton(
-              child: Text('Apply'),
-              onPressed: () {
-                if (selectedLeaveType != null && _selectedDateRange != null) {
-                  final leaveItem = LeaveItem(
-                    leaveType: selectedLeaveType!,
-                    fromDate: _selectedDateRange!.start,
-                    toDate: _selectedDateRange!.end,
-                    cause: causeController.text, numberOfDays: 5,
-                  );
+    final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    }, body: {
+      'employee_id': '1',
+    });
 
-                  setState(() {
-                    allLeaves.add(leaveItem);
+    if (response.statusCode == 200) {
+      // Leave request successful
+      final jsonDataMap = json.decode(response.body);
+      print(jsonDataMap);
+      List<dynamic> requestedLeaves = jsonDataMap['data']['requested_leaves'];
+      setState(() {
+      leaveRequests = requestedLeaves
+      .map((json) => LeaveRequest.fromJson(json))
+      .toList();
 
-                    if (selectedLeaveType == 'Sick') {
-                      sickLeaves.add(leaveItem);
-                    } else if (selectedLeaveType == 'Casual') {
-                      casualLeaves.add(leaveItem);
-                    }
-
-                    Navigator.of(context).pop();
-                  });
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
+     for (LeaveRequest request in leaveRequests) {
+    if (request.leaveType == "Compassionate") {
+      approvedLeaves.add(request);
+    } else if (request.leaveType == "Lieu") {
+      rejectedLeaves.add(request);
+    }
   }
-*/
+
+      });
+      // Handle success scenario
+    } else {
+      // Error occurred
+      print('Error: ${response.reasonPhrase}');
+      // Handle error scenario
+    }
+  }
+
+  Future<void> _getallapprovedLeaveRequest(String token) async {
+    const String requestLeaveUrl =
+        'https://jporter.ezeelogix.com/public/api/employee-get-all-approved-leaves';
+
+    final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    }, body: {
+      'employee_id': '1',
+    });
+
+    if (response.statusCode == 200) {
+      // Leave request successful
+      final jsonDataMap = json.decode(response.body);
+      print(jsonDataMap);
+      List<dynamic> requestedLeaves = jsonDataMap['data']['requested_leaves'];
+      setState(() {
+      approvedLeaves = requestedLeaves
+      .map((json) => LeaveRequest.fromJson(json))
+      .toList();  
+      });
+      // Handle success scenario
+    } else {
+      // Error occurred
+      print('Error: ${response.reasonPhrase}');
+      // Handle error scenario
+    }
+  }
+
+  Future<void> _getallrejectedLeaveRequest(String token) async {
+    const String requestLeaveUrl =
+        'https://jporter.ezeelogix.com/public/api/employee-get-all-rejected-leaves';
+
+    final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    }, body: {
+      'employee_id': '1',
+    });
+
+    if (response.statusCode == 200) {
+      // Leave request successful
+      final jsonDataMap = json.decode(response.body);
+      print(jsonDataMap);
+      List<dynamic> requestedLeaves = jsonDataMap['data']['requested_leaves'];
+      setState(() {
+      rejectedLeaves = requestedLeaves
+      .map((json) => LeaveRequest.fromJson(json))
+      .toList();  
+      });
+      //Handle success scenario
+    } else {
+      // Error occurred
+      print('Error: ${response.reasonPhrase}');
+      // Handle error scenario
+    }
+  }
+  
+
+
   @override
   Widget build(BuildContext context) {
+    final empViewModel = Provider.of<EmpViewModel>(context);
+    final token = empViewModel.token;
+    if(check == 0){
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) { 
+            _getallLeaveRequest(token!);
+            // _getallapprovedLeaveRequest(token);
+            // _getallrejectedLeaveRequest(token);
+            });
+      check = 1;
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -316,7 +237,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                   Tab(
                     child: Text(
                       "All ",
-                      style: TextStyle(fontSize: 16, color: Colors.black),
+                      style: TextStyle(fontSize: 14, color: Colors.black),
                     ),
                   ),
                   Tab(
@@ -327,8 +248,8 @@ class _LeaveScreenState extends State<LeaveScreen>
                           width: 5,
                         ),
                         Text(
-                          "Sick ",
-                          style: TextStyle(fontSize: 16, color: Colors.black),
+                          "Compassionate",
+                          style: TextStyle(fontSize: 10, color: Colors.black),
                         )
                       ],
                     ),
@@ -345,8 +266,8 @@ class _LeaveScreenState extends State<LeaveScreen>
                             width: 5,
                           ),
                           Text(
-                            "Casual",
-                            style: TextStyle(fontSize: 16, color: Colors.black),
+                            "Lieu",
+                            style: TextStyle(fontSize: 14, color: Colors.black),
                           )
                         ],
                       ),
@@ -361,23 +282,23 @@ class _LeaveScreenState extends State<LeaveScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          _buildLeaveList(allLeaves),
-          _buildLeaveList(sickLeaves),
-          _buildLeaveList(casualLeaves),
+          _buildLeaveList(leaveRequests),
+          _buildLeaveList(approvedLeaves),
+          _buildLeaveList(rejectedLeaves),
         ],
       ),
     );
   }
 
-  Widget _buildLeaveList(List<LeaveItem> leaves) {
+  Widget _buildLeaveList(List<LeaveRequest> leaves) {
     return ListView.builder(
       itemCount: leaves.length,
       itemBuilder: (context, index) {
         final leave = leaves[index];
-        String fromDate =
-        DateFormat('EEE, MMM d, yyyy').format(leave.fromDate);
-        String toDate = 
-        DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
+        // String fromDate =
+        // DateFormat('EEE, MMM d, yyyy').format(leave.startDate);
+        // String toDate = 
+        // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
         return Padding(
           padding: const EdgeInsets.all(13.0),
           child: Container(
@@ -399,24 +320,25 @@ class _LeaveScreenState extends State<LeaveScreen>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${leave.numberOfDays} Day Application',
+                        '${leave.totalRequestLeave} Day Application',
                         style: TextStyle(fontSize: 16, color: Colors.grey),
                       ),
                       Container(
                         decoration: BoxDecoration(
                             color: Colors.green,
                             borderRadius: BorderRadius.circular(10)),
-                        height: 20,
-                        width: 60,
                         child: Center(
-                            child: Text("Status",
-                                style:
-                                    TextStyle(color: Colors.green.shade100))),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(leave.leaveCurrentStatus,
+                                  style:
+                                      TextStyle(color: Colors.green.shade100)),
+                            )),
                       )
                     ],
                   ),
                   Text(
-                    'From: $fromDate',
+                    'From: ${leave.startDate}',
                     style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
@@ -428,7 +350,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                     height: 10,
                   ),
                   Text(
-                    'To: $toDate,',
+                    'To: ${leave.endDate},',
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
                   ),

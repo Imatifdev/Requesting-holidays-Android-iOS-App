@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:holidays/screens/companyauth/leave_requests_company.dart';
-
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import '../../models/leave.dart';
+import '../../viewmodel/employee/empuserviewmodel.dart';
 import 'approved_leaves.dart';
 import 'declined_leaves.dart';
 
@@ -11,14 +16,124 @@ class HomeCompany extends StatefulWidget {
 
 class _HomeCompanyState extends State<HomeCompany> {
   int _currentIndex = 0;
+  int check =0; 
 
-  final List<Widget> _screens = [
-    const ReceivedRequests(),const Text("2"),ApprovedLeaves(),DeclinedLeaves()
-  ];
+  
 
+  List<LeaveRequest> leaveRequests = [];
+  List<LeaveRequest> approvedLeaves = [];
+  List<LeaveRequest> rejectedLeaves = [];
+
+  Future<void> _getallpendingLeaveRequest(String token) async {
+    const String requestLeaveUrl =
+        'https://jporter.ezeelogix.com/public/api/employee-get-all-pending-leaves';
+
+    final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    }, body: {
+      'employee_id': '1',
+    });
+
+    if (response.statusCode == 200) {
+      // Leave request successful
+      final jsonDataMap = json.decode(response.body);
+      print(jsonDataMap);
+      List<dynamic> requestedLeaves = jsonDataMap['data']['requested_leaves'];
+      setState(() {
+      leaveRequests = requestedLeaves
+      .map((json) => LeaveRequest.fromJson(json))
+      .toList();  
+      });
+      // Handle success scenario
+    } else {
+      // Error occurred
+      print('Error: ${response.reasonPhrase}');
+      // Handle error scenario
+    }
+  }
+
+  Future<void> _getallapprovedLeaveRequest(String token) async {
+    const String requestLeaveUrl =
+        'https://jporter.ezeelogix.com/public/api/employee-get-all-approved-leaves';
+
+    final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    }, body: {
+      'employee_id': '1',
+    });
+
+    if (response.statusCode == 200) {
+      // Leave request successful
+      final jsonDataMap = json.decode(response.body);
+      print(jsonDataMap);
+      List<dynamic> requestedLeaves = jsonDataMap['data']['requested_leaves'];
+      setState(() {
+      approvedLeaves = requestedLeaves
+      .map((json) => LeaveRequest.fromJson(json))
+      .toList();  
+      });
+      // Handle success scenario
+    } else {
+      // Error occurred
+      print('Error: ${response.reasonPhrase}');
+      // Handle error scenario
+    }
+  }
+
+  Future<void> _getallrejectedLeaveRequest(String token) async {
+    const String requestLeaveUrl =
+        'https://jporter.ezeelogix.com/public/api/employee-get-all-rejected-leaves';
+
+    final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    }, body: {
+      'employee_id': '1',
+    });
+
+    if (response.statusCode == 200) {
+      // Leave request successful
+      final jsonDataMap = json.decode(response.body);
+      print(jsonDataMap);
+      List<dynamic> requestedLeaves = jsonDataMap['data']['requested_leaves'];
+      setState(() {
+      rejectedLeaves = requestedLeaves
+      .map((json) => LeaveRequest.fromJson(json))
+      .toList();  
+      });
+      //Handle success scenario
+    } else {
+      // Error occurred
+      print('Error: ${response.reasonPhrase}');
+      // Handle error scenario
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
+    final empViewModel = Provider.of<EmpViewModel>(context);
+    final token = empViewModel.token;
+    if(check == 0){
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) { 
+            _getallpendingLeaveRequest(token!);
+            _getallapprovedLeaveRequest(token);
+            _getallrejectedLeaveRequest(token);
+            });
+      check = 1;
+    }
+    final List<Widget> _screens = [
+    ReceivedRequests(leaveRequests: leaveRequests),const Text("2"),ApprovedLeaves(approvedLeaves: approvedLeaves),DeclinedLeaves(rejectedLeaves: rejectedLeaves,)
+  ];
     return Scaffold(
+      // appBar: AppBar(
+      //   actions: [
+      //     ElevatedButton(onPressed: ()=>_getallapprovedLeaveRequest(token!), child: const Text("approved")),
+      //     ElevatedButton(onPressed: ()=>_getallrejectedLeaveRequest(token!), child: const Text("declined")),
+      //   ],
+      // ),
       body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.black,

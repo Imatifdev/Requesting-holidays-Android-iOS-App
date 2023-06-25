@@ -206,25 +206,25 @@ class _RequestLeaveState extends State<RequestLeave> {
                             ),),
                             onPressed: (){
                             if(_formKey.currentState!.validate() && _firstDate!=DateTime(2022,11,22) && _lastDate!=DateTime(2022,11,23)){
-                              final LeaveItem leave = 
-                              LeaveItem(
-                                id: DateTime.now().millisecond.toString(),
-                                cause: causeController.text,
-                                fromDate: _firstDate,
-                                toDate: _lastDate,
-                                leaveType:selectedLeaveType.toString(), 
-                                numberOfDays: _lastDate
-                .difference(_firstDate)
-                .inDays +
-            1);
-                              setState(() {
-                                allLeaves.add(leave);
-                                if (selectedLeaveType == 'Sick') {
-                      sickLeaves.add(leave);
-                    } else if (selectedLeaveType == 'Casual') {
-                      casualLeaves.add(leave);
-                    }
-                              });
+            // //                   final LeaveRequest leave = 
+            // //                   LeaveRequest(
+            // //                     id: DateTime.now().millisecond.toString(),
+            // //                     cause: causeController.text,
+            // //                     fromDate: _firstDate,
+            // //                     toDate: _lastDate,
+            // //                     leaveType:selectedLeaveType.toString(), 
+            // //                     numberOfDays: _lastDate
+            // //     .difference(_firstDate)
+            // //     .inDays +
+            // // 1);
+            // //                   setState(() {
+            // //                     allLeaves.add(leave);
+            // //                     if (selectedLeaveType == 'Sick') {
+            // //           sickLeaves.add(leave);
+            // //         } else if (selectedLeaveType == 'Casual') {
+            // //           casualLeaves.add(leave);
+            // //         }
+            // //                  });
                               Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  LeaveScreen()));
                             }
                             else{

@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import '../../models/leave.dart';
 import 'package:intl/intl.dart';
 
-List approvedLeaves = [];
+
 class ApprovedLeaves extends StatefulWidget {
-  const ApprovedLeaves({super.key});
+  final List approvedLeaves;
+  const ApprovedLeaves({super.key, required this.approvedLeaves});
 
   @override
   State<ApprovedLeaves> createState() => _ApprovedLeavesState();
@@ -32,11 +33,11 @@ class _ApprovedLeavesState extends State<ApprovedLeaves> {
               )),
               Expanded(
                 child: ListView.builder(
-                  itemCount: approvedLeaves.length,
+                  itemCount: widget.approvedLeaves.length,
                   itemBuilder: (context, index) {
-                    LeaveItem leave = approvedLeaves[index];
-                    String fromDate =
-                    DateFormat('EEE, MMM d, yyyy').format(leave.fromDate);
+                    LeaveRequest leave = widget.approvedLeaves[index];
+                    // String fromDate =
+                    // DateFormat('EEE, MMM d, yyyy').format(leave.startDate);
                     return Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Card(
@@ -49,10 +50,10 @@ class _ApprovedLeavesState extends State<ApprovedLeaves> {
                                 children: [
                                     Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text("${leave.numberOfDays} Day of Application")),
+                                    child: Text("${leave.totalRequestLeave} Day of Application")),
                                     Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(fromDate, style: TextStyle( fontSize: 22, fontWeight: FontWeight.bold, color: leave.leaveType == "Sick"? const Color.fromRGBO(100, 121, 198, 1 ):Colors.red))),
+                                    child: Text(leave.startDate, style: TextStyle( fontSize: 22, fontWeight: FontWeight.bold, color: leave.leaveType == "Sick"? const Color.fromRGBO(100, 121, 198, 1 ):Colors.red))),
                                     Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(leave.leaveType)),

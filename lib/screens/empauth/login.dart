@@ -156,7 +156,7 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
                     height: 20,
                   ),
                   TextFormField(
-                    keyboardType: TextInputType.visiblePassword,
+                    //keyboardType: TextInputType.visiblePassword,
                     controller: _emailController,
                     decoration: InputDecoration(
                       prefixIcon: Padding(

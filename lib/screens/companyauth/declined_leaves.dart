@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../../models/leave.dart';
 import 'package:intl/intl.dart';
 
-List declinedLeaves = [];
 class DeclinedLeaves extends StatefulWidget {
-  const DeclinedLeaves({super.key});
+  final List<LeaveRequest> rejectedLeaves;
+  const DeclinedLeaves({super.key, required this.rejectedLeaves});
 
   @override
   State<DeclinedLeaves> createState() => _DeclinedLeavesState();
@@ -30,13 +30,13 @@ class _DeclinedLeavesState extends State<DeclinedLeaves> {
                 padding: EdgeInsets.all(8.0),
                 child: Text("Declined Requests", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
               )),
-              Expanded(
+              if (widget.rejectedLeaves.isNotEmpty) Expanded(
                 child: ListView.builder(
-                  itemCount: declinedLeaves.length,
+                  itemCount: widget.rejectedLeaves.length,
                   itemBuilder: (context, index) {
-                    LeaveItem leave = declinedLeaves[index];
-                    String fromDate =
-                    DateFormat('EEE, MMM d, yyyy').format(leave.fromDate);
+                    LeaveRequest leave = widget.rejectedLeaves[index];
+                    // String fromDate =
+                    // DateFormat('EEE, MMM d, yyyy').format(leave.fromDate);
                     return Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Card(
@@ -49,10 +49,10 @@ class _DeclinedLeavesState extends State<DeclinedLeaves> {
                                 children: [
                                     Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text("${leave.numberOfDays} Day of Application")),
+                                    child: Text("${leave.totalRequestLeave} Day of Application")),
                                     Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(fromDate, style: TextStyle( fontSize: 22, fontWeight: FontWeight.bold, color: leave.leaveType == "Sick"? const Color.fromRGBO(100, 121, 198, 1 ):Colors.red))),
+                                    child: Text(leave.startDate, style: TextStyle( fontSize: 22, fontWeight: FontWeight.bold, color: leave.leaveType == "Sick"? const Color.fromRGBO(100, 121, 198, 1 ):Colors.red))),
                                     Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(leave.leaveType)),
@@ -82,7 +82,9 @@ class _DeclinedLeavesState extends State<DeclinedLeaves> {
                         ),
                       ),
                     );
-                  },) )
+                  },) ) else const SizedBox(
+                    height: 600,
+                    child: Center(child: Text("No rejected leaves")))
             ]),
         ),
       ));
