@@ -31,25 +31,11 @@ class _RequestLeaveScreenState extends State<RequestLeaveScreen> {
       'total_leave_count': _totalLeaveCount,
       'comment': _comment,
     });
-    String _displayedLeaveType = '';
-    String _displayedStartDate = '';
-    String _displayedEndDate = '';
     if (response.statusCode == 200) {
       // Leave request successful
       final jsonData = json.decode(response.body);
       final leaveRequest = LeaveRequest.fromJson(jsonData);
       print(leaveRequest); // Print the leave request data
-
-      // Update the UI with the leave request data
-      setState(() {
-        // Store the leave request data in your Flutter widget's state variables
-        // and use them to display the data on the screen.
-        // For example:
-        _displayedLeaveType = leaveRequest.leaveType;
-        _displayedStartDate = leaveRequest.startDate;
-        _displayedEndDate = leaveRequest.endDate;
-      });
-
       // Handle success scenario
     } else {
       // Error occurred

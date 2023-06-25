@@ -1,7 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:holidays/models/leave.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
+
+import '../viewmodel/employee/empuserviewmodel.dart';
 import 'dashboard.dart';
 class RequestLeave extends StatefulWidget {
   const RequestLeave({super.key});
@@ -21,6 +27,8 @@ class _RequestLeaveState extends State<RequestLeave> {
   String? selectedLeaveType;
   TextEditingController causeController = TextEditingController();
   final DateTimeRange _selectedDateRange = DateTimeRange(start: DateTime( DateTime.now().year,DateTime.now().month,DateTime.now().day), end:DateTime( DateTime.now().year,DateTime.now().month,DateTime.now().day+1));
+  int totalLeaveCount = 0;
+
   void _selectDateRange(BuildContext context) async {
     final dateRange = await showDateRangePicker(
       context: context,
@@ -46,12 +54,56 @@ class _RequestLeaveState extends State<RequestLeave> {
         endDateFormatted =
         DateFormat('EEE, MMM d, yyyy').format(dateRange.end);
         _lastDate = dateRange.end;
+        var diff = dateRange.end.difference(dateRange.end);
+        totalLeaveCount = diff.inDays;
     });
     }
     }
+  
+  Future<void> _submitLeaveRequest(String token, String leaveType, String startDate,String endDate, String totalLeaveCount, String comment) async {
+    const String requestLeaveUrl =
+        'https://jporter.ezeelogix.com/public/api/employee-request-leave';
+
+    final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    }, body: {
+      'employee_id': '1',
+      'leave_type': leaveType,
+      'start_date': startDate,
+      'end_date': endDate,
+      'total_leave_count': totalLeaveCount,
+      'comment': comment,
+      // id: 20, 
+      // employee_id: 1, 
+      // leave_type: Compassionate, 
+      // start_date: 29-06-2023, 
+      // end_date: 29-06-2023, 
+      // total_request_leave: 1, 
+      // comment: thired, 
+      // status: 0, 
+      // created_at: 2023-06-23T12:08:41.000000Z, 
+      // updated_at: 2023-06-23T12:08:41.000000Z, 
+      // leave_current_status: Pending
+    });
+    if (response.statusCode == 200) {
+      // Leave request successful
+      final jsonData = json.decode(response.body);
+      //final leaveRequest = LeaveRequest.fromJson(jsonData);
+      //print(leaveRequest);
+      // Handle success scenario
+    } else {
+      // Error occurred
+      print('Error: ${response.reasonPhrase}');
+      // Handle error scenario
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final empViewModel = Provider.of<EmpViewModel>(context);
+    final token = empViewModel.token;
     return Scaffold(
       body: SafeArea(
         child: SizedBox(
@@ -76,12 +128,16 @@ class _RequestLeaveState extends State<RequestLeave> {
                             ),
                             items: const [
                               DropdownMenuItem<String>(
-                                value: 'Sick',
-                                child: Text('Sick'),
+                                value: 'Compassionate',
+                                child: Text('Compassionate'),
                               ),
                               DropdownMenuItem<String>(
-                                value: 'Casual',
-                                child: Text('Casual'),
+                                value: 'Lieu',
+                                child: Text('Lieu'),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: 'full day',
+                                child: Text('Full Day'),
                               ),
                             ],
                             onChanged: (value) {
@@ -204,27 +260,9 @@ class _RequestLeaveState extends State<RequestLeave> {
                         shape: RoundedRectangleBorder( //to set border radius to button
                   borderRadius: BorderRadius.circular(50)
                             ),),
-                            onPressed: (){
+                            onPressed: ()async{
                             if(_formKey.currentState!.validate() && _firstDate!=DateTime(2022,11,22) && _lastDate!=DateTime(2022,11,23)){
-            // //                   final LeaveRequest leave = 
-            // //                   LeaveRequest(
-            // //                     id: DateTime.now().millisecond.toString(),
-            // //                     cause: causeController.text,
-            // //                     fromDate: _firstDate,
-            // //                     toDate: _lastDate,
-            // //                     leaveType:selectedLeaveType.toString(), 
-            // //                     numberOfDays: _lastDate
-            // //     .difference(_firstDate)
-            // //     .inDays +
-            // // 1);
-            // //                   setState(() {
-            // //                     allLeaves.add(leave);
-            // //                     if (selectedLeaveType == 'Sick') {
-            // //           sickLeaves.add(leave);
-            // //         } else if (selectedLeaveType == 'Casual') {
-            // //           casualLeaves.add(leave);
-            // //         }
-            // //                  });
+                              await _submitLeaveRequest(token!, selectedLeaveType!, startDateFormatted, endDateFormatted, totalLeaveCount.toString(), causeController.text.trim());
                               Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  LeaveScreen()));
                             }
                             else{
