@@ -24,6 +24,7 @@ import '../empauth/login.dart';
 import 'package:hive/hive.dart';
 
 import 'changepass.dart';
+import 'companydashboard.dart';
 
 class CompanyProfileView extends StatefulWidget {
   @override
@@ -64,17 +65,7 @@ class _CompanyProfileViewState extends State<CompanyProfileView> {
     final user = companyViewModel.user;
 
     return Scaffold(
-      backgroundColor: appbar,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: appbar,
-        leading: IconButton(
-            onPressed: () {},
-            icon: Icon(
-              CupertinoIcons.left_chevron,
-              color: Colors.black,
-            )),
-      ),
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -159,23 +150,6 @@ class _CompanyProfileViewState extends State<CompanyProfileView> {
               const SizedBox(
                 height: 30,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50),
-                child: MyCustomButton(
-                    title: "Leaves",
-                    borderrad: 10,
-                    buttontextcolr: Colors.white,
-                    onaction: () {
-                      //   Navigator.push(context,
-                      //       MaterialPageRoute(builder: (ctx) => ApiScreen()));
-                    },
-                    color1: red,
-                    color2: red,
-                    width: MediaQuery.of(context).size.width - 40),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
               InkWell(
                 onTap: () {
                   companyViewModel.signOut();
@@ -193,10 +167,7 @@ class _CompanyProfileViewState extends State<CompanyProfileView> {
                 child: Container(
                   height: 50,
                   width: MediaQuery.of(context).size.width * .70,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.red),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                  decoration: BoxDecoration(),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

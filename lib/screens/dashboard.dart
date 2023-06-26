@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_final_fields
 
 import 'dart:convert';
+import 'package:holidays/screens/empauth/profile.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -168,6 +169,18 @@ class _LeaveScreenState extends State<LeaveScreen>
           ),
           onPressed: () {},
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              CupertinoIcons.profile_circled,
+              color: Colors.grey,
+            ),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (ctx) => EmpProfileView()));
+            },
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight + 40),
           child: Column(

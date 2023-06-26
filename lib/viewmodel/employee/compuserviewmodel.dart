@@ -9,6 +9,7 @@ import 'dart:convert';
 
 import '../../models/company/compusermodel.dart';
 import '../../screens/companyauth/otp.dart';
+import '../../screens/dashboard.dart';
 import '../../widget/popuploader.dart';
 
 class CompanyViewModel extends ChangeNotifier {
@@ -44,7 +45,7 @@ class CompanyViewModel extends ChangeNotifier {
         print(jsonData);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CompanyProfileView()),
+          MaterialPageRoute(builder: (context) => LeaveScreen()),
         );
         notifyListeners();
       } else {

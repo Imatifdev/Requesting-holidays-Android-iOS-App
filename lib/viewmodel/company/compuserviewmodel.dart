@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:holidays/screens/companyauth/companydashboard.dart';
 import 'package:holidays/screens/companyauth/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -44,7 +45,7 @@ class CompanyViewModel extends ChangeNotifier {
         print(jsonData);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CompanyProfileView()),
+          MaterialPageRoute(builder: (context) => CompanyDashBoard()),
         );
         notifyListeners();
       } else {
