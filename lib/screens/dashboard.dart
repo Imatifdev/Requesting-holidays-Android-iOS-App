@@ -4,10 +4,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_date_pickers/flutter_date_pickers.dart' as dp;
-import 'package:flutter_date_pickers/flutter_date_pickers.dart';
+// import 'package:flutter_date_pickers/flutter_date_pickers.dart' as dp;
+//import 'package:flutter_date_pickers/flutter_date_pickers.dart';
 import 'package:holidays/screens/request_leave.dart';
-import 'package:intl/intl.dart';
+//import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../models/leave.dart';
@@ -22,20 +22,22 @@ class LeaveScreen extends StatefulWidget {
 class _LeaveScreenState extends State<LeaveScreen>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
-  DateTime? _firstDate;
-  DateTime? _lastDate;
-  DateTimeRange   _selectedDateRange = DateTimeRange(
-      start: DateTime.now(),
-      end: DateTime.now().add(Duration(days: 1)),
-    );
+  // DateTime? _firstDate;
+  // DateTime? _lastDate;
+  // DateTimeRange   _selectedDateRange = DateTimeRange(
+  //     start: DateTime.now(),
+  //     end: DateTime.now().add(Duration(days: 1)),
+  //   );
   int check = 0;
   List<LeaveRequest> leaveRequests = [];
+  List<LeaveRequest> commpassionateLeaves = [];
+  List<LeaveRequest> lieuLeaves = []; 
   List<LeaveRequest> approvedLeaves = [];
   List<LeaveRequest> rejectedLeaves = [];   
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
   }
 
   @override
@@ -44,37 +46,37 @@ class _LeaveScreenState extends State<LeaveScreen>
     super.dispose();
   }
 
-  void _selectDateRange(BuildContext context) async {
-    final dateRange = await showDateRangePicker(
-      context: context,
-      firstDate: _firstDate!,
-      lastDate: _lastDate!,
-      initialDateRange: _selectedDateRange,
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(
-              primary: Colors.red, // Customize the primary color
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
+  // void _selectDateRange(BuildContext context) async {
+  //   final dateRange = await showDateRangePicker(
+  //     context: context,
+  //     firstDate: _firstDate!,
+  //     lastDate: _lastDate!,
+  //     initialDateRange: _selectedDateRange,
+  //     builder: (BuildContext context, Widget? child) {
+  //       return Theme(
+  //         data: ThemeData.light().copyWith(
+  //           colorScheme: ColorScheme.light(
+  //             primary: Colors.red, // Customize the primary color
+  //           ),
+  //         ),
+  //         child: child!,
+  //       );
+  //     },
+  //   );
 
-    // if (dateRange != null) {
-    //   setState(() {
-    //     _selectedDateRange = dateRange;
-    //     _numberOfDays = _selectedDateRange!.end
-    //             .difference(_selectedDateRange!.start)
-    //             .inDays +
-    //         1;
-    //   });
-    // }
-  }
+  //   // if (dateRange != null) {
+  //   //   setState(() {
+  //   //     _selectedDateRange = dateRange;
+  //   //     _numberOfDays = _selectedDateRange!.end
+  //   //             .difference(_selectedDateRange!.start)
+  //   //             .inDays +
+  //   //         1;
+  //   //   });
+  //   // }
+  // }
 
   Future<void> _getallLeaveRequest(String token) async {
-    final String requestLeaveUrl =
+    const String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/employee-get-all-requested-leaves';
 
     final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
@@ -96,9 +98,9 @@ class _LeaveScreenState extends State<LeaveScreen>
 
      for (LeaveRequest request in leaveRequests) {
     if (request.leaveType == "Compassionate") {
-      approvedLeaves.add(request);
+      commpassionateLeaves.add(request);
     } else if (request.leaveType == "Lieu") {
-      rejectedLeaves.add(request);
+      lieuLeaves.add(request);
     }
   }
 
@@ -179,8 +181,8 @@ class _LeaveScreenState extends State<LeaveScreen>
       WidgetsBinding.instance
           .addPostFrameCallback((_) { 
             _getallLeaveRequest(token!);
-            // _getallapprovedLeaveRequest(token);
-            // _getallrejectedLeaveRequest(token);
+            _getallapprovedLeaveRequest(token);
+            _getallrejectedLeaveRequest(token);
             });
       check = 1;
     }
@@ -241,35 +243,32 @@ class _LeaveScreenState extends State<LeaveScreen>
                     ),
                   ),
                   Tab(
-                    child: Row(
-                      children: [
-                        CircleAvatar(radius: 5, backgroundColor: Colors.red),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          "Compassionate",
-                          style: TextStyle(fontSize: 10, color: Colors.black),
-                        )
-                      ],
+                    child: SizedBox(
+                      child: Text(
+                        "Compassionate",
+                        style: TextStyle(fontSize: 14, color: Colors.black),
+                      ),
                     ),
                   ),
                   Tab(
-                    child: Expanded(
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 5,
-                            backgroundColor: Color(0xff6479C6),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            "Lieu",
-                            style: TextStyle(fontSize: 14, color: Colors.black),
-                          )
-                        ],
+                    child: Text(
+                      "Lieu",
+                      style: TextStyle(fontSize: 14, color: Colors.black),
+                    ),
+                  ),
+                  Tab(
+                    child: SizedBox(
+                      child: Text(
+                        "Approved",
+                        style: TextStyle(fontSize: 14, color: Colors.black),
+                      ),
+                    ),
+                  ),
+                  Tab(
+                    child: SizedBox(
+                      child: Text(
+                        "Rejected",
+                        style: TextStyle(fontSize: 14, color: Colors.black),
                       ),
                     ),
                   ),
@@ -283,15 +282,18 @@ class _LeaveScreenState extends State<LeaveScreen>
         controller: _tabController,
         children: [
           _buildLeaveList(leaveRequests),
+          _buildLeaveList(commpassionateLeaves),
+          _buildLeaveList(lieuLeaves),
           _buildLeaveList(approvedLeaves),
           _buildLeaveList(rejectedLeaves),
+          //_buildLeaveList(lieuLeaves),
         ],
       ),
     );
   }
 
   Widget _buildLeaveList(List<LeaveRequest> leaves) {
-    return ListView.builder(
+    return leaves.isNotEmpty? ListView.builder(
       itemCount: leaves.length,
       itemBuilder: (context, index) {
         final leave = leaves[index];
@@ -320,7 +322,9 @@ class _LeaveScreenState extends State<LeaveScreen>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${leave.totalRequestLeave} Day Application',
+                        
+                        //${leave.totalRequestLeave}
+                        'Application',
                         style: TextStyle(fontSize: 16, color: Colors.grey),
                       ),
                       Container(
@@ -385,6 +389,6 @@ class _LeaveScreenState extends State<LeaveScreen>
           ),
         );
       },
-    );
+    ):Center(child: Text("No Leaves"),) ;
   }
 }

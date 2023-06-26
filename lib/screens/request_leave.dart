@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:holidays/models/leave.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -88,7 +85,7 @@ class _RequestLeaveState extends State<RequestLeave> {
     });
     if (response.statusCode == 200) {
       // Leave request successful
-      final jsonData = json.decode(response.body);
+      //final jsonData = json.decode(response.body);
       //final leaveRequest = LeaveRequest.fromJson(jsonData);
       //print(leaveRequest);
       // Handle success scenario
