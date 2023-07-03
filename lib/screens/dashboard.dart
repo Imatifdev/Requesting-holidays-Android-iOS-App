@@ -47,8 +47,8 @@ class _LeaveScreenState extends State<LeaveScreen>
   }
 
   Future<void> _getallLeaveRequest(String token) async {
-    final empViewModel = Provider.of<EmpViewModel>(context);
-    final user = empViewModel.user;
+    //final empViewModel = Provider.of<EmpViewModel>(context);
+    //final user = empViewModel.user;
 
     const String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/employee-get-all-requested-leaves';
@@ -57,7 +57,7 @@ class _LeaveScreenState extends State<LeaveScreen>
       'Authorization': 'Bearer $token',
       'Accept': 'application/json',
     }, body: {
-      'employee_id': user!.id,
+      'employee_id': 1.toString(),
     });
 
     if (response.statusCode == 200) {
@@ -86,8 +86,8 @@ class _LeaveScreenState extends State<LeaveScreen>
   }
 
   Future<void> _getallapprovedLeaveRequest(String token) async {
-    final empViewModel = Provider.of<EmpViewModel>(context);
-    final user = empViewModel.user;
+    // final empViewModel = Provider.of<EmpViewModel>(context);
+    // final user = empViewModel.user;
 
     const String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/employee-get-all-approved-leaves';
@@ -96,7 +96,7 @@ class _LeaveScreenState extends State<LeaveScreen>
       'Authorization': 'Bearer $token',
       'Accept': 'application/json',
     }, body: {
-      'employee_id': user!.id,
+      'employee_id': 1.toString(),
     });
 
     if (response.statusCode == 200) {
@@ -117,8 +117,8 @@ class _LeaveScreenState extends State<LeaveScreen>
   }
 
   Future<void> _getallrejectedLeaveRequest(String token) async {
-    final empViewModel = Provider.of<EmpViewModel>(context);
-    final user = empViewModel.user;
+    // final empViewModel = Provider.of<EmpViewModel>(context);
+    // final user = empViewModel.user;
 
     const String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/employee-get-all-rejected-leaves';
@@ -127,7 +127,7 @@ class _LeaveScreenState extends State<LeaveScreen>
       'Authorization': 'Bearer $token',
       'Accept': 'application/json',
     }, body: {
-      'employee_id': user!.id,
+      'employee_id': 1.toString(),
     });
 
     if (response.statusCode == 200) {

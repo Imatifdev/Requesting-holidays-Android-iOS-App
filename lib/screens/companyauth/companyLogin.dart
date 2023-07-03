@@ -94,7 +94,7 @@ class _CompanyLoginPageState extends State<CompanyLoginPage> {
                     height: 44,
                   ),
                   TextFormField(
-                    keyboardType: TextInputType.visiblePassword,
+                    //keyboardType: TextInputType.visiblePassword,
                     controller: _emailController,
                     decoration: InputDecoration(
                       prefixIcon: Padding(

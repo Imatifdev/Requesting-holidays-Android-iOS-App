@@ -317,7 +317,7 @@ class ApprovedApplications extends StatelessWidget {
               // String toDate =
               // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
               return Padding(
-                padding: const EdgeInsets.all(13.0),
+                padding: const EdgeInsets.all(5.0),
                 child: Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),

@@ -30,7 +30,7 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   Future<void> performLogin() async {
-    final String apiUrl = 'https://jporter.ezeelogix.com/public/api/login';
+    const String apiUrl = 'https://jporter.ezeelogix.com/public/api/login';
     PopupLoader.show();
 
     final response = await http.post(Uri.parse(apiUrl), body: {

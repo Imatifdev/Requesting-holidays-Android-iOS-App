@@ -52,12 +52,12 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           builder: EasyLoading.init(),
-          title: 'Flutter Demo',
+          title: 'Holiday Request',
           theme: ThemeData(
             fontFamily: GoogleFonts.poppins().fontFamily,
             primarySwatch: Colors.red,
           ),
-          home: CompanyLoginPage(),
+          home: EmpLoginPage(),
           routes: {
             EmpForgitPassword.idScreen: (context) => EmpForgitPassword(),
             EmpLoginPage.routeName: (context) => EmpLoginPage(),
