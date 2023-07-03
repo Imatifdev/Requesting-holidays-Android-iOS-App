@@ -7,12 +7,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_date_pickers/flutter_date_pickers.dart' as dp;
 //import 'package:flutter_date_pickers/flutter_date_pickers.dart';
-import 'package:holidays/screens/request_leave.dart';
+import 'package:holidays/screens/empauth/request_leave.dart';
 //import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../models/leave.dart';
-import '../viewmodel/employee/empuserviewmodel.dart';
+import '../../models/leave.dart';
+import '../../viewmodel/employee/empuserviewmodel.dart';
 
 class LeaveScreen extends StatefulWidget {
   @override

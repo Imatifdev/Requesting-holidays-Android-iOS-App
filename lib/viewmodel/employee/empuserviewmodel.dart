@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:holidays/screens/companyauth/home_company.dart';
 import 'package:holidays/screens/companyauth/profile.dart';
-import 'package:holidays/screens/dashboard.dart';
+import 'package:holidays/screens/empauth/dashboard.dart';
 import 'package:holidays/screens/empauth/otpscreen.dart';
 import 'package:holidays/screens/empauth/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';

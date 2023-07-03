@@ -17,8 +17,8 @@ import '../../../widget/constants.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../../viewmodel/company/compuserviewmodel.dart';
 import '../../widget/popuploader.dart';
-import '../dashboard.dart';
-import '../home.dart';
+import '../empauth/dashboard.dart';
+import '../empauth/home.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;

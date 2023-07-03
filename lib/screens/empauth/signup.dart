@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../widget/constants.dart';
-import '../home.dart';
+import 'home.dart';
 import 'login.dart';
 import 'package:velocity_x/velocity_x.dart';
 

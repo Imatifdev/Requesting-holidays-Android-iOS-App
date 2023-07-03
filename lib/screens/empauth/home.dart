@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:holidays/screens/empauth/profile.dart';
 
-import 'companyauth/profile.dart';
+import '../companyauth/profile.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "home";

@@ -4,8 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-import '../viewmodel/employee/empuserviewmodel.dart';
-import '../widget/constants.dart';
+import '../../viewmodel/employee/empuserviewmodel.dart';
+import '../../widget/constants.dart';
 import 'dashboard.dart';
 import 'package:velocity_x/velocity_x.dart';
 

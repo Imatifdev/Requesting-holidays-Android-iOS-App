@@ -9,7 +9,7 @@ import 'dart:convert';
 
 import '../../models/company/compusermodel.dart';
 import '../../screens/companyauth/otp.dart';
-import '../../screens/dashboard.dart';
+import '../../screens/empauth/dashboard.dart';
 import '../../widget/popuploader.dart';
 
 class CompanyViewModel extends ChangeNotifier {

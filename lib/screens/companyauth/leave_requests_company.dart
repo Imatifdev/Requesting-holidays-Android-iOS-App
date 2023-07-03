@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:holidays/models/leave.dart';
 import 'package:holidays/screens/companyauth/approved_leaves.dart';
 import 'package:holidays/screens/companyauth/declined_leaves.dart';
-import 'package:holidays/screens/dashboard.dart';
+import 'package:holidays/screens/empauth/dashboard.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
