@@ -4,11 +4,11 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:holidays/screens/companyauth/api_test.dart';
 import 'package:holidays/screens/companyauth/profile.dart';
+import 'package:holidays/screens/companyauth/search_screen.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
 import 'package:provider/provider.dart';
-
-import '../../viewmodel/employee/empuserviewmodel.dart';
 import '../../widget/constants.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -117,24 +117,31 @@ class _AllApplicationsState extends State<AllApplications> {
 
   @override
   Widget build(BuildContext context) {
-    final empViewModel = Provider.of<CompanyViewModel>(context);
-    final token = empViewModel.token;
+    // final empViewModel = Provider.of<CompanyViewModel>(context);
+    // final token = empViewModel.token;
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 20.0),
-          decoration: BoxDecoration(
-            color: Colors.grey.shade400,
-            borderRadius: BorderRadius.circular(25.0),
-          ),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Search',
-              border: InputBorder.none,
-              prefixIcon: Icon(Icons.search),
-              contentPadding: EdgeInsets.symmetric(vertical: 12.0),
-            ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Leave Requests", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+              ElevatedButton(child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("search"),
+                  SizedBox(width: 10,),
+                  Icon(Icons.search)
+                ],
+              ), onPressed: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchScreen(),));
+                }
+                ,),
+            ],
           ),
         ),
         Expanded(
