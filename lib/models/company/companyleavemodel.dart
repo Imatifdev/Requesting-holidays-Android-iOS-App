@@ -20,9 +20,9 @@ class CompanyLeave1 {
       id: json['id'],
       companyId: json['company_id'],
       title: json['title'],
-      date: DateTime.parse(json['date']),
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at']),
+      date: DateTime.tryParse(json['date']) ?? DateTime.now(),
+      createdAt: DateTime.tryParse(json['created_at']) ?? DateTime.now(),
+      updatedAt: DateTime.tryParse(json['updated_at']) ?? DateTime.now(),
     );
   }
 }

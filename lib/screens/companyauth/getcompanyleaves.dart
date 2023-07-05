@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:holidays/models/leave.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -107,39 +108,6 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class CompanyLeave {
-  final int? id;
-  final int? companyId;
-  final String? title;
-  final DateTime? date;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-
-  CompanyLeave({
-    this.id,
-    this.companyId,
-    this.title,
-    this.date,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  factory CompanyLeave.fromJson(Map<String, dynamic> json) {
-    return CompanyLeave(
-      id: json['id'] as int?,
-      companyId: json['company_id'] as int?,
-      title: json['title'] as String?,
-      date: json['date'] != null ? DateTime.parse(json['date']) : null,
-      createdAt: json['created_at'] != null
-          ? DateTime.parse(json['created_at'])
-          : null,
-      updatedAt: json['updated_at'] != null
-          ? DateTime.parse(json['updated_at'])
-          : null,
-    );
-  }
-}
-
 class MyScreen extends StatefulWidget {
   @override
   _MyScreenState createState() => _MyScreenState();
@@ -148,69 +116,98 @@ class MyScreen extends StatefulWidget {
 class _MyScreenState extends State<MyScreen> {
   int check = 0;
 
-  List<CompanyLeave> companyLeaves = [];
+  List<CompanyLeave1> companyLeaves = [];
 
   Future<void> newcallApi(String token, String id) async {
-    final baseUrl = 'https://jporter.ezeelogix.com/public/api/';
-    final endpoint = 'get-company-leaves';
+    // final baseUrl = 'https://jporter.ezeelogix.com/public/api/';
+    // final endpoint = 'get-company-leaves';
 
-    final requestBody = {
-      'company_id': id,
-    };
+    // final requestBody = {
+    //   'company_id': id,
+    // };
 
-    final headers = {
-      'Accept': 'application/json',
+    // final headers = {
+    //   'Accept': 'application/json',
+    //   'Authorization': 'Bearer $token',
+    // };
+
+    // try {
+    //   final response = await http.post(
+    //     Uri.parse(baseUrl + endpoint),
+    //     headers: headers,
+    //     body: requestBody,
+    //   );
+
+    //   if (response.statusCode == 200) {
+    //     final responseData = json.decode(response.body);
+    //     print("textCheck1");
+    //     if (responseData is List) {
+    //       // Store response data in CompanyLeave instances
+    //       List<CompanyLeave> companyLeaves = [];
+    //       for (var jsonLeave in responseData) {
+    //         CompanyLeave leave = CompanyLeave.fromJson(jsonLeave);
+    //         companyLeaves.add(leave);
+    //       }
+
+    //       // Print the stored data
+    //       for (var leave in companyLeaves) {
+    //         print(leave.id);
+    //         print(leave.companyId);
+    //         print(leave.title);
+    //         print(leave.date);
+    //         print(leave.createdAt);
+    //         print(leave.updatedAt);
+    //         print('---');
+    //       }
+    //     } else if (responseData is Map<String, dynamic>) {
+    //       // Handle a single object response
+    //       CompanyLeave leave = CompanyLeave.fromJson(responseData);
+
+    //       // Print the stored data
+    //       print(leave.id);
+    //       print(leave.companyId);
+    //       print(leave.title);
+    //       print(leave.date);
+    //       print(leave.createdAt);
+    //       print(leave.updatedAt);
+    //     } else {
+    //       // Invalid response format
+    //       print('Invalid response format');
+    //     }
+    //   } else {
+    //     print('Request failed with status: ${response.statusCode}');
+    //   }
+    // } catch (error) {
+    //   print('Error: $error');
+    // }
+    const String requestLeaveUrl =
+        'https://jporter.ezeelogix.com/public/api/get-company-leaves';
+
+    final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
       'Authorization': 'Bearer $token',
-    };
-
-    try {
-      final response = await http.post(
-        Uri.parse(baseUrl + endpoint),
-        headers: headers,
-        body: requestBody,
-      );
-
-      if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-
-        if (responseData is List) {
-          // Store response data in CompanyLeave instances
-          List<CompanyLeave> companyLeaves = [];
-          for (var jsonLeave in responseData) {
-            CompanyLeave leave = CompanyLeave.fromJson(jsonLeave);
-            companyLeaves.add(leave);
-          }
-
-          // Print the stored data
-          for (var leave in companyLeaves) {
-            print(leave.id);
-            print(leave.companyId);
-            print(leave.title);
-            print(leave.date);
-            print(leave.createdAt);
-            print(leave.updatedAt);
-            print('---');
-          }
-        } else if (responseData is Map<String, dynamic>) {
-          // Handle a single object response
-          CompanyLeave leave = CompanyLeave.fromJson(responseData);
-
-          // Print the stored data
-          print(leave.id);
-          print(leave.companyId);
-          print(leave.title);
-          print(leave.date);
-          print(leave.createdAt);
-          print(leave.updatedAt);
-        } else {
-          // Invalid response format
-          print('Invalid response format');
-        }
-      } else {
-        print('Request failed with status: ${response.statusCode}');
-      }
-    } catch (error) {
-      print('Error: $error');
+      'Accept': 'application/json',
+    }, body: {
+      'company_id': '1',
+    });
+    if (response.statusCode == 200) {
+      // Leave request successful
+      final jsonData = json.decode(response.body);
+      print(jsonData);
+      // Handle success scenario
+      List<dynamic> requestedLeaves =
+          jsonData["data"];
+      setState(() {
+        companyLeaves =
+            requestedLeaves.map((json) => CompanyLeave1.fromJson(json)).toList();
+        // for (CompanyLeave1 leave in companyLeaves) {
+        //     companyLeaves.add(leave);
+        // }
+      });
+    } else {
+      print(response.statusCode);
+      // Error occurred
+      print('Error: ${response.reasonPhrase}');
+      // Handle error scenario
     }
   }
 
@@ -231,18 +228,18 @@ class _MyScreenState extends State<MyScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Company Leaves'),
+        title: const Text('Company Leaves'),
       ),
-      body: ListView.builder(
+      body: companyLeaves.isNotEmpty? ListView.builder(
         itemCount: companyLeaves.length,
         itemBuilder: (context, index) {
-          CompanyLeave leave = companyLeaves[index];
+          CompanyLeave1 leave = companyLeaves[index];
           return ListTile(
-            title: Text(leave.title.toString()),
+            title: Text(leave.title),
             subtitle: Text('Dates:   ${leave.date}'),
           );
         },
-      ),
+      ):const Text("No Company Leaves"),
     );
   }
 }
