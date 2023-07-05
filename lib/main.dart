@@ -2,6 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:holidays/screens/companyauth/companyLogin.dart';
+import 'package:holidays/screens/companyauth/companydashboard.dart';
+import 'package:holidays/screens/companyauth/createcompanyleaves.dart';
+import 'package:holidays/screens/companyauth/createfinancialyear.dart';
+import 'package:holidays/screens/companyauth/leave_requests_company.dart';
+import 'package:holidays/screens/empauth/dashboard.dart';
+import 'package:holidays/screens/companyauth/resetpass.dart';
+import 'package:holidays/screens/empauth/leaverequest.dart';
+import 'package:holidays/screens/empauth/profile.dart';
+import 'package:holidays/screens/empauth/test1.dart';
 import 'package:holidays/screens/empauth/home.dart';
 import 'package:holidays/screens/empauth/forgotpass.dart';
 import 'package:holidays/screens/empauth/login.dart';
@@ -19,11 +29,11 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox('box');
 
-  runApp(const MyApp());
+  runApp(const MyApp1());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp1 extends StatelessWidget {
+  const MyApp1({super.key});
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -43,7 +53,7 @@ class MyApp extends StatelessWidget {
             fontFamily: GoogleFonts.poppins().fontFamily,
             primarySwatch: Colors.red,
           ),
-          home: EmpLoginPage(),
+          home: CompanyLoginPage(),
           routes: {
             EmpForgitPassword.idScreen: (context) => EmpForgitPassword(),
             EmpLoginPage.routeName: (context) => EmpLoginPage(),
