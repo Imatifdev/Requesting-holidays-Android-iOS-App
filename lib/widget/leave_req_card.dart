@@ -37,7 +37,7 @@ class LeaveRequestCard extends StatelessWidget {
                           ),
                           Container(
                             decoration: BoxDecoration(
-                                color: leave.leaveCurrentStatus == 'Pending'
+                                color: leave.leaveCurrentStatus == 'Rejected'
                                     ? Colors.red
                                     : Colors.green,
                                 borderRadius: BorderRadius.circular(10)),
@@ -45,11 +45,8 @@ class LeaveRequestCard extends StatelessWidget {
                                 child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(leave.leaveCurrentStatus,
-                                  style: TextStyle(
-                                      color: leave.leaveCurrentStatus ==
-                                              'Pending'
-                                          ? Colors.red.shade100
-                                          : Colors.green.shade100)),
+                                  style: const TextStyle(
+                                      color: Colors.white)),
                             )),
                           )
                         ],
