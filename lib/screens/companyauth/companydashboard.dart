@@ -117,8 +117,8 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
                 color: red, fontSize: 18, fontWeight: FontWeight.bold),
           ),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (ctx) => ShowCompanyLeaves()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (ctx) => MyScreen()));
           },
         ),
         ListTile(

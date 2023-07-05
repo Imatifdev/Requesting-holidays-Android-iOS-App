@@ -19,50 +19,6 @@ class CreateCompanyLeave extends StatefulWidget {
 }
 
 class _CreateCompanyLeaveState extends State<CreateCompanyLeave> {
-  Future<void> callApi(
-    String token,
-  ) async {
-    // Define the base URL and endpoint
-    final baseUrl = 'https://jporter.ezeelogix.com/public/api/';
-    final endpoint = 'create-company-leaves';
-
-    // Prepare the request body
-    final requestBody = {
-      'company_id': '1',
-      'title': 'holiday for shopping',
-      'selectedDatesInput[0]': '24-06-2023',
-      'selectedDatesInput[1]': '26-06-2023',
-    };
-
-    // Prepare the request headers
-    final headers = {
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    };
-
-    try {
-      // Send the POST request
-      final response = await http.post(
-        Uri.parse(baseUrl + endpoint),
-        headers: headers,
-        body: requestBody,
-      );
-
-      if (response.statusCode == 200) {
-        // Request successful
-        final responseData = json.decode(response.body);
-        // Handle the response data as needed
-        print(responseData);
-      } else {
-        // Request failed
-        print('Request failed with status: ${response.statusCode}');
-      }
-    } catch (error) {
-      // An error occurred
-      print('Error: $error');
-    }
-  }
-
   List<DateTime> _selectedDates = [];
   String _selectedDate = '';
   String _dateCount = '';
@@ -87,40 +43,6 @@ class _CreateCompanyLeaveState extends State<CreateCompanyLeave> {
     });
   }
 
-  TextEditingController title = TextEditingController();
-
-  void _submitLeaveRequest(
-    String title,
-    String token,
-    String companyId,
-  ) async {
-    final String requestLeaveUrl =
-        'https://jporter.ezeelogix.com/public/api/company-change-leave-request-status';
-
-    final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    }, body: {
-      'company_id': companyId.toString(),
-      'selectedDatesInput[0]':
-          '${[24 - 06 - 2023, 27 - 06 - 2023, 29 - 06 - 2023]}',
-      'title': title.toString(),
-    });
-
-    if (response.statusCode == 200) {
-      // Leave request successful
-      final jsonData = json.decode(response.body);
-      print(jsonData);
-      // Handle success scenario
-    } else {
-      print(response.statusCode);
-      // Error occurred
-      print('Error: ${response.reasonPhrase}');
-      // Handle error scenario
-    }
-  }
-
-  List<DateTime> _newselectedDates = [];
   TextEditingController _titleController = TextEditingController();
 
   Future<void> newcallApi(String token, String id) async {
