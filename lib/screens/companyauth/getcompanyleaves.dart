@@ -239,7 +239,7 @@ class _MyScreenState extends State<MyScreen> {
           CompanyLeave leave = companyLeaves[index];
           return ListTile(
             title: Text(leave.title.toString()),
-            subtitle: Text('Date: ${leave.date}'),
+            subtitle: Text('Dates:   ${leave.date}'),
           );
         },
       ),
