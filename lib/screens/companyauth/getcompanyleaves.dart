@@ -1,112 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:holidays/models/leave.dart';
+import 'package:holidays/screens/companyauth/update_company_leave.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import '../../models/company/companyleavemodel.dart';
 import '../../viewmodel/company/compuserviewmodel.dart';
-
-// class ShowCompanyLeaves extends StatefulWidget {
-//   const ShowCompanyLeaves({super.key});
-
-//   @override
-//   State<ShowCompanyLeaves> createState() => _ShowCompanyLeavesState();
-// }
-
-// class _ShowCompanyLeavesState extends State<ShowCompanyLeaves> {
-//   List<CompanyLeave> companyLeaves = [];
-
-//   @override
-//   void didChangeDependencies() {
-//     super.didChangeDependencies();
-
-//     final comViewModel = Provider.of<CompanyViewModel>(context);
-//     final token = comViewModel.token;
-//     final companyViewModel = Provider.of<CompanyViewModel>(context);
-//     final user = companyViewModel.user;
-//     final companyId = user!.id;
-
-//     newcallApi(token!, companyId.toString());
-//   }
-
-//   Future<void> newcallApi(String token, String id) async {
-//     // Define the base URL and endpoint
-//     final baseUrl = 'https://jporter.ezeelogix.com/public/api/';
-//     final endpoint = 'get-company-leaves';
-
-//     // Prepare the request body
-//     final requestBody = {
-//       'company_id': id,
-//     };
-
-//     // Prepare the request headers
-//     final headers = {
-//       'Accept': 'application/json',
-//       'Authorization': 'Bearer $token',
-//     };
-
-//     try {
-//       // Send the POST request
-//       final response = await http.post(
-//         Uri.parse(baseUrl + endpoint),
-//         headers: headers,
-//         body: requestBody,
-//       );
-
-//       if (response.statusCode == 200) {
-//         final responseData = json.decode(response.body);
-
-//         // Create a list to store the parsed company leaves
-//         List<CompanyLeave> companyLeaves = [];
-
-//         for (var item in responseData) {
-//           // Parse each item and create a CompanyLeave object
-//           CompanyLeave companyLeave = CompanyLeave.fromJson(item);
-
-//           // Add the parsed object to the list
-//           companyLeaves.add(companyLeave);
-//         }
-
-//         // Print the list of company leaves
-//         print(companyLeaves);
-//       } else {
-//         // Request failed
-//         print('Request failed with status: ${response.statusCode}');
-//       }
-//     } catch (error) {
-//       // An error occurred
-//       print('Error: $error');
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final comViewModel = Provider.of<CompanyViewModel>(context);
-//     final token = comViewModel.token;
-//     final companyViewModel = Provider.of<CompanyViewModel>(context);
-//     final user = companyViewModel.user;
-//     final companyId = user!.id;
-
-//     return Scaffold(
-//       body: ListView.builder(
-//         itemCount: companyLeaves.length,
-//         itemBuilder: (context, index) {
-//           CompanyLeave leave = companyLeaves[index];
-//           return ListTile(
-//             title: Text(leave.title),
-//             subtitle: Text('Date: ${leave.date}'),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
-
-import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class MyScreen extends StatefulWidget {
   @override
@@ -118,68 +18,7 @@ class _MyScreenState extends State<MyScreen> {
 
   List<CompanyLeave1> companyLeaves = [];
 
-  Future<void> newcallApi(String token, String id) async {
-    // final baseUrl = 'https://jporter.ezeelogix.com/public/api/';
-    // final endpoint = 'get-company-leaves';
-
-    // final requestBody = {
-    //   'company_id': id,
-    // };
-
-    // final headers = {
-    //   'Accept': 'application/json',
-    //   'Authorization': 'Bearer $token',
-    // };
-
-    // try {
-    //   final response = await http.post(
-    //     Uri.parse(baseUrl + endpoint),
-    //     headers: headers,
-    //     body: requestBody,
-    //   );
-
-    //   if (response.statusCode == 200) {
-    //     final responseData = json.decode(response.body);
-    //     print("textCheck1");
-    //     if (responseData is List) {
-    //       // Store response data in CompanyLeave instances
-    //       List<CompanyLeave> companyLeaves = [];
-    //       for (var jsonLeave in responseData) {
-    //         CompanyLeave leave = CompanyLeave.fromJson(jsonLeave);
-    //         companyLeaves.add(leave);
-    //       }
-
-    //       // Print the stored data
-    //       for (var leave in companyLeaves) {
-    //         print(leave.id);
-    //         print(leave.companyId);
-    //         print(leave.title);
-    //         print(leave.date);
-    //         print(leave.createdAt);
-    //         print(leave.updatedAt);
-    //         print('---');
-    //       }
-    //     } else if (responseData is Map<String, dynamic>) {
-    //       // Handle a single object response
-    //       CompanyLeave leave = CompanyLeave.fromJson(responseData);
-
-    //       // Print the stored data
-    //       print(leave.id);
-    //       print(leave.companyId);
-    //       print(leave.title);
-    //       print(leave.date);
-    //       print(leave.createdAt);
-    //       print(leave.updatedAt);
-    //     } else {
-    //       // Invalid response format
-    //       print('Invalid response format');
-    //     }
-    //   } else {
-    //     print('Request failed with status: ${response.statusCode}');
-    //   }
-    // } catch (error) {
-    //   print('Error: $error');
-    // }
+  Future<void> fetchCompanyLeaves(String token, String id) async {
     const String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/get-company-leaves';
 
@@ -210,6 +49,33 @@ class _MyScreenState extends State<MyScreen> {
       // Handle error scenario
     }
   }
+  
+  Future<void> deleteCompanyLeave(String token, CompanyLeave1 leave) async {
+    const String requestLeaveUrl =
+        'https://jporter.ezeelogix.com/public/api/delete-company-leaves';
+
+    final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    }, body: {
+      'company_id': leave.companyId.toString(),
+      'leave_id': leave.id.toString(),
+    });
+    if (response.statusCode == 200) {
+      // Leave request successful
+      final jsonData = json.decode(response.body);
+      print(jsonData);
+      setState(() {
+        companyLeaves.removeWhere((lev) => lev.id == leave.id);
+      });
+    } else {
+      print(response.statusCode);
+      // Error occurred
+      print('Error: ${response.reasonPhrase}');
+      // Handle error scenario
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +87,7 @@ class _MyScreenState extends State<MyScreen> {
 
     if (check == 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        newcallApi(token!, companyId.toString());
+        fetchCompanyLeaves(token!, companyId.toString());
       });
       check = 1;
     }
@@ -235,8 +101,19 @@ class _MyScreenState extends State<MyScreen> {
         itemBuilder: (context, index) {
           CompanyLeave1 leave = companyLeaves[index];
           return ListTile(
+            leading: IconButton(onPressed: (){
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => 
+                UpdateCompanyLeave(leave: leave,token: token!),
+                )).then((value) {setState(() {
+                  fetchCompanyLeaves(token!, companyId.toString());
+                });}) ;
+            }, icon: const Icon(Icons.update)),
             title: Text(leave.title),
             subtitle: Text('Dates:   ${leave.date}'),
+            trailing: IconButton(onPressed: (){
+              deleteCompanyLeave(token!, leave);
+            }, icon: const Icon(Icons.delete)),
           );
         },
       ):const Text("No Company Leaves"),
