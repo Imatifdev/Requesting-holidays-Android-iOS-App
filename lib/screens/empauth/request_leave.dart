@@ -67,6 +67,7 @@ class _RequestLeaveState extends State<RequestLeave> {
       String leaveType,
       String startDate,
       String endDate,
+      String id,
       String totalLeaveCount,
       String comment) async {
     const String requestLeaveUrl =
@@ -76,7 +77,7 @@ class _RequestLeaveState extends State<RequestLeave> {
       'Authorization': 'Bearer $token',
       'Accept': 'application/json',
     }, body: {
-      'employee_id': '1',
+      'employee_id': id,
       'leave_type': leaveType,
       'start_date': startDate,
       'end_date': endDate,
@@ -112,6 +113,8 @@ class _RequestLeaveState extends State<RequestLeave> {
     Size size = MediaQuery.of(context).size;
     final empViewModel = Provider.of<EmpViewModel>(context);
     final token = empViewModel.token;
+    final user = empViewModel.user;
+
     return Scaffold(
       backgroundColor: appbar,
       appBar: AppBar(
@@ -294,7 +297,8 @@ class _RequestLeaveState extends State<RequestLeave> {
                                     startDateFormatted,
                                     endDateFormatted,
                                     totalLeaveCount.toString(),
-                                    causeController.text.trim());
+                                    causeController.text.trim(),
+                                    user!.id.toString());
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => LeaveScreen()));
                               } else {

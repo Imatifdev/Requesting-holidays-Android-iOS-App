@@ -47,7 +47,7 @@ class _LeaveScreenState extends State<LeaveScreen>
     super.dispose();
   }
 
-  Future<void> _getallLeaveRequest(String token) async {
+  Future<void> _getallLeaveRequest(String token, String id) async {
     //final empViewModel = Provider.of<EmpViewModel>(context);
     //final user = empViewModel.user;
 
@@ -58,7 +58,7 @@ class _LeaveScreenState extends State<LeaveScreen>
       'Authorization': 'Bearer $token',
       'Accept': 'application/json',
     }, body: {
-      'employee_id': 1.toString(),
+      'employee_id': id,
     });
 
     if (response.statusCode == 200) {
@@ -86,7 +86,7 @@ class _LeaveScreenState extends State<LeaveScreen>
     }
   }
 
-  Future<void> _getallapprovedLeaveRequest(String token) async {
+  Future<void> _getallapprovedLeaveRequest(String token, String id) async {
     // final empViewModel = Provider.of<EmpViewModel>(context);
     // final user = empViewModel.user;
 
@@ -97,7 +97,7 @@ class _LeaveScreenState extends State<LeaveScreen>
       'Authorization': 'Bearer $token',
       'Accept': 'application/json',
     }, body: {
-      'employee_id': 1.toString(),
+      'employee_id': id,
     });
 
     if (response.statusCode == 200) {
@@ -117,7 +117,7 @@ class _LeaveScreenState extends State<LeaveScreen>
     }
   }
 
-  Future<void> _getallrejectedLeaveRequest(String token) async {
+  Future<void> _getallrejectedLeaveRequest(String token, String id) async {
     // final empViewModel = Provider.of<EmpViewModel>(context);
     // final user = empViewModel.user;
 
@@ -128,7 +128,7 @@ class _LeaveScreenState extends State<LeaveScreen>
       'Authorization': 'Bearer $token',
       'Accept': 'application/json',
     }, body: {
-      'employee_id': 1.toString(),
+      'employee_id': id,
     });
 
     if (response.statusCode == 200) {
@@ -151,12 +151,14 @@ class _LeaveScreenState extends State<LeaveScreen>
   @override
   Widget build(BuildContext context) {
     final empViewModel = Provider.of<EmpViewModel>(context);
+    final user = empViewModel.user;
+
     final token = empViewModel.token;
     if (check == 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _getallLeaveRequest(token!);
-        _getallapprovedLeaveRequest(token);
-        _getallrejectedLeaveRequest(token);
+        _getallLeaveRequest(token!, user!.id.toString());
+        _getallapprovedLeaveRequest(token, user.id.toString());
+        _getallrejectedLeaveRequest(token, user.id.toString());
       });
       check = 1;
     }
@@ -290,12 +292,13 @@ class _LeaveScreenState extends State<LeaveScreen>
               // DateFormat('EEE, MMM d, yyyy').format(leave.startDate);
               // String toDate =
               // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
-              return LeaveRequestCard(leave: leave,);
+              return LeaveRequestCard(
+                leave: leave,
+              );
             },
           )
         : Center(
             child: Text("No Leaves"),
           );
   }
-
-  }
+}

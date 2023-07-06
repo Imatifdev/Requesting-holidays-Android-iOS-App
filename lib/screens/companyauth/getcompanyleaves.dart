@@ -8,12 +8,12 @@ import 'package:provider/provider.dart';
 import '../../models/company/companyleavemodel.dart';
 import '../../viewmodel/company/compuserviewmodel.dart';
 
-class MyScreen extends StatefulWidget {
+class GetCompanyLeaves extends StatefulWidget {
   @override
-  _MyScreenState createState() => _MyScreenState();
+  _GetCompanyLeavesState createState() => _GetCompanyLeavesState();
 }
 
-class _MyScreenState extends State<MyScreen> {
+class _GetCompanyLeavesState extends State<GetCompanyLeaves> {
   int check = 0;
 
   List<CompanyLeave1> companyLeaves = [];
@@ -26,21 +26,18 @@ class _MyScreenState extends State<MyScreen> {
       'Authorization': 'Bearer $token',
       'Accept': 'application/json',
     }, body: {
-      'company_id': '1',
+      'company_id': id.toString(),
     });
     if (response.statusCode == 200) {
       // Leave request successful
       final jsonData = json.decode(response.body);
       print(jsonData);
       // Handle success scenario
-      List<dynamic> requestedLeaves =
-          jsonData["data"];
+      List<dynamic> requestedLeaves = jsonData["data"];
       setState(() {
-        companyLeaves =
-            requestedLeaves.map((json) => CompanyLeave1.fromJson(json)).toList();
-        // for (CompanyLeave1 leave in companyLeaves) {
-        //     companyLeaves.add(leave);
-        // }
+        companyLeaves = requestedLeaves
+            .map((json) => CompanyLeave1.fromJson(json))
+            .toList();
       });
     } else {
       print(response.statusCode);
@@ -49,7 +46,7 @@ class _MyScreenState extends State<MyScreen> {
       // Handle error scenario
     }
   }
-  
+
   Future<void> deleteCompanyLeave(String token, CompanyLeave1 leave) async {
     const String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/delete-company-leaves';
@@ -76,7 +73,6 @@ class _MyScreenState extends State<MyScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     final comViewModel = Provider.of<CompanyViewModel>(context);
@@ -96,27 +92,37 @@ class _MyScreenState extends State<MyScreen> {
       appBar: AppBar(
         title: const Text('Company Leaves'),
       ),
-      body: companyLeaves.isNotEmpty? ListView.builder(
-        itemCount: companyLeaves.length,
-        itemBuilder: (context, index) {
-          CompanyLeave1 leave = companyLeaves[index];
-          return ListTile(
-            leading: IconButton(onPressed: (){
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => 
-                UpdateCompanyLeave(leave: leave,token: token!),
-                )).then((value) {setState(() {
-                  fetchCompanyLeaves(token!, companyId.toString());
-                });}) ;
-            }, icon: const Icon(Icons.update)),
-            title: Text(leave.title),
-            subtitle: Text('Dates:   ${leave.date}'),
-            trailing: IconButton(onPressed: (){
-              deleteCompanyLeave(token!, leave);
-            }, icon: const Icon(Icons.delete)),
-          );
-        },
-      ):const Text("No Company Leaves"),
+      body: companyLeaves.isNotEmpty
+          ? ListView.builder(
+              itemCount: companyLeaves.length,
+              itemBuilder: (context, index) {
+                CompanyLeave1 leave = companyLeaves[index];
+                return ListTile(
+                  leading: IconButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                          builder: (context) =>
+                              UpdateCompanyLeave(leave: leave, token: token!),
+                        ))
+                            .then((value) {
+                          setState(() {
+                            fetchCompanyLeaves(token!, companyId.toString());
+                          });
+                        });
+                      },
+                      icon: const Icon(Icons.update)),
+                  title: Text(leave.title),
+                  subtitle: Text('Dates:   ${leave.date}'),
+                  trailing: IconButton(
+                      onPressed: () {
+                        deleteCompanyLeave(token!, leave);
+                      },
+                      icon: const Icon(Icons.delete)),
+                );
+              },
+            )
+          : const Text("No Company Leaves"),
     );
   }
 }

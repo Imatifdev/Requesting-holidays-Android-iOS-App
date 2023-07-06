@@ -39,6 +39,8 @@ class _EmpOtpScreenState extends State<EmpOtpScreen> {
       if (response.statusCode == 200) {
         // Success
         Fluttertoast.showToast(msg: 'OTP resend successful');
+        print(response);
+        print(response.statusCode);
       } else {
         // Error
         Fluttertoast.showToast(msg: 'Failed to resend OTP');

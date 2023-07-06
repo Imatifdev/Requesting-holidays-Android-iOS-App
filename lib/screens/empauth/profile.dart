@@ -138,6 +138,23 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 50,
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height / 14,
+                    width: MediaQuery.of(context).size.width,
+                    child: ListTile(
+                      leading: Icon(CupertinoIcons.person_alt_circle),
+                      title: Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: Text(
+                          '${user?.id}',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ),
+                    ),
+                  ),
                 ]),
               ),
               SizedBox(

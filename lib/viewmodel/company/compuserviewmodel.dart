@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:holidays/screens/companyauth/companydashboard.dart';
 import 'package:holidays/screens/companyauth/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -75,10 +76,33 @@ class CompanyViewModel extends ChangeNotifier {
     }
   }
 
+  // Future<void> retrieveUserDataFromSharedPreferences() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   _token = prefs.getString('token');
+  //   // Retrieve and deserialize user object if stored
+
+  //   // Notify listeners about the updated data
+  //   notifyListeners();
+  // }
   Future<void> retrieveUserDataFromSharedPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _token = prefs.getString('token');
     // Retrieve and deserialize user object if stored
+
+    if (_token != null && _token!.isNotEmpty) {
+      // User is already logged in, fetch user data if needed
+      // Set the user object based on the fetched data
+      // _user = ...
+
+      // Notify listeners about the updated data
+      notifyListeners();
+    }
+  }
+
+  Future<void> retrieveUserDataFromHive() async {
+    await Hive.openBox('loginBox');
+    var loginBox = Hive.box('loginBox');
+    _token = loginBox.get('token') as String?;
 
     // Notify listeners about the updated data
     notifyListeners();
