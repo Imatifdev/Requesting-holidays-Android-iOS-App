@@ -92,7 +92,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
     }
     final List<Widget> _pages = [
     AllApplications(pendingLeaves: pendingLeaves,),
-    CreateApplications(),
+    CreateCompanyLeave(),
     ApprovedApplications(),
     RejectedApplications(),
     CompanyProfileView()
