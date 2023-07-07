@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_const_declarations, unused_element, must_be_immutable
 
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -86,6 +87,8 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
   Widget build(BuildContext context) {
     final empViewModel = Provider.of<CompanyViewModel>(context);
     final token = empViewModel.token;
+    final user = empViewModel.user;
+
     if (check == 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _getallLeaveRequest(token!);
@@ -103,49 +106,137 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
     ];
     return Scaffold(
       appBar: AppBar(),
-      drawer: Drawer(
+      endDrawer: Drawer(
           child: ListView(padding: EdgeInsets.zero, children: [
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.red.shade900, Colors.red.shade500],
+            ),
+          ),
+          height: 275,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 80,
+              ),
+              Image.asset(
+                'assets/images/logo.png',
+                height: 120,
+                width: 90,
+                fit: BoxFit.contain,
+              ).pOnly(left: 20),
+              Text(
+                '${user!.firstName} ' + ' ${user!.lastName}',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              )
+            ],
+          ).pOnly(left: 20),
+        ),
         SizedBox(
-          height: 70,
+          height: 30,
         ),
         ListTile(
+          leading: Icon(Icons.person_2),
           title: Text(
-            'Company Leaves',
+            'Profile',
             style: TextStyle(
-                color: red, fontSize: 18, fontWeight: FontWeight.bold),
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
           ),
+          trailing: Icon(CupertinoIcons.right_chevron),
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (ctx) => GetCompanyLeaves()));
+                MaterialPageRoute(builder: (ctx) => CompanyProfileView()));
           },
         ),
+        Divider(
+          color: Colors.grey,
+          thickness: 0.5,
+        ).pSymmetric(h: 20),
+
         ListTile(
+          leading: Icon(Icons.home),
           title: Text(
-            'Change Company Logo',
+            'Home',
             style: TextStyle(
-                color: red, fontSize: 18, fontWeight: FontWeight.bold),
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
           ),
+          trailing: Icon(CupertinoIcons.right_chevron),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+        Divider(
+          color: Colors.grey,
+          thickness: 0.5,
+        ).pSymmetric(h: 20),
+
+        ListTile(
+          leading: Icon(Icons.create),
+          title: Text(
+            'Create New Employee',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+          trailing: Icon(CupertinoIcons.right_chevron),
           onTap: () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (ctx) => MyForm()));
           },
         ),
+        Divider(
+          color: Colors.grey,
+          thickness: 0.5,
+        ).pSymmetric(h: 20),
+
         ListTile(
+          leading: Icon(CupertinoIcons.person_3_fill),
           title: Text(
-            'View Employee',
+            'View All Employee',
             style: TextStyle(
-                color: red, fontSize: 18, fontWeight: FontWeight.bold),
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
           ),
+          trailing: Icon(CupertinoIcons.right_chevron),
           onTap: () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (ctx) => ShowEmployee()));
           },
         ),
+        Divider(
+          color: Colors.grey,
+          thickness: 0.2,
+        ).pSymmetric(h: 20),
+
         ListTile(
+          leading: Icon(Icons.search_off),
           title: Text(
-            'Change Company Logo',
+            'View Company Leaves',
             style: TextStyle(
-                color: red, fontSize: 18, fontWeight: FontWeight.bold),
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+          trailing: Icon(CupertinoIcons.right_chevron),
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (ctx) => GetCompanyLeaves()));
+          },
+        ),
+        Divider(
+          color: Colors.grey,
+          thickness: 0.5,
+        ).pSymmetric(h: 20),
+
+        ListTile(
+          leading: Icon(Icons.logout),
+          title: Text(
+            'Logout',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
           ),
           onTap: () {
             Navigator.push(
@@ -185,10 +276,6 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           BottomNavigationBarItem(
             icon: Icon(Icons.close),
             label: 'Rejected',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_2),
-            label: 'Profile',
           ),
         ],
       ),
@@ -243,35 +330,32 @@ class _AllApplicationsState extends State<AllApplications> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Leave Requests",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (ctx) => SearchScreen(),
               ),
-              //ElevatedButton(onPressed: (){_getallLeaveRequest(token!);}, child: Text("hehe") ),
-              ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("search"),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Icon(Icons.search)
-                  ],
-                ),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => SearchScreen(),
-                  ));
-                },
-              ),
-            ],
-          ),
+            );
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width - 20,
+            height: 40,
+            decoration: BoxDecoration(
+                border: Border.all(width: 1),
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey.shade400),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Search",
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                Icon(Icons.search)
+              ],
+            ).centered().pSymmetric(h: 20),
+          ).centered().p(10),
         ),
         widget.pendingLeaves.isNotEmpty
             ? Expanded(
@@ -310,14 +394,14 @@ class _AllApplicationsState extends State<AllApplications> {
                                       Text(
                                         '${leave.totalRequestLeave} day Application ',
                                         style: const TextStyle(
-                                            fontSize: 16, color: Colors.grey),
+                                            fontSize: 14, color: Colors.grey),
                                       ),
                                     ],
                                   ),
                                   Text(
                                     'From: ${leave.startDate}',
                                     style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 22,
                                         fontWeight: FontWeight.bold,
                                         color:
                                             leave.leaveType == 'Compassionate'
@@ -325,12 +409,16 @@ class _AllApplicationsState extends State<AllApplications> {
                                                 : Colors.blue),
                                   ),
                                   const SizedBox(
-                                    height: 10,
+                                    height: 05,
                                   ),
                                   Text(
                                     'To: ${leave.endDate},',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 16,
+                                        color:
+                                            leave.leaveType == 'Compassionate'
+                                                ? Colors.red
+                                                : Colors.blue,
                                         fontWeight: FontWeight.normal),
                                   ),
                                   Row(
@@ -340,8 +428,8 @@ class _AllApplicationsState extends State<AllApplications> {
                                       Text(
                                         leave.leaveType,
                                         style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+                                          fontSize: 14,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -410,9 +498,15 @@ class _AllApplicationsState extends State<AllApplications> {
                   },
                 ),
               )
-            : Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text("No leave requests to show"),
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 300,
+                  ),
+                  Center(child: CircularProgressIndicator()),
+                ],
               ),
       ],
     );
@@ -490,51 +584,33 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
     }
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Approved Leave",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (ctx) => SearchScreen(),
               ),
-              //ElevatedButton(onPressed: (){_getallLeaveRequest(token!);}, child: Text("hehe") ),
-              ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("search"),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Icon(Icons.search)
-                  ],
-                ),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => SearchScreen(),
-                  ));
-                },
-              ),
-            ],
-          ),
+            );
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width - 20,
+            height: 40,
+            decoration: BoxDecoration(
+                border: Border.all(width: 1),
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey.shade400),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Search",
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                Icon(Icons.search)
+              ],
+            ).centered().pSymmetric(h: 20),
+          ).centered().p(10),
         ),
-        // Container(
-        //   margin: EdgeInsets.symmetric(horizontal: 20.0),
-        //   decoration: BoxDecoration(
-        //     color: Colors.grey.shade400,
-        //     borderRadius: BorderRadius.circular(25.0),
-        //   ),
-        //   child: TextField(
-        //     decoration: InputDecoration(
-        //       hintText: 'Search',
-        //       border: InputBorder.none,
-        //       prefixIcon: Icon(Icons.search),
-        //       contentPadding: EdgeInsets.symmetric(vertical: 12.0),
-        //     ),
-        //   ),
-        // ),
         approvedLeaves.isNotEmpty
             ? Expanded(
                 child: ListView.builder(
@@ -549,7 +625,16 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
                   },
                 ),
               )
-            : Text("No leaves to show"),
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 300,
+                  ),
+                  Center(child: CircularProgressIndicator()),
+                ],
+              ),
       ],
     );
   }
@@ -615,51 +700,33 @@ class _RejectedApplicationsState extends State<RejectedApplications> {
     }
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Rejected Leave",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (ctx) => SearchScreen(),
               ),
-              //ElevatedButton(onPressed: (){_getallLeaveRequest(token!);}, child: Text("hehe") ),
-              ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("search"),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Icon(Icons.search)
-                  ],
-                ),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => SearchScreen(),
-                  ));
-                },
-              ),
-            ],
-          ),
+            );
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width - 20,
+            height: 40,
+            decoration: BoxDecoration(
+                border: Border.all(width: 1),
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey.shade400),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Search",
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                Icon(Icons.search)
+              ],
+            ).centered().pSymmetric(h: 20),
+          ).centered().p(10),
         ),
-        // Container(
-        //   margin: EdgeInsets.symmetric(horizontal: 20.0),
-        //   decoration: BoxDecoration(
-        //     color: Colors.grey.shade400,
-        //     borderRadius: BorderRadius.circular(25.0),
-        //   ),
-        //   child: TextField(
-        //     decoration: InputDecoration(
-        //       hintText: 'Search',
-        //       border: InputBorder.none,
-        //       prefixIcon: Icon(Icons.search),
-        //       contentPadding: EdgeInsets.symmetric(vertical: 12.0),
-        //     ),
-        //   ),
-        // ),
         rejectedLeaves.isNotEmpty
             ? Expanded(
                 child: ListView.builder(
@@ -674,11 +741,16 @@ class _RejectedApplicationsState extends State<RejectedApplications> {
                   },
                 ),
               )
-            : Center(
-                child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text("No leaves to show"),
-              )),
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 300,
+                  ),
+                  Center(child: CircularProgressIndicator()),
+                ],
+              ),
       ],
     );
   }
