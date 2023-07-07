@@ -131,7 +131,9 @@ class _ShowEmployeeState extends State<ShowEmployee> {
         elevation: 0,
         backgroundColor: appbar,
         leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             icon: Icon(
               CupertinoIcons.left_chevron,
               color: Colors.black,
