@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
+import 'package:holidays/widget/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -129,7 +130,9 @@ class _ShowEmployeeState extends State<ShowEmployee> {
               itemBuilder: (context, index) {
                 Employee leave = showemployees[index];
                 return Container(
-                  decoration: BoxDecoration(),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(width: 1, color: Colors.grey)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -139,11 +142,99 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       Row(
-                        children: [Text(leave.email)],
+                        children: [
+                          Text(
+                            leave.email,
+                            style: TextStyle(
+                                fontSize: 11, fontWeight: FontWeight.normal),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Days",
+                            style: TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.normal),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            leave.phone,
+                            style: TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.normal),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: leave.isVerified == '0'
+                                    ? Colors.blue
+                                    : Colors.grey,
+                                radius: 5,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                leave.isVerified == '0' ? "Inactive" : "Active",
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                height: 20,
+                                width: 50,
+                                child: Center(
+                                    child: Text(
+                                  "Edit",
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Color(0xffED930B)),
+                              ),
+                              Container(
+                                height: 30,
+                                width: 70,
+                                child: Center(
+                                    child: Text(
+                                  "Delete",
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: red),
+                              ),
+                              Container(
+                                height: 20,
+                                width: 50,
+                                child: Center(
+                                    child: Text(
+                                  "Request Leave",
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.blueAccent),
+                              ),
+                            ],
+                          ).pOnly(top: 10),
+                        ],
                       )
                     ],
-                  ),
-                );
+                  ).p(10),
+                ).pSymmetric(h: 20, v: 5);
               },
             )
           : const Text("No Company Leaves"),
