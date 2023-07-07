@@ -243,7 +243,6 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
                 context, MaterialPageRoute(builder: (ctx) => CompanyLogo()));
           },
         ),
-        // Add more ListTile widgets for additional drawer items
       ])),
       backgroundColor: backgroundColor,
       body: SafeArea(child: _pages[_currentIndex]),
