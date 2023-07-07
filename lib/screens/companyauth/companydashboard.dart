@@ -642,22 +642,6 @@ class _RejectedApplicationsState extends State<RejectedApplications> {
                   ));
                 },
               ),
-              ElevatedButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("search"),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Icon(Icons.search)
-                    ],
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => SearchScreen(),
-                    ));
-                  }),
             ],
           ),
         ),
