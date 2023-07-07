@@ -69,12 +69,14 @@ class EmpViewModel extends ChangeNotifier {
                     email: email,
                   )),
         );
-        print('');
+        print(response);
 
         print('Login failed');
       }
     } else {
-      // Error occurred
+      // Error occurred        print(response);
+      print(response);
+
       print('Error: ${response.reasonPhrase}');
     }
   }

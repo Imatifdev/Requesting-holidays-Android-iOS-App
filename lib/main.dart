@@ -54,7 +54,7 @@ class MyApp1 extends StatelessWidget {
             primarySwatch: Colors.red,
           ),
           home: //MyForm(),
-              EmpLoginPage(),
+              CompanyLoginPage(),
           routes: {
             EmpForgitPassword.idScreen: (context) => EmpForgitPassword(),
             EmpLoginPage.routeName: (context) => EmpLoginPage(),

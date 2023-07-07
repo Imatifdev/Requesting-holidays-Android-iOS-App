@@ -8,6 +8,7 @@ import 'package:holidays/screens/companyauth/api_test.dart';
 import 'package:holidays/screens/companyauth/createnewemployee.dart';
 import 'package:holidays/screens/companyauth/profile.dart';
 import 'package:holidays/screens/companyauth/search_screen.dart';
+import 'package:holidays/screens/companyauth/showemployes.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
 import 'package:holidays/widget/leave_req_card.dart';
 import 'package:provider/provider.dart';
@@ -118,10 +119,25 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           },
         ),
         ListTile(
-          title: Text('Create new employee'),
+          title: Text(
+            'Create Employee',
+            style: TextStyle(
+                color: red, fontSize: 18, fontWeight: FontWeight.bold),
+          ),
           onTap: () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (ctx) => MyForm()));
+          },
+        ),
+        ListTile(
+          title: Text(
+            'View Employee',
+            style: TextStyle(
+                color: red, fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (ctx) => ShowEmployee()));
           },
         ),
         // Add more ListTile widgets for additional drawer items
