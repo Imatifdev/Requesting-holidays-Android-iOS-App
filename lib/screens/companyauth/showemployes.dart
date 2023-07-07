@@ -139,7 +139,7 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                       Text(
                         leave.firstName,
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                            fontSize: 11, fontWeight: FontWeight.bold),
                       ),
                       Row(
                         children: [
