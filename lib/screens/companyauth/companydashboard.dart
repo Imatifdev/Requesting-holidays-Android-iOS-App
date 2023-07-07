@@ -120,7 +120,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
         ),
         ListTile(
           title: Text(
-            'Create Employee',
+            'Change Company Logo',
             style: TextStyle(
                 color: red, fontSize: 18, fontWeight: FontWeight.bold),
           ),

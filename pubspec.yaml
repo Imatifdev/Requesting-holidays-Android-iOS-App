@@ -50,7 +50,7 @@ dependencies:
   hive_flutter: ^1.1.0
   provider: ^6.0.5
   syncfusion_flutter_datepicker: ^22.1.37
-
+  image_picker: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
