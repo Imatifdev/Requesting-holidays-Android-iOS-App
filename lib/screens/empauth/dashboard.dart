@@ -81,7 +81,7 @@ class _LeaveScreenState extends State<LeaveScreen>
       // Handle success scenario
     } else {
       // Error occurred
-      print('Error: ${response.reasonPhrase}');
+      print('Errorrrrr: ${response.reasonPhrase}');
       // Handle error scenario
     }
   }
@@ -154,11 +154,12 @@ class _LeaveScreenState extends State<LeaveScreen>
     final user = empViewModel.user;
 
     final token = empViewModel.token;
+    final empId = empViewModel.user!.id;
     if (check == 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _getallLeaveRequest(token!, user!.id.toString());
-        _getallapprovedLeaveRequest(token, user.id.toString());
-        _getallrejectedLeaveRequest(token, user.id.toString());
+        _getallLeaveRequest(token!, empId.toString());
+        _getallapprovedLeaveRequest(token,empId.toString() );
+        _getallrejectedLeaveRequest(token,empId.toString());
       });
       check = 1;
     }
@@ -166,14 +167,6 @@ class _LeaveScreenState extends State<LeaveScreen>
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(
-            CupertinoIcons.left_chevron,
-            color: Colors.red,
-          ),
-          onPressed: () {},
-        ),
-        actions: [
-          IconButton(
             icon: Icon(
               CupertinoIcons.profile_circled,
               color: Colors.grey,
@@ -183,7 +176,6 @@ class _LeaveScreenState extends State<LeaveScreen>
                   MaterialPageRoute(builder: (ctx) => EmpProfileView()));
             },
           ),
-        ],
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight + 40),
           child: Column(
@@ -198,13 +190,15 @@ class _LeaveScreenState extends State<LeaveScreen>
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
+                    ElevatedButton(onPressed: (){
+                      _getallLeaveRequest(token!,empId.toString());
+                    }, child: Text("test")),
                     InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => RequestLeave(),
                         ));
                       },
-                      //_openLeaveDialog,
                       child: Container(
                         decoration: BoxDecoration(
                             color: Colors.red,

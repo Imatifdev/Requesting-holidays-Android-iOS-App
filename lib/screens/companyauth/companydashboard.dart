@@ -18,6 +18,7 @@ import 'package:velocity_x/velocity_x.dart';
 
 import 'package:http/http.dart' as http;
 
+import 'companylogo.dart';
 import 'createcompanyleaves.dart';
 import 'getcompanyleaves.dart';
 
@@ -120,7 +121,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
         ),
         ListTile(
           title: Text(
-            'Create Employee',
+            'Change Company Logo',
             style: TextStyle(
                 color: red, fontSize: 18, fontWeight: FontWeight.bold),
           ),
@@ -138,6 +139,17 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           onTap: () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (ctx) => ShowEmployee()));
+          },
+        ),
+        ListTile(
+          title: Text(
+            'Change Company Logo',
+            style: TextStyle(
+                color: red, fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (ctx) => CompanyLogo()));
           },
         ),
         // Add more ListTile widgets for additional drawer items
