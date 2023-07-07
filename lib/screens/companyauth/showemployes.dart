@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
@@ -121,121 +122,167 @@ class _ShowEmployeeState extends State<ShowEmployee> {
       });
       check = 1;
     }
+    final height = MediaQuery.of(context).size.height;
 
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: appbar,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: appbar,
+        leading: IconButton(
+            onPressed: () {},
+            icon: Icon(
+              CupertinoIcons.left_chevron,
+              color: Colors.black,
+            )),
+      ),
       body: showemployees.isNotEmpty
-          ? ListView.builder(
-              itemCount: showemployees.length,
-              itemBuilder: (context, index) {
-                Employee leave = showemployees[index];
-                return Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(width: 1, color: Colors.grey)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        leave.firstName,
-                        style: TextStyle(
-                            fontSize: 11, fontWeight: FontWeight.bold),
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            leave.email,
-                            style: TextStyle(
-                                fontSize: 11, fontWeight: FontWeight.normal),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "Days",
-                            style: TextStyle(
-                                fontSize: 13, fontWeight: FontWeight.normal),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            leave.phone,
-                            style: TextStyle(
-                                fontSize: 13, fontWeight: FontWeight.normal),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: leave.isVerified == '0'
-                                    ? Colors.blue
-                                    : Colors.grey,
-                                radius: 5,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                leave.isVerified == '0' ? "Inactive" : "Active",
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                height: 20,
-                                width: 50,
-                                child: Center(
-                                    child: Text(
-                                  "Edit",
-                                  style: TextStyle(color: Colors.white),
-                                )),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Color(0xffED930B)),
-                              ),
-                              Container(
-                                height: 30,
-                                width: 70,
-                                child: Center(
-                                    child: Text(
-                                  "Delete",
-                                  style: TextStyle(color: Colors.white),
-                                )),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: red),
-                              ),
-                              Container(
-                                height: 20,
-                                width: 50,
-                                child: Center(
-                                    child: Text(
-                                  "Request Leave",
-                                  style: TextStyle(color: Colors.white),
-                                )),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.blueAccent),
-                              ),
-                            ],
-                          ).pOnly(top: 10),
-                        ],
-                      )
-                    ],
-                  ).p(10),
-                ).pSymmetric(h: 20, v: 5);
-              },
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "All Employees",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ).pOnly(left: 24),
+                SizedBox(
+                  height: 25,
+                ),
+                Container(
+                  height: height / 1.3,
+                  child: ListView.builder(
+                    itemCount: showemployees.length,
+                    itemBuilder: (context, index) {
+                      Employee leave = showemployees[index];
+                      return Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(width: 1, color: Colors.grey)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              leave.firstName,
+                              style: TextStyle(
+                                  fontSize: 11, fontWeight: FontWeight.bold),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  leave.email,
+                                  style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "Days",
+                                  style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  leave.phone,
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor: leave.isVerified == '0'
+                                          ? Colors.blue
+                                          : Colors.grey,
+                                      radius: 5,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      leave.isVerified == '0'
+                                          ? "Inactive"
+                                          : "Active",
+                                      style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.normal),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Container(
+                                      height: 20,
+                                      width: 50,
+                                      child: Center(
+                                          child: Text(
+                                        "Edit",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 11),
+                                      )),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: Color(0xffED930B)),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      height: 22,
+                                      width: 70,
+                                      child: Center(
+                                          child: Text(
+                                        "Delete",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 11),
+                                      )),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: red),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      height: 22,
+                                      width: 90,
+                                      child: Center(
+                                          child: Text(
+                                        "View Employee",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 11),
+                                      )),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: Colors.blueAccent),
+                                    ),
+                                  ],
+                                ).pOnly(top: 10),
+                              ],
+                            )
+                          ],
+                        ).p(10),
+                      ).pSymmetric(h: 20, v: 5);
+                    },
+                  ),
+                ),
+              ],
             )
           : const Text("No Company Leaves"),
     );
