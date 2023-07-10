@@ -213,86 +213,86 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                width: 20,
+                              SizedBox(width: 20,),
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: Color(0xffED930B)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: InkWell(
+                                          onTap: (){
+                                        Navigator.of(context).
+                                        push(MaterialPageRoute(builder: (context) => EditEmployee(emp: emp),)) 
+                                        .then((value) {
+                                                        setState(() {
+                                                          getEmployees(token, companyId.toString());
+                                                        });
+                                                      });
+                                          },
+                                          child: Center(
+                                              child: Text(
+                                            "Edit",
+                                            style: TextStyle(
+                                                color: Colors.white, fontSize: 11),
+                                          )),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: (){
+                                        deleteCompanyEm(token,emp);
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: red),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Center(
+                                              child: Text(
+                                            "Delete",
+                                            style: TextStyle(
+                                                color: Colors.white, fontSize: 11),
+                                          )),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: (){
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: Colors.blueAccent),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Center(
+                                              child: Text(
+                                            "View Employee",
+                                            style: TextStyle(
+                                                color: Colors.white, fontSize: 11),
+                                          )),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ).pOnly(top: 10),
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(5),
-                                        color: Color(0xffED930B)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: InkWell(
-                                        onTap: (){
-                                      Navigator.of(context).
-                                      push(MaterialPageRoute(builder: (context) => EditEmployee(emp: emp),)) 
-                                      .then((value) {
-                          setState(() {
-                            getEmployees(token, companyId.toString());
-                          });
-                        });
-                                        },
-                                        child: Center(
-                                            child: Text(
-                                          "Edit",
-                                          style: TextStyle(
-                                              color: Colors.white, fontSize: 11),
-                                        )),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  InkWell(
-                                    onTap: (){
-                                      deleteCompanyEm(token,emp);
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          color: red),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Center(
-                                            child: Text(
-                                          "Delete",
-                                          style: TextStyle(
-                                              color: Colors.white, fontSize: 11),
-                                        )),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  InkWell(
-                                    onTap: (){
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          color: Colors.blueAccent),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Center(
-                                            child: Text(
-                                          "View Employee",
-                                          style: TextStyle(
-                                              color: Colors.white, fontSize: 11),
-                                        )),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ).pOnly(top: 10),
                             ],
                           )
                         ],
