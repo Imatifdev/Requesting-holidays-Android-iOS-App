@@ -590,7 +590,7 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
           },
           child: Container(
             width: MediaQuery.of(context).size.width - 20,
-            height: 40,
+            height: 41,
             decoration: BoxDecoration(
                 border: Border.all(width: 1),
                 borderRadius: BorderRadius.circular(20),
