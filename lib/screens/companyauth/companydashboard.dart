@@ -229,6 +229,23 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           thickness: 0.5,
         ).pSymmetric(h: 20),
         ListTile(
+          leading: Icon(Icons.search_off),
+          title: Text(
+            'Change Company Logo',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+          trailing: Icon(CupertinoIcons.right_chevron),
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (ctx) => CompanyLogo()));
+          },
+        ),
+        Divider(
+          color: Colors.grey,
+          thickness: 0.5,
+        ).pSymmetric(h: 20),
+        ListTile(
           leading: Icon(Icons.logout),
           title: Text(
             'Logout',
