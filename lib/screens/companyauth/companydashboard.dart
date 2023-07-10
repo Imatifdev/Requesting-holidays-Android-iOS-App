@@ -105,8 +105,10 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
       CompanyProfileView()
     ];
     return Scaffold(
-      appBar: AppBar(),
-      endDrawer: Drawer(
+      appBar: AppBar(
+        title: Text("Leave Requests"),
+      ),
+      drawer: Drawer(
           child: ListView(padding: EdgeInsets.zero, children: [
         Container(
           decoration: BoxDecoration(
@@ -400,7 +402,7 @@ class _AllApplicationsState extends State<AllApplications> {
                                   Text(
                                     'From: ${leave.startDate}',
                                     style: TextStyle(
-                                        fontSize: 22,
+                                        fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                         color:
                                             leave.leaveType == 'Compassionate'
