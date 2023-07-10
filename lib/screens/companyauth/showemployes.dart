@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:holidays/screens/companyauth/edit_employee.dart';
+import 'package:holidays/screens/companyauth/view_employee_screen.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
 import 'package:holidays/widget/constants.dart';
 import 'package:http/http.dart' as http;

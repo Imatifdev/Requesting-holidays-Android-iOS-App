@@ -133,7 +133,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
                 fit: BoxFit.contain,
               ).pOnly(left: 20),
               Text(
-                '${user!.firstName} ' + ' ${user!.lastName}',
+                '${user!.firstName} ' + ' ${user.lastName}',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -229,7 +229,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
         ),
         Divider(
           color: Colors.grey,
-          thickness: 0.2,
+          thickness: 0.5,
         ).pSymmetric(h: 20),
         ListTile(
           leading: Icon(Icons.search_off),
@@ -249,7 +249,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           thickness: 0.5,
         ).pSymmetric(h: 20),
         ListTile(
-          leading: Icon(Icons.search_off),
+          leading: Icon(CupertinoIcons.person_3_fill),
           title: Text(
             'Change Company Logo',
             style: TextStyle(

@@ -109,7 +109,9 @@ class _CompanyLogoState extends State<CompanyLogo> {
         appBar: AppBar(
           backgroundColor: backgroundColor,
           elevation: 0,
-          leading: Icon(CupertinoIcons.left_chevron, color: red),
+          leading: IconButton(onPressed: (){
+            Navigator.of(context).pop();
+          } ,icon: Icon(CupertinoIcons.left_chevron, color: red)),
         ),
         body: SafeArea(
             child: SizedBox(
@@ -176,12 +178,10 @@ class _CompanyLogoState extends State<CompanyLogo> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: MaterialButton(
+                Center(
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.all(15)),
                       onPressed: () {
                         if (pickedImageName != "") {
                           _changeLogo(token!, companyId.toString(),
@@ -198,10 +198,9 @@ class _CompanyLogoState extends State<CompanyLogo> {
                             )
                           : const Text(
                               "Change Logo",
-                              style:
-                                  TextStyle(fontSize: 14, color: Colors.white),
-                            )),
-                ).pOnly(left: 20),
+                              style: TextStyle(fontSize: 14),
+                            )).pOnly(left: 20),
+                ),
                 Text(
                   errMsg,
                   style: const TextStyle(color: Colors.red),

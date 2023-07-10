@@ -115,6 +115,21 @@ class Employee {
     days = Days.fromJson(json['days']);
   }
 
+  String getWorkingDaysAsString() {
+    final List<String> daysOfWeek = ['Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
+    final List<String> workingDays = [];
+
+    if (days.monday == 1) workingDays.add(daysOfWeek[0]);
+    if (days.tuesday == 1) workingDays.add(daysOfWeek[1]);
+    if (days.wednesday == 1) workingDays.add(daysOfWeek[2]);
+    if (days.thursday == 1) workingDays.add(daysOfWeek[3]);
+    if (days.friday == 1) workingDays.add(daysOfWeek[4]);
+    if (days.saturday == 1) workingDays.add(daysOfWeek[5]);
+    if (days.sunday == 1) workingDays.add(daysOfWeek[6]);
+
+    return workingDays.join(', ');
+  }
+
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['id'] = id;
