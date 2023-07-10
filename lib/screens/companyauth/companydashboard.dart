@@ -105,7 +105,12 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
       CompanyProfileView()
     ];
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        backgroundColor: backgroundColor,
+        elevation: 0,
+        leading: Icon(CupertinoIcons.left_chevron, color: red),
+      ),
       endDrawer: Drawer(
           child: ListView(padding: EdgeInsets.zero, children: [
         Container(
@@ -159,7 +164,6 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           color: Colors.grey,
           thickness: 0.5,
         ).pSymmetric(h: 20),
-
         ListTile(
           leading: Icon(Icons.home),
           title: Text(
@@ -176,7 +180,6 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           color: Colors.grey,
           thickness: 0.5,
         ).pSymmetric(h: 20),
-
         ListTile(
           leading: Icon(Icons.create),
           title: Text(
@@ -194,7 +197,6 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           color: Colors.grey,
           thickness: 0.5,
         ).pSymmetric(h: 20),
-
         ListTile(
           leading: Icon(CupertinoIcons.person_3_fill),
           title: Text(
@@ -212,7 +214,6 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           color: Colors.grey,
           thickness: 0.2,
         ).pSymmetric(h: 20),
-
         ListTile(
           leading: Icon(Icons.search_off),
           title: Text(
@@ -230,7 +231,6 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           color: Colors.grey,
           thickness: 0.5,
         ).pSymmetric(h: 20),
-
         ListTile(
           leading: Icon(Icons.logout),
           title: Text(
@@ -244,7 +244,6 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           },
         ),
       ])),
-      backgroundColor: backgroundColor,
       body: SafeArea(child: _pages[_currentIndex]),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.red,
