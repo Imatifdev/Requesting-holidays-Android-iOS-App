@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:provider/provider.dart';
 
+import '../../widget/constants.dart';
 import 'companydashboard.dart';
 
 class MyForm extends StatefulWidget {
@@ -22,6 +23,8 @@ class _MyFormState extends State<MyForm> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController totalLeavesController = TextEditingController();
+  Map<int, bool> selectedDays = {};
+  List<int> dayValues = List<int>.filled(7, 0);
 
   bool mondayChecked = false;
   bool tuesdayChecked = false;
@@ -47,13 +50,13 @@ class _MyFormState extends State<MyForm> {
       'password': passwordController.text,
       'password_confirmation': confirmPasswordController.text,
       'total_leaves': totalLeavesController.text,
-      'monday': mondayChecked ? '1' : '0',
-      'tuesday': tuesdayChecked ? '1' : '0',
-      'wednesday': wednesdayChecked ? '1' : '0',
-      'thursday': thursdayChecked ? '1' : '0',
-      'friday': fridayChecked ? '1' : '0',
-      'saturday': saturdayChecked ? '1' : '0',
-      'sunday': sundayChecked ? '1' : '0',
+      "monday": dayValues[0].toString(),
+      "tuesday": dayValues[1].toString(),
+      "wednesday": dayValues[2].toString(),
+      "thursday": dayValues[3].toString(),
+      "friday": dayValues[4].toString(),
+      "saturday": dayValues[5].toString(),
+      "sunday": dayValues[6].toString(),
     };
 
     final response =
@@ -95,6 +98,7 @@ class _MyFormState extends State<MyForm> {
     final companyViewModel = Provider.of<CompanyViewModel>(context);
     final user = companyViewModel.user;
     final companyId = user!.id;
+    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(title: Text('Employee Form')),
@@ -102,35 +106,202 @@ class _MyFormState extends State<MyForm> {
         padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(children: <Widget>[
-            TextField(
+            TextFormField(
               controller: firstNameController,
-              decoration: InputDecoration(labelText: 'First Name'),
+              decoration: InputDecoration(
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          right: BorderSide(width: 1.0, color: Colors.black),
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.person,
+                        color: red,
+                      )),
+                ),
+                labelText: 'First Name',
+              ),
+              obscureText: false,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Please enter your first name';
+                }
+                return null;
+              },
             ),
-            TextField(
+            TextFormField(
               controller: lastNameController,
-              decoration: InputDecoration(labelText: 'Last Name'),
+              decoration: InputDecoration(
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          right: BorderSide(width: 1.0, color: Colors.black),
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.person,
+                        color: red,
+                      )),
+                ),
+                labelText: 'Last Name',
+              ),
+              obscureText: false,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Please enter your first name';
+                }
+                return null;
+              },
             ),
-            TextField(
+            TextFormField(
               controller: emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: InputDecoration(
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          right: BorderSide(width: 1.0, color: Colors.black),
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.email,
+                        color: red,
+                      )),
+                ),
+                labelText: 'Email',
+              ),
+              obscureText: false,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Please enter your first name';
+                }
+                return null;
+              },
             ),
-            TextField(
+            TextFormField(
               controller: phoneController,
-              decoration: InputDecoration(labelText: 'Phone'),
+              decoration: InputDecoration(
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          right: BorderSide(width: 1.0, color: Colors.black),
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.phone,
+                        color: red,
+                      )),
+                ),
+                labelText: 'Phone',
+              ),
+              obscureText: false,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Please enter your first name';
+                }
+                return null;
+              },
             ),
-            TextField(
+            TextFormField(
               controller: passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
+              decoration: InputDecoration(
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          right: BorderSide(width: 1.0, color: Colors.black),
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.lock,
+                        color: red,
+                      )),
+                ),
+                labelText: 'Password',
+              ),
+              obscureText: false,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Please enter your first name';
+                }
+                return null;
+              },
             ),
-            TextField(
+            TextFormField(
               controller: confirmPasswordController,
-              decoration: InputDecoration(labelText: 'Confirm Password'),
-              obscureText: true,
+              decoration: InputDecoration(
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          right: BorderSide(width: 1.0, color: Colors.black),
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.lock,
+                        color: red,
+                      )),
+                ),
+                labelText: 'Confirm Password',
+              ),
+              obscureText: false,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Please enter your first name';
+                }
+                return null;
+              },
             ),
-            TextField(
+            TextFormField(
               controller: totalLeavesController,
-              decoration: InputDecoration(labelText: 'Total Leaves'),
+              decoration: InputDecoration(
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          right: BorderSide(width: 1.0, color: Colors.black),
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.note_alt,
+                        color: red,
+                      )),
+                ),
+                labelText: 'Total Leaves',
+              ),
+              obscureText: false,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Please enter your first name';
+                }
+                return null;
+              },
+            ),
+            SizedBox(
+              height: size.height / 4,
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4),
+                itemCount: 7,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: dayCard(index),
+                  );
+                },
+              ),
             ),
             Column(
               children: [
@@ -209,5 +380,54 @@ class _MyFormState extends State<MyForm> {
         ),
       ),
     );
+  }
+
+  Container dayCard(int index) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(width: 1),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(3.0),
+        child: Column(
+          children: [
+            Text(
+              _getDayOfWeek(index),
+              style: const TextStyle(fontSize: 12),
+            ),
+            Checkbox(
+              value: dayValues[index] == 1,
+              onChanged: (bool? value) {
+                setState(() {
+                  dayValues[index] = value! ? 1 : 0;
+                });
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _getDayOfWeek(int index) {
+    switch (index) {
+      case 0:
+        return 'Sunday';
+      case 1:
+        return 'Monday';
+      case 2:
+        return 'Tuesday';
+      case 3:
+        return 'Wednesday';
+      case 4:
+        return 'Thursday';
+      case 5:
+        return 'Friday';
+      case 6:
+        return 'Saturday';
+      default:
+        return '';
+    }
   }
 }

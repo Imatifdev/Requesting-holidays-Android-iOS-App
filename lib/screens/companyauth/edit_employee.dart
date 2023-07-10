@@ -140,7 +140,7 @@ class _EditEmployeeState extends State<EditEmployee> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "All Employees",
+                  "Edit Employee Data",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ).pOnly(left: 24),
                 const SizedBox(
