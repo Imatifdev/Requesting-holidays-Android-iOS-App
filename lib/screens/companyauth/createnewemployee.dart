@@ -6,6 +6,8 @@ import 'dart:convert';
 
 import 'package:provider/provider.dart';
 
+import 'companydashboard.dart';
+
 class MyForm extends StatefulWidget {
   @override
   _MyFormState createState() => _MyFormState();
@@ -69,6 +71,8 @@ class _MyFormState extends State<MyForm> {
           fontSize: 16.0);
 
       print(response.body);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (ctx) => CompanyDashBoard()));
     } else {
       // Request failed, handle the error
       // print('Request failed with status: ${response.statusCode}');

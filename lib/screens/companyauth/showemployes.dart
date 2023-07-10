@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:holidays/screens/companyauth/edit_employee.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
 import 'package:holidays/widget/constants.dart';
@@ -82,6 +83,15 @@ class _ShowEmployeeState extends State<ShowEmployee> {
     });
     if (response.statusCode == 200) {
       // Leave request successful
+      Fluttertoast.showToast(
+          msg: "Employee Deleted Successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
+
       final jsonData = json.decode(response.body);
       print(jsonData);
       setState(() {
@@ -90,6 +100,15 @@ class _ShowEmployeeState extends State<ShowEmployee> {
     } else {
       print(response.statusCode);
       // Error occurred
+      Fluttertoast.showToast(
+          msg: "Employee could not deleted",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+
       print('Error: ${response.reasonPhrase}');
       // Handle error scenario
     }

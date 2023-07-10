@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:http/http.dart' as http;
@@ -74,15 +75,34 @@ class _EditEmployeeState extends State<EditEmployee> {
     });
     if (response.statusCode == 200) {
       // Leave request successful
+      Fluttertoast.showToast(
+          msg: "Employee Data Updated Successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
+
       final jsonData = json.decode(response.body);
       print(jsonData);
       setState(() {
         isLoading = false;
       });
+
       Navigator.of(context).pop();
     } else {
       print(response.statusCode);
       // Error occurred
+      Fluttertoast.showToast(
+          msg: "Employee Data Could not Updated ",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+
       setState(() {
         isLoading = false;
       });
