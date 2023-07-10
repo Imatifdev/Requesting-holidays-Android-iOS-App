@@ -8,7 +8,7 @@ import 'package:holidays/screens/companyauth/createcompanyleaves.dart';
 import 'package:holidays/screens/companyauth/createfinancialyear.dart';
 import 'package:holidays/screens/companyauth/leave_requests_company.dart';
 import 'package:holidays/screens/empauth/dashboard.dart';
-import 'package:holidays/screens/companyauth/resetpass.dart';
+import 'package:holidays/screens/companyauth/compforgotpass.dart';
 import 'package:holidays/screens/empauth/leaverequest.dart';
 import 'package:holidays/screens/empauth/profile.dart';
 import 'package:holidays/screens/empauth/test1.dart';

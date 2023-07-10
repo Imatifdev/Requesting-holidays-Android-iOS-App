@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:holidays/screens/companyauth/companyLogin.dart';
-import 'package:holidays/screens/companyauth/resetpass.dart';
+import 'package:holidays/screens/companyauth/compforgotpass.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 
@@ -65,6 +65,16 @@ class _CompanyProfileViewState extends State<CompanyProfileView> {
     final user = companyViewModel.user;
 
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: backgroundColor,
+        leading: IconButton(
+            onPressed: () {},
+            icon: Icon(
+              CupertinoIcons.left_chevron,
+              color: Colors.black,
+            )),
+      ),
       backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Column(
@@ -130,20 +140,20 @@ class _CompanyProfileViewState extends State<CompanyProfileView> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 50,
                   ),
-                  Container(
-                    height: MediaQuery.of(context).size.height / 14,
-                    width: MediaQuery.of(context).size.width,
-                    child: ListTile(
-                      leading: Icon(CupertinoIcons.person_alt_circle),
-                      title: Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: Text(
-                          '${user?.id}',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   height: MediaQuery.of(context).size.height / 14,
+                  //   width: MediaQuery.of(context).size.width,
+                  //   child: ListTile(
+                  //     leading: Icon(CupertinoIcons.person_alt_circle),
+                  //     title: Padding(
+                  //       padding: const EdgeInsets.only(left: 30),
+                  //       child: Text(
+                  //         '${user?.id}',
+                  //         style: TextStyle(fontSize: 14),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ]),
               ),
               SizedBox(

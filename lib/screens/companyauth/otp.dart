@@ -56,6 +56,8 @@
 //     }
 //   }
 
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
@@ -106,12 +108,14 @@
 // }
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:holidays/screens/companyauth/setpass.dart';
 import 'package:holidays/screens/empauth/login.dart';
 import 'package:holidays/screens/empauth/profile.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../widget/constants.dart';
+import 'compforgotpass.dart';
 
 final String baseUrl = 'https://jporter.ezeelogix.com/public/api';
 final String resendOtpEndpoint = '/resend-otp';
@@ -168,7 +172,12 @@ class _CompanyOtpScreenState extends State<CompanyOtpScreen> {
         Fluttertoast.showToast(
             msg: 'OTP verification successful, You can login now');
         Navigator.push(
-            context, MaterialPageRoute(builder: (ctx) => EmpLoginPage()));
+            context,
+            MaterialPageRoute(
+                builder: (ctx) => SetCompPass(
+                      email: widget.email,
+                      otp: otpController.text,
+                    )));
       } else {
         // Error
         Fluttertoast.showToast(msg: 'OTP verification failed');
@@ -182,19 +191,31 @@ class _CompanyOtpScreenState extends State<CompanyOtpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: red,
-        title: Text('OTP'),
+        elevation: 0,
+        iconTheme: IconThemeData(color: red),
+        backgroundColor: backgroundColor,
+        title: Text(
+          'OTP',
+          style: TextStyle(fontSize: 20, color: red),
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextField(
+            TextFormField(
               controller: otpController,
               decoration: InputDecoration(
-                labelText: 'OTP',
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                filled: true,
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                fillColor: Colors.grey.shade300,
+                hintText: 'Enter OTP',
               ),
             ),
             SizedBox(height: 16.0),

@@ -178,10 +178,10 @@ class _CompanyLogoState extends State<CompanyLogo> {
                 const SizedBox(height: 20),
                 Container(
                   height: 50,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          padding: const EdgeInsets.all(15)),
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: MaterialButton(
                       onPressed: () {
                         if (pickedImageName != "") {
                           _changeLogo(token!, companyId.toString(),
@@ -198,7 +198,8 @@ class _CompanyLogoState extends State<CompanyLogo> {
                             )
                           : const Text(
                               "Change Logo",
-                              style: TextStyle(fontSize: 14),
+                              style:
+                                  TextStyle(fontSize: 14, color: Colors.white),
                             )),
                 ).pOnly(left: 20),
                 Text(

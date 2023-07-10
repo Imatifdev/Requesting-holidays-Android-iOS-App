@@ -199,18 +199,6 @@ class _CompanyLoginPageState extends State<CompanyLoginPage> {
                     ),
                   ),
                   const SizedBox(height: 16.0),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignupPage()),
-                      );
-                    },
-                    child: const Text(
-                      'Don\'t have an account? Sign up here',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
                 ],
               ),
             ).pSymmetric(h: 10),

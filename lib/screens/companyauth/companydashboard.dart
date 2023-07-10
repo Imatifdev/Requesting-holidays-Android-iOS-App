@@ -21,6 +21,7 @@ import 'package:http/http.dart' as http;
 
 import 'companylogo.dart';
 import 'createcompanyleaves.dart';
+import 'createfinancialyear.dart';
 import 'getcompanyleaves.dart';
 
 class CompanyDashBoard extends StatefulWidget {
@@ -171,6 +172,25 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           trailing: Icon(CupertinoIcons.right_chevron),
           onTap: () {
             Navigator.pop(context);
+          },
+        ),
+        Divider(
+          color: Colors.grey,
+          thickness: 0.5,
+        ).pSymmetric(h: 20),
+        ListTile(
+          leading: Icon(Icons.home),
+          title: Text(
+            'Create a financial Year',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+          trailing: Icon(CupertinoIcons.right_chevron),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (ctx) => CompanyFinancialYearScreen()));
           },
         ),
         Divider(

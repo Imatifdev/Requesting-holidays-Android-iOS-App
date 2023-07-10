@@ -1,6 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'companyLogin.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   @override
@@ -78,9 +82,47 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     }
   }
 
-  Future<void> verifyOtp() async {
-    // Remaining code remains the same as before
-  }
+  bool _isOTPSent = false;
+  bool _isOTPSuccessful = false;
+
+  Future<void> _verifyOTP() async {
+    final url = 'https://jporter.ezeelogix.com/public/api/reset-password';
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: {
+        'otp': otpController.text,
+        'password': passwordController.text,
+        'user_type': '1',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (ctx) => CompanyLoginPage()));
+      // Password reset successful
+      setState(() {
+        _isOTPSuccessful = true;
+      });
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Failed to reset password. Please try again.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  } // Remaining code remains the same as before
 
   Future<void> resetPassword() async {
     // Remaining code remains the same as before
@@ -124,7 +166,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             ElevatedButton(
               child: Text('Verify OTP'),
               onPressed: () {
-                verifyOtp();
+                _verifyOTP();
               },
             ),
           ],

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:holidays/screens/companyauth/resetpass.dart';
+import 'package:holidays/screens/companyauth/compforgotpass.dart';
 
 import '../../widget/constants.dart';
 import '../../widget/custombutton.dart';
