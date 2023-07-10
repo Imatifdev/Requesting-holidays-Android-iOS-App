@@ -303,75 +303,76 @@ class _MyFormState extends State<MyForm> {
                 },
               ),
             ),
-            Column(
-              children: [
-                CheckboxListTile(
-                  title: Text('Monday'),
-                  value: mondayChecked,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      mondayChecked = value!;
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: Text('Tuesday'),
-                  value: tuesdayChecked,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      tuesdayChecked = value!;
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: Text('Wednesday'),
-                  value: wednesdayChecked,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      wednesdayChecked = value!;
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: Text('Thursday'),
-                  value: thursdayChecked,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      thursdayChecked = value!;
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: Text('Friday'),
-                  value: fridayChecked,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      fridayChecked = value!;
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: Text('Saturday'),
-                  value: saturdayChecked,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      saturdayChecked = value!;
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: Text('Sunday'),
-                  value: sundayChecked,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      sundayChecked = value!;
-                    });
-                  },
-                ),
-              ],
-            ),
+            // Column(
+            //   children: [
+            //     CheckboxListTile(
+            //       title: Text('Monday'),
+            //       value: mondayChecked,
+            //       onChanged: (bool? value) {
+            //         setState(() {
+            //           mondayChecked = value!;
+            //         });
+            //       },
+            //     ),
+            //     CheckboxListTile(
+            //       title: Text('Tuesday'),
+            //       value: tuesdayChecked,
+            //       onChanged: (bool? value) {
+            //         setState(() {
+            //           tuesdayChecked = value!;
+            //         });
+            //       },
+            //     ),
+            //     CheckboxListTile(
+            //       title: Text('Wednesday'),
+            //       value: wednesdayChecked,
+            //       onChanged: (bool? value) {
+            //         setState(() {
+            //           wednesdayChecked = value!;
+            //         });
+            //       },
+            //     ),
+            //     CheckboxListTile(
+            //       title: Text('Thursday'),
+            //       value: thursdayChecked,
+            //       onChanged: (bool? value) {
+            //         setState(() {
+            //           thursdayChecked = value!;
+            //         });
+            //       },
+            //     ),
+            //     CheckboxListTile(
+            //       title: Text('Friday'),
+            //       value: fridayChecked,
+            //       onChanged: (bool? value) {
+            //         setState(() {
+            //           fridayChecked = value!;
+            //         });
+            //       },
+            //     ),
+            //     CheckboxListTile(
+            //       title: Text('Saturday'),
+            //       value: saturdayChecked,
+            //       onChanged: (bool? value) {
+            //         setState(() {
+            //           saturdayChecked = value!;
+            //         });
+            //       },
+            //     ),
+            //     CheckboxListTile(
+            //       title: Text('Sunday'),
+            //       value: sundayChecked,
+            //       onChanged: (bool? value) {
+            //         setState(() {
+            //           sundayChecked = value!;
+            //         });
+            //       },
+            //     ),
+            //   ],
+            // ),
             ElevatedButton(
               onPressed: () {
+                print(dayValues);
                 makeApiRequest(token!, companyId.toString());
               },
               child: Text("Create"),

@@ -140,7 +140,7 @@ class _EditEmployeeState extends State<EditEmployee> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Edit Employee Data",
+                  "Edit Employee Details",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ).pOnly(left: 24),
                 const SizedBox(
@@ -413,23 +413,6 @@ class _EditEmployeeState extends State<EditEmployee> {
                           print(dayValues.contains(1));
                           if (_formKey.currentState!.validate() &&
                               dayValues.contains(1)) {
-                            print("all good");
-                            print(companyId.toString());
-                            print(widget.emp.id);
-                            print(_nameFirst.text.trim());
-                            print(_nameLast.text.trim());
-                            print(_phone.text);
-                            print(_email.text);
-                            print(_password.text);
-                            print(_confirmPassword.text);
-                            print(_totalLeaves.text);
-                            print("monday " + dayValues[0].toString());
-                            print("tues " + dayValues[1].toString());
-                            print("wed " + dayValues[2].toString());
-                            print("thur " + dayValues[3].toString());
-                            print("fri " + dayValues[4].toString());
-                            print("sat " + dayValues[5].toString());
-                            print("sun " + dayValues[6].toString());
                             editEmployeeInfo(token!, companyId.toString());
                           } else if (!dayValues.contains(1)) {
                             setState(() {
@@ -445,7 +428,10 @@ class _EditEmployeeState extends State<EditEmployee> {
                               )
                             : const Text("Save Employee")),
                   ),
-                )
+                ),
+                Center(child: TextButton(onPressed: (){
+                  Navigator.of(context).pop();
+                }, child: const Text("Cancel") ))
               ],
             ),
           )),
