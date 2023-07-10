@@ -54,7 +54,7 @@ class LeaveRequestCard extends StatelessWidget {
                       Text(
                         'From: ${leave.startDate}',
                         style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: leave.leaveType == 'Compassionate'
                                 ? Colors.red

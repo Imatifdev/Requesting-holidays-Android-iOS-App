@@ -105,13 +105,10 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
       CompanyProfileView()
     ];
     return Scaffold(
-      backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: backgroundColor,
-        elevation: 0,
-        leading: Icon(CupertinoIcons.left_chevron, color: red),
+        title: Text("Leave Requests"),
       ),
-      endDrawer: Drawer(
+      drawer: Drawer(
           child: ListView(padding: EdgeInsets.zero, children: [
         Container(
           decoration: BoxDecoration(
@@ -399,7 +396,7 @@ class _AllApplicationsState extends State<AllApplications> {
                                   Text(
                                     'From: ${leave.startDate}',
                                     style: TextStyle(
-                                        fontSize: 22,
+                                        fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                         color:
                                             leave.leaveType == 'Compassionate'
