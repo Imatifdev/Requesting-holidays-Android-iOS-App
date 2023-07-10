@@ -94,7 +94,7 @@ class _ShowEmployeeState extends State<ShowEmployee> {
       // Handle error scenario
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final comViewModel = Provider.of<CompanyViewModel>(context);
@@ -139,7 +139,8 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                     itemCount: showemployees.length,
                     itemBuilder: (context, index) {
                       Employee employee = showemployees[index];
-                      return empCard(token!, companyId.toString() ,employee).pSymmetric(h: 20, v: 5);
+                      return empCard(token!, companyId.toString(), employee)
+                          .pSymmetric(h: 20, v: 5);
                     },
                   ),
                 ),
@@ -149,154 +150,144 @@ class _ShowEmployeeState extends State<ShowEmployee> {
     );
   }
 
-  Container empCard(String token, String companyId ,Employee emp) {
+  Container empCard(String token, String companyId, Employee emp) {
     return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(width: 1, color: Colors.grey)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            emp.firstName,
+            style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+          ),
+          Row(
+            children: [
+              Text(
+                emp.email,
+                style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                "Days",
+                style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                emp.phone,
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.normal),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor:
+                        emp.isVerified == '0' ? Colors.blue : Colors.grey,
+                    radius: 5,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    emp.isVerified == '0' ? "Inactive" : "Active",
+                    style:
+                        TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(width: 1, color: Colors.grey)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            emp.firstName,
-                            style: TextStyle(
-                                fontSize: 11, fontWeight: FontWeight.bold),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                emp.email,
-                                style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.normal),
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color(0xffED930B)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(
+                              builder: (context) => EditEmployee(
+                                emp: emp,
+                                email: emp.email.toString(),
+                                first_name: emp.firstName,
+                                last_name: emp.lastName,
+                                mobile: emp.phone,
                               ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                "Days",
-                                style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                emp.phone,
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Row(
-                                children: [
-                                  CircleAvatar(
-                                    backgroundColor: emp.isVerified == '0'
-                                        ? Colors.blue
-                                        : Colors.grey,
-                                    radius: 5,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    emp.isVerified == '0'
-                                        ? "Inactive"
-                                        : "Active",
-                                    style: TextStyle(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(width: 20,),
-                              Expanded(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          color: Color(0xffED930B)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: InkWell(
-                                          onTap: (){
-                                        Navigator.of(context).
-                                        push(MaterialPageRoute(builder: (context) => EditEmployee(emp: emp),)) 
-                                        .then((value) {
-                                                        setState(() {
-                                                          getEmployees(token, companyId.toString());
-                                                        });
-                                                      });
-                                          },
-                                          child: Center(
-                                              child: Text(
-                                            "Edit",
-                                            style: TextStyle(
-                                                color: Colors.white, fontSize: 11),
-                                          )),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: (){
-                                        deleteCompanyEm(token,emp);
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            color: red),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Center(
-                                              child: Text(
-                                            "Delete",
-                                            style: TextStyle(
-                                                color: Colors.white, fontSize: 11),
-                                          )),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: (){
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            color: Colors.blueAccent),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Center(
-                                              child: Text(
-                                            "View Employee",
-                                            style: TextStyle(
-                                                color: Colors.white, fontSize: 11),
-                                          )),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ).pOnly(top: 10),
-                              ),
-                            ],
-                          )
-                        ],
-                      ).p(10),
-                    );
+                            ))
+                                .then((value) {
+                              setState(() {
+                                getEmployees(token, companyId.toString());
+                              });
+                            });
+                          },
+                          child: Center(
+                              child: Text(
+                            "Edit",
+                            style: TextStyle(color: Colors.white, fontSize: 11),
+                          )),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        deleteCompanyEm(token, emp);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5), color: red),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                              child: Text(
+                            "Delete",
+                            style: TextStyle(color: Colors.white, fontSize: 11),
+                          )),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.blueAccent),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                              child: Text(
+                            "View Employee",
+                            style: TextStyle(color: Colors.white, fontSize: 11),
+                          )),
+                        ),
+                      ),
+                    ),
+                  ],
+                ).pOnly(top: 10),
+              ),
+            ],
+          )
+        ],
+      ).p(10),
+    );
   }
 }

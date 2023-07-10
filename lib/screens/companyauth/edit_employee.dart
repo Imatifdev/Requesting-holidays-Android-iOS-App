@@ -11,7 +11,18 @@ import '../../widget/constants.dart';
 
 class EditEmployee extends StatefulWidget {
   final Employee emp;
-  const EditEmployee({super.key, required this.emp});
+  final String email;
+  final String first_name;
+  final String last_name;
+  final String mobile;
+
+  const EditEmployee(
+      {super.key,
+      required this.emp,
+      required this.email,
+      required this.first_name,
+      required this.last_name,
+      required this.mobile});
 
   @override
   State<EditEmployee> createState() => _EditEmployeeState();
@@ -33,7 +44,7 @@ class _EditEmployeeState extends State<EditEmployee> {
   String errMsg = "";
   bool isLoading = false;
 
-  void editEmployeeInfo(String token, String id)async{
+  void editEmployeeInfo(String token, String id) async {
     setState(() {
       isLoading = true;
     });
@@ -44,15 +55,15 @@ class _EditEmployeeState extends State<EditEmployee> {
       'Authorization': 'Bearer $token',
       'Accept': 'application/json',
     }, body: {
-      "company_id":id,
+      "company_id": id,
       "employee_id": widget.emp.id.toString(),
-      "first_name":_nameFirst.text.trim(),
-      "last_name":_nameLast.text.trim(),
+      "first_name": _nameFirst.text.trim(),
+      "last_name": _nameLast.text.trim(),
       "email": _email.text.trim(),
       "phone": _phone.text,
       "password": _password.text,
-      "password_confirmation":_confirmPassword.text,
-      "total_leaves":_totalLeaves.text,
+      "password_confirmation": _confirmPassword.text,
+      "total_leaves": _totalLeaves.text,
       "monday": dayValues[0].toString(),
       "tuesday": dayValues[1].toString(),
       "wednesday": dayValues[2].toString(),
@@ -88,353 +99,368 @@ class _EditEmployeeState extends State<EditEmployee> {
     final user = comViewModel.user;
     final companyId = user!.id;
     return Scaffold(
-      backgroundColor: appbar,
-      appBar: AppBar(
-        elevation: 0,
         backgroundColor: appbar,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              CupertinoIcons.left_chevron,
-              color: Colors.black,
-            )),
-      ),
-      body:SingleChildScrollView(
-        child: SafeArea(
-          child: SizedBox(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: appbar,
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                CupertinoIcons.left_chevron,
+                color: Colors.black,
+              )),
+        ),
+        body: SingleChildScrollView(
+          child: SafeArea(
+              child: SizedBox(
             width: size.width,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                    "All Employees",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ).pOnly(left: 24),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Form(
+                  "All Employees",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ).pOnly(left: 24),
+                const SizedBox(
+                  height: 25,
+                ),
+                Form(
                     key: _formKey,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Column(children: [
-                        TextFormField(
-                        controller: _nameFirst,
-                        decoration: InputDecoration(
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.only(right: 5),
-                              child: Container(
-                                  decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          width: 1.0, color: Colors.black),
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: _nameFirst,
+                            decoration: InputDecoration(
+                              prefixIcon: Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: Container(
+                                    decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(
+                                            width: 1.0, color: Colors.black),
+                                      ),
                                     ),
-                                  ),
-                                  child: const Icon(
-                                    Icons.person,
-                                    color: red,
-                                  )),
-                            ),
-                            labelText: 'First Name',
-                            ),
-                        obscureText: false,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your first name';
-                          }
-                          return null;
-                        },
-                      ),
-                        TextFormField(
-                        controller: _nameLast,
-                        decoration: InputDecoration(
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.only(right: 5),
-                              child: Container(
-                                  decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          width: 1.0, color: Colors.black),
-                                    ),
-                                  ),
-                                  child: const Icon(
-                                    Icons.person,
-                                    color: red,
-                                  )),
-                            ),
-                            labelText: 'Last Name',
-                            ),
-                        obscureText: false,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your last name';
-                          }
-                          return null;
-                        },
-                      ),
-                        TextFormField(
-                        controller: _phone,
-                    keyboardType: TextInputType.phone,
-                        decoration: InputDecoration(
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.only(right: 5),
-                              child: Container(
-                                  decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          width: 1.0, color: Colors.black),
-                                    ),
-                                  ),
-                                  child: const Icon(
-                                    Icons.phone_android_rounded,
-                                    color: red,
-                                  )),
-                            ),
-                            labelText: 'Mobile Number',
-                            ),
-                        obscureText: false,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your mobile number';
-                          }
-                          return null;
-                        },
-                      ),
-                        TextFormField(
-                        controller: _email,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.only(right: 5),
-                              child: Container(
-                                  decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          width: 1.0, color: Colors.black),
-                                    ),
-                                  ),
-                                  child: const Icon(
-                                    Icons.mail,
-                                    color: red,
-                                  )),
-                            ),
-                            labelText: 'Email',
-                            ),
-                        obscureText: false,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          if(!value.contains("@")){
-                            return "Please enter valid email";
-                          }
-                          return null;
-                        },
-                      ),
-                        TextFormField(
-                    controller: _password,
-                    decoration: InputDecoration(
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(right: 5),
-                          child: Container(
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  right: BorderSide(
-                                      width: 1.0, color: Colors.black),
-                                ),
+                                    child: const Icon(
+                                      Icons.person,
+                                      color: red,
+                                    )),
                               ),
-                              child: const Icon(
-                                Icons.lock_open_rounded,
-                                color: red,
-                              )),
-                        ),
-                        labelText: 'Password',
-                        suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                obsCheck = !obsCheck;
-                              });
+                              labelText: widget.first_name.toString(),
+                            ),
+                            obscureText: false,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter your first name';
+                              }
+                              return null;
                             },
-                            icon: Icon(
-                              obsCheck
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: Colors.black,
-                            ))),
-                    obscureText: !obsCheck,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your password';
-                      }
-                      if(value.length<6){
-                        return 'Password too short';
-                      }
-                      return null;
-                    },
-                  ),
-                        TextFormField(
-                    controller: _confirmPassword,
-                    decoration: InputDecoration(
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(right: 5),
-                          child: Container(
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  right: BorderSide(
-                                      width: 1.0, color: Colors.black),
-                                ),
-                              ),
-                              child: const Icon(
-                                Icons.lock_open_rounded,
-                                color: red,
-                              )),
-                        ),
-                        labelText: 'Confirm Password',
-                        suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                obsCheck1 = !obsCheck1;
-                              });
-                            },
-                            icon: Icon(
-                              obsCheck1
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: Colors.black,
-                            ))),
-                    obscureText: !obsCheck1,
-                    validator: (value) {
-                      if (value!.isEmpty || value != _password.text) {
-                        return 'Please confirm your password';
-                      }
-                      return null;
-                    },
-                  ),
-                        TextFormField(
-                        controller: _totalLeaves,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.only(right: 5),
-                              child: Container(
-                                  decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          width: 1.0, color: Colors.black),
+                          ),
+                          TextFormField(
+                            controller: _nameLast,
+                            decoration: InputDecoration(
+                              prefixIcon: Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: Container(
+                                    decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(
+                                            width: 1.0, color: Colors.black),
+                                      ),
                                     ),
-                                  ),
-                                  child: const Icon(
-                                    Icons.edit_note_sharp,
-                                    color: red,
-                                  )),
+                                    child: const Icon(
+                                      Icons.person,
+                                      color: red,
+                                    )),
+                              ),
+                              labelText: widget.last_name.toString(),
                             ),
-                            labelText: 'Total Leaves',
+                            obscureText: false,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter your last name';
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            controller: _phone,
+                            keyboardType: TextInputType.phone,
+                            decoration: InputDecoration(
+                              prefixIcon: Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: Container(
+                                    decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(
+                                            width: 1.0, color: Colors.black),
+                                      ),
+                                    ),
+                                    child: const Icon(
+                                      Icons.phone_android_rounded,
+                                      color: red,
+                                    )),
+                              ),
+                              labelText: widget.mobile.toString(),
                             ),
-                        obscureText: false,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter total leaves';
-                          }
-                          return null;
-                        },
+                            obscureText: false,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter your mobile number';
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            controller: _email,
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                              prefixIcon: Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: Container(
+                                    decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(
+                                            width: 1.0, color: Colors.black),
+                                      ),
+                                    ),
+                                    child: const Icon(
+                                      Icons.mail,
+                                      color: red,
+                                    )),
+                              ),
+                              labelText: widget.email.toString(),
+                            ),
+                            obscureText: false,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter your email';
+                              }
+                              if (!value.contains("@")) {
+                                return "Please enter valid email";
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            controller: _password,
+                            decoration: InputDecoration(
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.only(right: 5),
+                                  child: Container(
+                                      decoration: const BoxDecoration(
+                                        border: Border(
+                                          right: BorderSide(
+                                              width: 1.0, color: Colors.black),
+                                        ),
+                                      ),
+                                      child: const Icon(
+                                        Icons.lock_open_rounded,
+                                        color: red,
+                                      )),
+                                ),
+                                labelText: 'Password',
+                                suffixIcon: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        obsCheck = !obsCheck;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      obsCheck
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: Colors.black,
+                                    ))),
+                            obscureText: !obsCheck,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter your password';
+                              }
+                              if (value.length < 6) {
+                                return 'Password too short';
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            controller: _confirmPassword,
+                            decoration: InputDecoration(
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.only(right: 5),
+                                  child: Container(
+                                      decoration: const BoxDecoration(
+                                        border: Border(
+                                          right: BorderSide(
+                                              width: 1.0, color: Colors.black),
+                                        ),
+                                      ),
+                                      child: const Icon(
+                                        Icons.lock_open_rounded,
+                                        color: red,
+                                      )),
+                                ),
+                                labelText: 'Confirm Password',
+                                suffixIcon: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        obsCheck1 = !obsCheck1;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      obsCheck1
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: Colors.black,
+                                    ))),
+                            obscureText: !obsCheck1,
+                            validator: (value) {
+                              if (value!.isEmpty || value != _password.text) {
+                                return 'Please confirm your password';
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            controller: _totalLeaves,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              prefixIcon: Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: Container(
+                                    decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(
+                                            width: 1.0, color: Colors.black),
+                                      ),
+                                    ),
+                                    child: const Icon(
+                                      Icons.edit_note_sharp,
+                                      color: red,
+                                    )),
+                              ),
+                              labelText: 'Total Leaves',
+                            ),
+                            obscureText: false,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter total leaves';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text(
+                            "Working Days",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          SizedBox(
+                            height: size.height / 4,
+                            child: GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 4),
+                              itemCount: 7,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: dayCard(index),
+                                );
+                              },
+                            ),
+                          ),
+                          Text(
+                            errMsg,
+                            style: const TextStyle(color: Colors.red),
+                          )
+                        ],
                       ),
-                      
-                      const SizedBox(height: 20,),
-                  const Text("Working Days", style: TextStyle(fontSize: 18),),
-                  const SizedBox(height: 5,),
-                 
-          SizedBox(
-        height: size.height/4,
-        child: GridView.builder(
-          physics:const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
-            itemCount: 7,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: dayCard(index),
-              );
-            },
-          ),
-          ),
-          Text(errMsg, style: const TextStyle(color: Colors.red),)
-                      ],),
-                    ) 
-                  ),
+                    )),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 10) ,
+                  padding: const EdgeInsets.only(bottom: 10),
                   child: Center(
                     child: ElevatedButton(
-                      onPressed: (){
-                        print(dayValues.contains(1));
-                        if(_formKey.currentState!.validate() && dayValues.contains(1)){
-                          print("all good");
-                          print(companyId.toString());
-                          print(widget.emp.id);
-                          print(_nameFirst.text.trim());
-                          print(_nameLast.text.trim());
-                          print(_phone.text);
-                          print(_email.text);
-                          print(_password.text);
-                          print(_confirmPassword.text);
-                          print(_totalLeaves.text);
-                          print("monday "+ dayValues[0].toString());
-                          print("tues "+ dayValues[1].toString());
-                          print("wed "+ dayValues[2].toString());
-                          print("thur "+ dayValues[3].toString());
-                          print("fri "+ dayValues[4].toString());
-                          print("sat "+ dayValues[5].toString());
-                          print("sun "+ dayValues[6].toString());
-                          editEmployeeInfo(token!, companyId.toString());
-                        }
-                        else if(!dayValues.contains(1)){
-                          setState(() {
-                            errMsg = "Please select working days";
-                          });
-                        }
+                        onPressed: () {
+                          print(dayValues.contains(1));
+                          if (_formKey.currentState!.validate() &&
+                              dayValues.contains(1)) {
+                            print("all good");
+                            print(companyId.toString());
+                            print(widget.emp.id);
+                            print(_nameFirst.text.trim());
+                            print(_nameLast.text.trim());
+                            print(_phone.text);
+                            print(_email.text);
+                            print(_password.text);
+                            print(_confirmPassword.text);
+                            print(_totalLeaves.text);
+                            print("monday " + dayValues[0].toString());
+                            print("tues " + dayValues[1].toString());
+                            print("wed " + dayValues[2].toString());
+                            print("thur " + dayValues[3].toString());
+                            print("fri " + dayValues[4].toString());
+                            print("sat " + dayValues[5].toString());
+                            print("sun " + dayValues[6].toString());
+                            editEmployeeInfo(token!, companyId.toString());
+                          } else if (!dayValues.contains(1)) {
+                            setState(() {
+                              errMsg = "Please select working days";
+                            });
+                          }
                         },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(10)
-                      ),
-                      child: isLoading? const CircularProgressIndicator(color: Colors.white,) :const Text("Save Employee")),
+                        style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.all(10)),
+                        child: isLoading
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : const Text("Save Employee")),
                   ),
                 )
               ],
             ),
-          ) ),
-      )
+          )),
+        ));
+  }
+
+  Container dayCard(int index) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(width: 1),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(3.0),
+        child: Column(
+          children: [
+            Text(
+              _getDayOfWeek(index),
+              style: const TextStyle(fontSize: 12),
+            ),
+            Checkbox(
+              value: dayValues[index] == 1,
+              onChanged: (bool? value) {
+                setState(() {
+                  dayValues[index] = value! ? 1 : 0;
+                });
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 
-  Container dayCard(int index ) {
-
-  return Container(
-    decoration: BoxDecoration(
-      border: Border.all(width: 1),
-      borderRadius: BorderRadius.circular(15),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(3.0),
-      child: Column(
-        children: [
-          Text(_getDayOfWeek(index), style: const TextStyle(fontSize: 12),),
-          Checkbox(
-                  value: dayValues[index] == 1,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      dayValues[index] = value! ? 1 : 0;
-                    });
-                  },
-                ),
-        ],
-      ),
-    ),
-  );
-}
-
-String _getDayOfWeek(int index) {
+  String _getDayOfWeek(int index) {
     switch (index) {
       case 0:
         return 'Sunday';
@@ -454,5 +480,4 @@ String _getDayOfWeek(int index) {
         return '';
     }
   }
-
 }
