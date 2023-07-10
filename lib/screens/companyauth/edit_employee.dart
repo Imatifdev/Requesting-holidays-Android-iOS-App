@@ -1,10 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:http/http.dart' as http;
+import '../../models/company/viewemployeedata.dart';
+import '../../viewmodel/company/compuserviewmodel.dart';
 import '../../widget/constants.dart';
 
 class EditEmployee extends StatefulWidget {
-  const EditEmployee({super.key});
+  final Employee emp;
+  const EditEmployee({super.key, required this.emp});
 
   @override
   State<EditEmployee> createState() => _EditEmployeeState();
@@ -16,23 +23,70 @@ class _EditEmployeeState extends State<EditEmployee> {
   final TextEditingController _nameLast = TextEditingController();
   final TextEditingController _phone = TextEditingController();
   final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _confirmPassword = TextEditingController();
   final TextEditingController _totalLeaves = TextEditingController();
-  int selectedDay = 0;
   Map<int, bool> selectedDays = {};
-  void selectDay(int day) {
-  setState(() {
-    if (selectedDays.containsKey(day)) {
-      selectedDays.remove(day);
-      print(selectedDay);
+  List<int> dayValues = List<int>.filled(7, 0);
+  bool obsCheck = false;
+  bool obsCheck1 = false;
+  String errMsg = "";
+  bool isLoading = false;
+
+  void editEmployeeInfo(String token, String id)async{
+    setState(() {
+      isLoading = true;
+    });
+    const String requestLeaveUrl =
+        'https://jporter.ezeelogix.com/public/api/company-update-employee-data';
+
+    final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    }, body: {
+      "company_id":id,
+      "employee_id": widget.emp.id.toString(),
+      "first_name":_nameFirst.text.trim(),
+      "last_name":_nameLast.text.trim(),
+      "email": _email.text.trim(),
+      "phone": _phone.text,
+      "password": _password.text,
+      "password_confirmation":_confirmPassword.text,
+      "total_leaves":_totalLeaves.text,
+      "monday": dayValues[0].toString(),
+      "tuesday": dayValues[1].toString(),
+      "wednesday": dayValues[2].toString(),
+      "thursday": dayValues[3].toString(),
+      "friday": dayValues[4].toString(),
+      "saturday": dayValues[5].toString(),
+      "sunday": dayValues[6].toString(),
+    });
+    if (response.statusCode == 200) {
+      // Leave request successful
+      final jsonData = json.decode(response.body);
+      print(jsonData);
+      setState(() {
+        isLoading = false;
+      });
+      Navigator.of(context).pop();
     } else {
-      selectedDays[day] = true;
+      print(response.statusCode);
+      // Error occurred
+      setState(() {
+        isLoading = false;
+      });
+      print('Error: ${response.reasonPhrase}');
+      // Handle error scenario
     }
-  });
-}
-List<int> dayValues = List<int>.filled(7, 0);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final comViewModel = Provider.of<CompanyViewModel>(context);
+    final token = comViewModel.token;
+    final user = comViewModel.user;
+    final companyId = user!.id;
     return Scaffold(
       backgroundColor: appbar,
       appBar: AppBar(
@@ -122,6 +176,7 @@ List<int> dayValues = List<int>.filled(7, 0);
                       ),
                         TextFormField(
                         controller: _phone,
+                    keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                             prefixIcon: Padding(
                               padding: const EdgeInsets.only(right: 5),
@@ -149,6 +204,7 @@ List<int> dayValues = List<int>.filled(7, 0);
                       ),
                         TextFormField(
                         controller: _email,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                             prefixIcon: Padding(
                               padding: const EdgeInsets.only(right: 5),
@@ -171,11 +227,94 @@ List<int> dayValues = List<int>.filled(7, 0);
                           if (value!.isEmpty) {
                             return 'Please enter your email';
                           }
+                          if(!value.contains("@")){
+                            return "Please enter valid email";
+                          }
                           return null;
                         },
                       ),
                         TextFormField(
+                    controller: _password,
+                    decoration: InputDecoration(
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.only(right: 5),
+                          child: Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  right: BorderSide(
+                                      width: 1.0, color: Colors.black),
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.lock_open_rounded,
+                                color: red,
+                              )),
+                        ),
+                        labelText: 'Password',
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                obsCheck = !obsCheck;
+                              });
+                            },
+                            icon: Icon(
+                              obsCheck
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.black,
+                            ))),
+                    obscureText: !obsCheck,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      if(value.length<6){
+                        return 'Password too short';
+                      }
+                      return null;
+                    },
+                  ),
+                        TextFormField(
+                    controller: _confirmPassword,
+                    decoration: InputDecoration(
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.only(right: 5),
+                          child: Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  right: BorderSide(
+                                      width: 1.0, color: Colors.black),
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.lock_open_rounded,
+                                color: red,
+                              )),
+                        ),
+                        labelText: 'Confirm Password',
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                obsCheck1 = !obsCheck1;
+                              });
+                            },
+                            icon: Icon(
+                              obsCheck1
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.black,
+                            ))),
+                    obscureText: !obsCheck1,
+                    validator: (value) {
+                      if (value!.isEmpty || value != _password.text) {
+                        return 'Please confirm your password';
+                      }
+                      return null;
+                    },
+                  ),
+                        TextFormField(
                         controller: _totalLeaves,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             prefixIcon: Padding(
                               padding: const EdgeInsets.only(right: 5),
@@ -201,51 +340,66 @@ List<int> dayValues = List<int>.filled(7, 0);
                           return null;
                         },
                       ),
-                      ],),
-                    ) 
-                  ),
-                  const SizedBox(height: 20,),
+                      
+                      const SizedBox(height: 20,),
                   const Text("Working Days", style: TextStyle(fontSize: 18),),
                   const SizedBox(height: 5,),
                  
           SizedBox(
-        height: 300,
-        child: ListView.builder(
+        height: size.height/4,
+        child: GridView.builder(
+          physics:const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
             itemCount: 7,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(_getDayOfWeek(index)),
-                leading: Checkbox(
-                  value: dayValues[index] == 1,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      dayValues[index] = value! ? 1 : 0;
-                    });
-                  },
-                ),
-              );},
+              return Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: dayCard(index),
+              );
+            },
           ),
           ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: [
-                  //     dayCard('SUN', 1, selectDay),
-                  //     dayCard("MON", 2, selectDay),
-                  //     dayCard("TUE", 3, selectDay),
-                  //     dayCard("WED", 4, selectDay),
-                  //     dayCard("THUR", 5, selectDay),
-                  //     dayCard("FRI", 6, selectDay),
-                  //     dayCard("SAT", 7, selectDay)
-                  //   ],
-                  // ),
-                const  SizedBox(height: 10,),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: (){}, 
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.all(10)
-                    ),
-                    child: const Text("Save Employee")),
+          Text(errMsg, style: const TextStyle(color: Colors.red),)
+                      ],),
+                    ) 
+                  ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10) ,
+                  child: Center(
+                    child: ElevatedButton(
+                      onPressed: (){
+                        print(dayValues.contains(1));
+                        if(_formKey.currentState!.validate() && dayValues.contains(1)){
+                          print("all good");
+                          print(companyId.toString());
+                          print(widget.emp.id);
+                          print(_nameFirst.text.trim());
+                          print(_nameLast.text.trim());
+                          print(_phone.text);
+                          print(_email.text);
+                          print(_password.text);
+                          print(_confirmPassword.text);
+                          print(_totalLeaves.text);
+                          print("monday "+ dayValues[0].toString());
+                          print("tues "+ dayValues[1].toString());
+                          print("wed "+ dayValues[2].toString());
+                          print("thur "+ dayValues[3].toString());
+                          print("fri "+ dayValues[4].toString());
+                          print("sat "+ dayValues[5].toString());
+                          print("sun "+ dayValues[6].toString());
+                          editEmployeeInfo(token!, companyId.toString());
+                        }
+                        else if(!dayValues.contains(1)){
+                          setState(() {
+                            errMsg = "Please select working days";
+                          });
+                        }
+                        },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(10)
+                      ),
+                      child: isLoading? const CircularProgressIndicator(color: Colors.white,) :const Text("Save Employee")),
+                  ),
                 )
               ],
             ),
@@ -254,27 +408,26 @@ List<int> dayValues = List<int>.filled(7, 0);
     );
   }
 
-  Container dayCard(String name, int value, Function(int) onSelectDay) {
-  final isSelected = selectedDays.containsKey(value) && selectedDays[value] == true;
+  Container dayCard(int index ) {
 
   return Container(
     decoration: BoxDecoration(
       border: Border.all(width: 1),
       borderRadius: BorderRadius.circular(15),
-      color: isSelected ? Colors.blue : Colors.transparent,
     ),
     child: Padding(
       padding: const EdgeInsets.all(3.0),
       child: Column(
         children: [
-          Text(name),
-          Radio(
-            value: value,
-            groupValue: null,
-            onChanged: (newValue) {
-              onSelectDay(newValue!);
-            },
-          ),
+          Text(_getDayOfWeek(index), style: const TextStyle(fontSize: 12),),
+          Checkbox(
+                  value: dayValues[index] == 1,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      dayValues[index] = value! ? 1 : 0;
+                    });
+                  },
+                ),
         ],
       ),
     ),

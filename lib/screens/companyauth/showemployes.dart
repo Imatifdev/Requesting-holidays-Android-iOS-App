@@ -99,8 +99,7 @@ class _ShowEmployeeState extends State<ShowEmployee> {
   Widget build(BuildContext context) {
     final comViewModel = Provider.of<CompanyViewModel>(context);
     final token = comViewModel.token;
-    final companyViewModel = Provider.of<CompanyViewModel>(context);
-    final user = companyViewModel.user;
+    final user = comViewModel.user;
     final companyId = user!.id;
     if (check == 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -139,8 +138,8 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                   child: ListView.builder(
                     itemCount: showemployees.length,
                     itemBuilder: (context, index) {
-                      Employee leave = showemployees[index];
-                      return empCard(token! ,leave).pSymmetric(h: 20, v: 5);
+                      Employee employee = showemployees[index];
+                      return empCard(token!, companyId.toString() ,employee).pSymmetric(h: 20, v: 5);
                     },
                   ),
                 ),
@@ -150,7 +149,7 @@ class _ShowEmployeeState extends State<ShowEmployee> {
     );
   }
 
-  Container empCard(String token, Employee leave) {
+  Container empCard(String token, String companyId ,Employee emp) {
     return Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -159,14 +158,14 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            leave.firstName,
+                            emp.firstName,
                             style: TextStyle(
                                 fontSize: 11, fontWeight: FontWeight.bold),
                           ),
                           Row(
                             children: [
                               Text(
-                                leave.email,
+                                emp.email,
                                 style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.normal),
@@ -184,7 +183,7 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                                 width: 10,
                               ),
                               Text(
-                                leave.phone,
+                                emp.phone,
                                 style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.normal),
@@ -196,7 +195,7 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                               Row(
                                 children: [
                                   CircleAvatar(
-                                    backgroundColor: leave.isVerified == '0'
+                                    backgroundColor: emp.isVerified == '0'
                                         ? Colors.blue
                                         : Colors.grey,
                                     radius: 5,
@@ -205,7 +204,7 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                                     width: 10,
                                   ),
                                   Text(
-                                    leave.isVerified == '0'
+                                    emp.isVerified == '0'
                                         ? "Inactive"
                                         : "Active",
                                     style: TextStyle(
@@ -230,7 +229,13 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: InkWell(
                                         onTap: (){
-                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditEmployee(),));
+                                      Navigator.of(context).
+                                      push(MaterialPageRoute(builder: (context) => EditEmployee(emp: emp),)) 
+                                      .then((value) {
+                          setState(() {
+                            getEmployees(token, companyId.toString());
+                          });
+                        });
                                         },
                                         child: Center(
                                             child: Text(
@@ -246,7 +251,7 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                                   ),
                                   InkWell(
                                     onTap: (){
-                                      deleteCompanyEm(token,leave);
+                                      deleteCompanyEm(token,emp);
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(

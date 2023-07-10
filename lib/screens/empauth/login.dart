@@ -176,7 +176,7 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
                       labelText: 'Email Address',
                     ),
                     validator: (value) {
-                      if (value!.isEmpty) {
+                      if (value!.isEmpty || !value.contains("@")) {
                         return 'Please enter your email';
                       }
                       return null;
