@@ -52,9 +52,9 @@ class _RequestLeaveState extends State<RequestLeave> {
     if (dateRange != null) {
       setState(() {
         startDateFormatted =
-            DateFormat('EEE, MMM d, yyyy').format(dateRange.start);
+            DateFormat('dd-MM-yyyy').format(dateRange.start);
         _firstDate = dateRange.start;
-        endDateFormatted = DateFormat('EEE, MMM d, yyyy').format(dateRange.end);
+        endDateFormatted = DateFormat('dd-MM-yyyy').format(dateRange.end);
         _lastDate = dateRange.end;
         var diff = dateRange.end.difference(dateRange.end);
         totalLeaveCount = diff.inDays;
@@ -96,12 +96,12 @@ class _RequestLeaveState extends State<RequestLeave> {
       // leave_current_status: Pending
     });
     if (response.statusCode == 200) {
-      // Leave request successful
-      //final jsonData = json.decode(response.body);
-      //final leaveRequest = LeaveRequest.fromJson(jsonData);
-      //print(leaveRequest);
+      print("responseee: ${response.body}");
+      Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => LeaveScreen()));
       // Handle success scenario
     } else {
+      print(response.body);
       // Error occurred
       print('Error: ${response.reasonPhrase}');
       // Handle error scenario
@@ -122,7 +122,7 @@ class _RequestLeaveState extends State<RequestLeave> {
         backgroundColor: appbar,
         leading: IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               CupertinoIcons.left_chevron,
               color: Colors.black,
             )),
@@ -158,10 +158,6 @@ class _RequestLeaveState extends State<RequestLeave> {
                           DropdownMenuItem<String>(
                             value: 'Lieu',
                             child: Text('Lieu'),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'full day',
-                            child: Text('Full Day'),
                           ),
                         ],
                         onChanged: (value) {
@@ -284,23 +280,28 @@ class _RequestLeaveState extends State<RequestLeave> {
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                  //to set border radius to button
                                   borderRadius: BorderRadius.circular(10)),
                             ),
                             onPressed: () async {
                               if (_formKey.currentState!.validate() &&
                                   _firstDate != DateTime(2022, 11, 22) &&
                                   _lastDate != DateTime(2022, 11, 23)) {
+                                    print(selectedLeaveType);
+                                    print(startDateFormatted);
+                                    print(endDateFormatted);
+                                    print(totalLeaveCount);
+                                    print(causeController.text);
+                                    print(user!.id);
                                 await _submitLeaveRequest(
                                     token!,
                                     selectedLeaveType!,
                                     startDateFormatted,
                                     endDateFormatted,
+                                    user.id.toString(),
                                     totalLeaveCount.toString(),
-                                    causeController.text.trim(),
-                                    user!.id.toString());
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => LeaveScreen()));
+                                    causeController.text.trim()
+                                    );
+                                
                               } else {
                                 setState(() {
                                   errMsg = "please select a valid date";

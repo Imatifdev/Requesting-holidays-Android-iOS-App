@@ -11,7 +11,7 @@ class DateRangePickerWidget extends StatefulWidget {
 }
 
 class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
-  DateTime? startDate;
+    DateTime? startDate;
   DateTime? endDate;
 
   Future<void> _selectDate(BuildContext context, bool isStartDate) async {
@@ -41,40 +41,86 @@ class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            children: [
-              ElevatedButton(
-                onPressed: () => _selectDate(context, true),
-                child: const Text('Select Start Date'),
+Widget build(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Row(
+              children:[
+                 Text(
+                  'Start Date:'
+                )
+              ],
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: InkWell(
+                    onTap: () => _selectDate(context, true),
+                    child: Center(
+                      child: Text(
+                          startDate != null
+                              ? DateFormat('dd-MM-yyyy').format(startDate!)
+                              : 'Select Start Date',
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                    ),
+                  ),
+                ),
               ),
-              const SizedBox(height: 10),
-              Text(
-                startDate != null
-                    ? 'Start Date: ${DateFormat('dd-MM-yyyy').format(startDate!)}'
-                    : 'Start Date not selected',
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Row(
+              children: [
+                Text(
+                  'End Date:'
+                ),
+              ],
+            ),
+            const SizedBox(width: 10,),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: InkWell(
+                    onTap: () => _selectDate(context, false),
+                    child: Center(
+                      child: Text(
+                          endDate != null
+                              ? DateFormat('dd-MM-yyyy').format(endDate!)
+                              : 'Select End Date',
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                    ),
+                  ),
+                ),
               ),
-            ],
-          ),
-          Column(children: [
-            ElevatedButton(
-                onPressed: () => _selectDate(context, false),
-                child: const Text('Select End Date'),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                endDate != null
-                    ? 'End Date: ${DateFormat('dd-MM-yyyy').format(endDate!)}'
-                    : 'End Date not selected',
-              ),
-          ]),
-        ],
-      ),
-    );
-  }
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
 }
