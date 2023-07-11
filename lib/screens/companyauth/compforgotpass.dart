@@ -1,211 +1,125 @@
-// import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, prefer_const_constructors
 
-// class ForgotPasswordScreen extends StatefulWidget {
-//   @override
-//   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
-// }
-
-// class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-//   TextEditingController _emailController = TextEditingController();
-//   TextEditingController _otpController = TextEditingController();
-//   TextEditingController _passwordController = TextEditingController();
-//   bool _isOTPSent = false;
-//   bool _isOTPSuccessful = false;
-
-//   Future<void> _sendOTP() async {
-//     final url = 'https://jporter.ezeelogix.com/public/api/forgot-password';
-
-//     final response = await http.post(
-//       Uri.parse(url),
-//       headers: {
-//         'Accept': 'application/json',
-//       },
-//       body: {
-//         'email': _emailController.text,
-//         'user_type': '1',
-//       },
-//     );
-
-//     if (response.statusCode == 200) {
-//       setState(() {
-//         _isOTPSent = true;
-//       });
-//     } else {
-//       showDialog(
-//         context: context,
-//         builder: (context) => AlertDialog(
-//           title: Text('Error'),
-//           content: Text('Failed to send OTP. Please try again.'),
-//           actions: [
-//             TextButton(
-//               onPressed: () => Navigator.pop(context),
-//               child: Text('OK'),
-//             ),
-//           ],
-//         ),
-//       );
-//     }
-//   }
-
-//   Future<void> _verifyOTP() async {
-//     final url = 'https://jporter.ezeelogix.com/public/api/reset-password';
-
-//     final response = await http.post(
-//       Uri.parse(url),
-//       headers: {
-//         'Accept': 'application/json',
-//       },
-//       body: {
-//         'otp': _otpController.text,
-//         'password': _passwordController.text,
-//         'user_type': '1',
-//       },
-//     );
-
-//     if (response.statusCode == 200) {
-//       // Password reset successful
-//       setState(() {
-//         _isOTPSuccessful = true;
-//       });
-//     } else {
-//       showDialog(
-//         context: context,
-//         builder: (context) => AlertDialog(
-//           title: Text('Error'),
-//           content: Text('Failed to reset password. Please try again.'),
-//           actions: [
-//             TextButton(
-//               onPressed: () => Navigator.pop(context),
-//               child: Text('OK'),
-//             ),
-//           ],
-//         ),
-//       );
-//     }
-//   }
-
-// ignore_for_file: use_build_context_synchronously
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Forgot Password'),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.stretch,
-//           children: [
-//             TextField(
-//               controller: _emailController,
-//               decoration: InputDecoration(
-//                 labelText: 'Email',
-//               ),
-//             ),
-//             SizedBox(height: 16.0),
-//             if (!_isOTPSent)
-//               ElevatedButton(
-//                 onPressed: _sendOTP,
-//                 child: Text('Send OTP'),
-//               ),
-//             if (_isOTPSent)
-//               Column(
-//                 children: [
-//                   TextField(
-//                     controller: _otpController,
-//                     decoration: InputDecoration(
-//                       labelText: 'OTP',
-//                     ),
-//                   ),
-//                   SizedBox(height: 16.0),
-//                   TextField(
-//                     controller: _passwordController,
-//                     decoration: InputDecoration(
-//                       labelText: 'New Password',
-//                     ),
-//                     obscureText: true,
-//                   ),
-//                   SizedBox(height: 16.0),
-//                   ElevatedButton(
-//                     onPressed: _verifyOTP,
-//                     child: Text('Reset Password'),
-//                   ),
-//                 ],
-//               ),
-//             if (_isOTPSuccessful)
-//               Text(
-//                 'Password reset successful!',
-//                 style: TextStyle(
-//                   fontWeight: FontWeight.bold,
-//                   fontSize: 16.0,
-//                 ),
-//               ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:holidays/screens/companyauth/companyLogin.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../../widget/constants.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
+class CompanyForgotPasswordScreen extends StatefulWidget {
   final String email;
 
-  const ForgotPasswordScreen({super.key, required this.email});
+  const CompanyForgotPasswordScreen({super.key, required this.email});
   @override
-  _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
+  _CompanyForgotPasswordScreenState createState() =>
+      _CompanyForgotPasswordScreenState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class _CompanyForgotPasswordScreenState
+    extends State<CompanyForgotPasswordScreen> {
   TextEditingController _otpController = TextEditingController();
+  TextEditingController _confirmPasswordController = TextEditingController();
+
   TextEditingController _passwordController = TextEditingController();
   bool _isOTPSent = false;
   bool _isOTPSuccessful = false;
 
-  Future<void> _sendOTP() async {
-    final url = 'https://jporter.ezeelogix.com/public/api/forgot-password';
+  // Future<void> _forgotpass() async {
+  //   final url = 'https://jporter.ezeelogix.com/public/api/forgot-password';
 
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {
-        'Accept': 'application/json',
-      },
-      body: {
-        'email': widget.email,
-        'user_type': '1',
-      },
-    );
+  //   final response = await http.post(
+  //     Uri.parse(url),
+  //     headers: {
+  //       'Accept': 'application/json',
+  //     },
+  //     body: {
+  //       'email': widget.email,
+  //       'user_type': '1',
+  //     },
+  //   );
 
-    if (response.statusCode == 200) {
-      setState(() {
-        _isOTPSent = true;
-      });
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('Failed to send OTP. Please try again.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
-            ),
-          ],
-        ),
+  //   if (response.statusCode == 200) {
+  //     setState(() {
+  //       _isOTPSent = true;
+  //     });
+  //   } else {
+  //     showDialog(
+  //       context: context,
+  //       builder: (context) => AlertDialog(
+  //         title: Text('Error'),
+  //         content: Text('Failed to send OTP. Please try again.'),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () => Navigator.pop(context),
+  //             child: Text('OK'),
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //   }
+  // }
+
+  // Future<void> _resetPass() async {
+  //   final url = 'https://jporter.ezeelogix.com/public/api/reset-password';
+
+  //   final response = await http.post(
+  //     Uri.parse(url),
+  //     headers: {
+  //       'Accept': 'application/json',
+  //     },
+  //     body: {
+  //       'otp': _otpController.text,
+  //       'password': _passwordController.text,
+  //       'user_type': '1',
+  //     },
+  //   );
+
+  //   if (response.statusCode == 200) {
+  //     print(response.statusCode);
+  //     print(response.body);
+
+  //     // Navigator.push(
+  //     //     context, MaterialPageRoute(builder: (ctx) => CompanyLoginPage()));
+  //     // // Password reset successful
+  //     // setState(() {
+  //     //   _isOTPSuccessful = true;
+  //     // });
+  //   } else {
+  //     print(response.statusCode);
+  //     print(response.body);
+  //   }
+  // }
+
+  final String baseUrl = 'https://jporter.ezeelogix.com/public/api';
+  final String resendOtpEndpoint = '/resend-otp';
+  Future<void> resendOtp(String email) async {
+    try {
+      final response = await http.post(
+        Uri.parse(baseUrl + resendOtpEndpoint),
+        headers: {'Accept': 'application/json'},
+        body: {'user_type': '1', 'email': email},
       );
+
+      if (response.statusCode == 200) {
+        // Success
+        Fluttertoast.showToast(msg: 'OTP resend successful');
+        print(response);
+        print(response.statusCode);
+      } else {
+        // Error
+        Fluttertoast.showToast(msg: 'Failed to resend OTP');
+      }
+    } catch (e) {
+      // Exception
+      Fluttertoast.showToast(msg: 'Exception: $e');
     }
   }
 
-  Future<void> _verifyOTP() async {
+  bool _isPasswordVisible = false;
+
+  Future<void> _resetPass() async {
     final url = 'https://jporter.ezeelogix.com/public/api/reset-password';
 
     final response = await http.post(
@@ -221,26 +135,45 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
 
     if (response.statusCode == 200) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (ctx) => CompanyLoginPage()));
-      // Password reset successful
-      setState(() {
-        _isOTPSuccessful = true;
-      });
+      print(response.statusCode);
+      print(response.body);
+      Fluttertoast.showToast(msg: 'Password Reset Successfully');
+
+      final responseData = jsonDecode(response.body);
+
+      if (responseData['status'] == 'Error') {
+        final errorMessage = responseData['message'];
+
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Error'),
+            content: Text(errorMessage != null
+                ? errorMessage.toString()
+                : 'OTP not found.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      } else {
+        // Password reset successful
+        setState(() {
+          _isOTPSuccessful = true;
+        });
+
+        // Navigate to the desired screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (ctx) => CompanyLoginPage()),
+        );
+      }
     } else {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('Failed to reset password. Please try again.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
+      print(response.statusCode);
+      print(response.body);
     }
   }
 
@@ -258,41 +191,107 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(height: 16.0),
-            if (!_isOTPSent)
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: red,
+            // if (!_isOTPSent)
+            //   ElevatedButton(
+            //     style: ElevatedButton.styleFrom(
+            //       backgroundColor: red,
+            //     ),
+            //     onPressed: _forgotpass,
+            //     child: Text('Send OTP'),
+            //   ),
+            Column(
+              children: [
+                TextField(
+                  keyboardType: TextInputType.number,
+                  maxLength: 4,
+                  controller: _otpController,
+                  decoration: InputDecoration(
+                    labelText: 'OTP',
+                  ),
                 ),
-                onPressed: _sendOTP,
-                child: Text('Send OTP'),
-              ),
-            if (_isOTPSent)
-              Column(
-                children: [
-                  TextField(
-                    controller: _otpController,
-                    decoration: InputDecoration(
-                      labelText: 'OTP',
+                SizedBox(height: 16.0),
+                TextField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'New Password',
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                      icon: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
                     ),
                   ),
-                  SizedBox(height: 16.0),
-                  TextField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'New Password',
+                  obscureText: !_isPasswordVisible,
+                ),
+                SizedBox(height: 16.0),
+                TextField(
+                  obscureText: !_isPasswordVisible,
+                  controller: _confirmPasswordController,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                      icon: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
                     ),
-                    obscureText: true,
+                    labelText: 'Confirm Password',
                   ),
-                  SizedBox(height: 16.0),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: red,
-                    ),
-                    onPressed: _verifyOTP,
-                    child: Text('Reset Password'),
+                ),
+                SizedBox(height: 16.0),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: red,
                   ),
-                ],
-              ),
+                  onPressed: () {
+                    if (_passwordController.text ==
+                        _confirmPasswordController.text) {
+                      _resetPass();
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text('Error'),
+                          content: Text('Passwords do not match.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                  child: Text('Reset Password'),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    MaterialButton(
+                      onPressed: () {
+                        resendOtp(widget.email);
+                      },
+                      child: Text(
+                        "resend OTP ",
+                        style: TextStyle(decoration: TextDecoration.underline),
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
             if (_isOTPSuccessful)
               Text(
                 'Password reset successful!',

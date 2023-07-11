@@ -51,10 +51,11 @@ class _RequestLeaveState extends State<RequestLeave> {
     );
     if (dateRange != null) {
       setState(() {
-        startDateFormatted =
-            DateFormat('dd-MM-yyyy').format(dateRange.start);
+        startDateFormatted = DateFormat('d-MMM-yyyy').format(dateRange.start);
+        print(startDateFormatted);
         _firstDate = dateRange.start;
-        endDateFormatted = DateFormat('dd-MM-yyyy').format(dateRange.end);
+        endDateFormatted = DateFormat('d-MMM-yyyy').format(dateRange.end);
+        print(endDateFormatted);
         _lastDate = dateRange.end;
         var diff = dateRange.end.difference(dateRange.end);
         totalLeaveCount = diff.inDays;
@@ -96,10 +97,10 @@ class _RequestLeaveState extends State<RequestLeave> {
       // leave_current_status: Pending
     });
     if (response.statusCode == 200) {
-      print("responseee: ${response.body}");
-      Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => LeaveScreen()));
-      // Handle success scenario
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => LeaveScreen()));
+
+      print(response.statusCode);
     } else {
       print(response.body);
       // Error occurred
@@ -286,22 +287,15 @@ class _RequestLeaveState extends State<RequestLeave> {
                               if (_formKey.currentState!.validate() &&
                                   _firstDate != DateTime(2022, 11, 22) &&
                                   _lastDate != DateTime(2022, 11, 23)) {
-                                    print(selectedLeaveType);
-                                    print(startDateFormatted);
-                                    print(endDateFormatted);
-                                    print(totalLeaveCount);
-                                    print(causeController.text);
-                                    print(user!.id);
                                 await _submitLeaveRequest(
-                                    token!,
-                                    selectedLeaveType!,
-                                    startDateFormatted,
-                                    endDateFormatted,
-                                    user.id.toString(),
-                                    totalLeaveCount.toString(),
-                                    causeController.text.trim()
-                                    );
-                                
+                                  token!,
+                                  selectedLeaveType!,
+                                  startDateFormatted,
+                                  endDateFormatted,
+                                  user!.id.toString(),
+                                  totalLeaveCount.toString(),
+                                  causeController.text.trim(),
+                                );
                               } else {
                                 setState(() {
                                   errMsg = "please select a valid date";

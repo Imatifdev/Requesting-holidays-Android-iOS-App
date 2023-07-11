@@ -51,6 +51,7 @@ class CompanyViewModel extends ChangeNotifier {
         notifyListeners();
       } else {
         // Login failed
+        print(response.body);
         Fluttertoast.showToast(
             msg: "Verify your email through OTP sent to your email",
             toastLength: Toast.LENGTH_SHORT,

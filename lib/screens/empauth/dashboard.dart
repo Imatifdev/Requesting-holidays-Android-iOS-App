@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import '../../models/leave.dart';
 import '../../viewmodel/employee/empuserviewmodel.dart';
 import '../../widget/leave_req_card.dart';
+import 'employeeDashboard.dart';
 
 class LeaveScreen extends StatefulWidget {
   @override
@@ -158,8 +159,8 @@ class _LeaveScreenState extends State<LeaveScreen>
     if (check == 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _getallLeaveRequest(token!, empId.toString());
-        _getallapprovedLeaveRequest(token,empId.toString() );
-        _getallrejectedLeaveRequest(token,empId.toString());
+        _getallapprovedLeaveRequest(token, empId.toString());
+        _getallrejectedLeaveRequest(token, empId.toString());
       });
       check = 1;
     }
@@ -167,15 +168,15 @@ class _LeaveScreenState extends State<LeaveScreen>
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-            icon: Icon(
-              CupertinoIcons.profile_circled,
-              color: Colors.grey,
-            ),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (ctx) => EmpProfileView()));
-            },
+          icon: Icon(
+            CupertinoIcons.profile_circled,
+            color: Colors.grey,
           ),
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (ctx) => EmployeeDashBoard()));
+          },
+        ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight + 40),
           child: Column(
@@ -190,9 +191,11 @@ class _LeaveScreenState extends State<LeaveScreen>
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
-                    ElevatedButton(onPressed: (){
-                      _getallLeaveRequest(token!,empId.toString());
-                    }, child: Text("test")),
+                    ElevatedButton(
+                        onPressed: () {
+                          _getallLeaveRequest(token!, empId.toString());
+                        },
+                        child: Text("test")),
                     InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(

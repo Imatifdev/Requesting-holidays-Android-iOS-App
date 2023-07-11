@@ -393,12 +393,14 @@ class _AllApplicationsState extends State<AllApplications> {
             ? Expanded(
                 child: ListView.builder(
                   itemCount: widget.pendingLeaves.length,
+                  reverse: true,
                   itemBuilder: (context, index) {
                     // String fromDate =
                     // DateFormat('EEE, MMM d, yyyy').format(leave.startDate);
                     // String toDate =
                     // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
-                    LeaveRequest leave = widget.pendingLeaves[index];
+                    LeaveRequest leave =
+                        widget.pendingLeaves.reversed.toList()[index];
                     return Padding(
                       padding: const EdgeInsets.all(13.0),
                       child: Container(

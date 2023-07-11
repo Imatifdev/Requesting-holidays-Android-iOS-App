@@ -108,6 +108,7 @@
 // }
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:holidays/screens/companyauth/companyLogin.dart';
 import 'package:holidays/screens/companyauth/setpass.dart';
 import 'package:holidays/screens/empauth/login.dart';
 import 'package:holidays/screens/empauth/profile.dart';
@@ -172,12 +173,7 @@ class _CompanyOtpScreenState extends State<CompanyOtpScreen> {
         Fluttertoast.showToast(
             msg: 'OTP verification successful, You can login now');
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (ctx) => SetCompPass(
-                      email: widget.email,
-                      otp: otpController.text,
-                    )));
+            context, MaterialPageRoute(builder: (ctx) => CompanyLoginPage()));
       } else {
         // Error
         Fluttertoast.showToast(msg: 'OTP verification failed');

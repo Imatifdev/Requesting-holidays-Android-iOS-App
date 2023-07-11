@@ -266,85 +266,6 @@ class _EditEmployeeState extends State<EditEmployee> {
                             },
                           ),
                           TextFormField(
-                            controller: _password,
-                            decoration: InputDecoration(
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.only(right: 5),
-                                  child: Container(
-                                      decoration: const BoxDecoration(
-                                        border: Border(
-                                          right: BorderSide(
-                                              width: 1.0, color: Colors.black),
-                                        ),
-                                      ),
-                                      child: const Icon(
-                                        Icons.lock_open_rounded,
-                                        color: red,
-                                      )),
-                                ),
-                                labelText: 'Password',
-                                suffixIcon: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        obsCheck = !obsCheck;
-                                      });
-                                    },
-                                    icon: Icon(
-                                      obsCheck
-                                          ? Icons.visibility_off
-                                          : Icons.visibility,
-                                      color: Colors.black,
-                                    ))),
-                            obscureText: !obsCheck,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter your password';
-                              }
-                              if (value.length < 6) {
-                                return 'Password too short';
-                              }
-                              return null;
-                            },
-                          ),
-                          TextFormField(
-                            controller: _confirmPassword,
-                            decoration: InputDecoration(
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.only(right: 5),
-                                  child: Container(
-                                      decoration: const BoxDecoration(
-                                        border: Border(
-                                          right: BorderSide(
-                                              width: 1.0, color: Colors.black),
-                                        ),
-                                      ),
-                                      child: const Icon(
-                                        Icons.lock_open_rounded,
-                                        color: red,
-                                      )),
-                                ),
-                                labelText: 'Confirm Password',
-                                suffixIcon: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        obsCheck1 = !obsCheck1;
-                                      });
-                                    },
-                                    icon: Icon(
-                                      obsCheck1
-                                          ? Icons.visibility_off
-                                          : Icons.visibility,
-                                      color: Colors.black,
-                                    ))),
-                            obscureText: !obsCheck1,
-                            validator: (value) {
-                              if (value!.isEmpty || value != _password.text) {
-                                return 'Please confirm your password';
-                              }
-                              return null;
-                            },
-                          ),
-                          TextFormField(
                             controller: _totalLeaves,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
@@ -429,9 +350,14 @@ class _EditEmployeeState extends State<EditEmployee> {
                             : const Text("Save Employee")),
                   ),
                 ),
-                Center(child: TextButton(onPressed: (){
-                  Navigator.of(context).pop();
-                }, child: const Text("Cancel") ))
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("Cancel"),
+                  ),
+                )
               ],
             ),
           )),
