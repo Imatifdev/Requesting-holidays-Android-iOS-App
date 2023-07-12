@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:holidays/screens/companyauth/home_company.dart';
 import 'package:holidays/screens/companyauth/profile.dart';
 import 'package:holidays/screens/empauth/dashboard.dart';
+import 'package:holidays/screens/empauth/emp_home.dart';
 import 'package:holidays/screens/empauth/otpscreen.dart';
 import 'package:holidays/screens/empauth/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -109,7 +110,7 @@ class EmpViewModel extends ChangeNotifier {
         print(jsonData);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => LeaveScreen()),
+          MaterialPageRoute(builder: (context) => EmpHome()),
         );
         notifyListeners();
       } else {

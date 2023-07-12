@@ -96,14 +96,17 @@ class _EmpHomeState extends State<EmpHome> with SingleTickerProviderStateMixin{
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                       const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Welcome", textAlign: TextAlign.left ,style: TextStyle(fontSize:16, fontWeight: FontWeight.bold, color:Colors.white),),
-                            Text("View all your leaves\n and request more", textAlign: TextAlign.left, style: TextStyle(color:Colors.white))
-                          ],
-                        ),
+                       const Padding(
+                         padding:  EdgeInsets.only(left: 8.0),
+                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Welcome", textAlign: TextAlign.left ,style: TextStyle(fontSize:18, fontWeight: FontWeight.bold, color:Colors.white),),
+                              Text("View all your leaves\nand request more", textAlign: TextAlign.left, style: TextStyle(color:Colors.white))
+                            ],
+                          ),
+                       ),
                         Image.asset("assets/images/holiday.png",color: Colors.white,)
                       ]),
                     ),
