@@ -17,7 +17,7 @@ class SplashScreen extends StatelessWidget {
         fit: BoxFit.cover,
       ),
       title: const Text(
-        "True North",
+        "Holiday Request",
         style: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,

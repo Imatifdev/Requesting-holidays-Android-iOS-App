@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:holidays/screens/empauth/login.dart';
+import 'package:holidays/screens/welcome.dart';
 import 'package:holidays/widget/constants.dart';
 
 import '../models/contentmodel.dart';
@@ -117,7 +118,8 @@ class _OnboardScreenState extends State<OnboardScreen> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed(EmpLoginPage.routeName);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (ctx) => WelcomeScreen()));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: red,

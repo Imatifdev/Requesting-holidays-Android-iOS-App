@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:holidays/screens/companyauth/companyLogin.dart';
+import 'package:holidays/screens/empauth/login.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -168,7 +169,7 @@ class _EmployeeForgotPasswordScreenState
         // Navigate to the desired screen
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (ctx) => CompanyLoginPage()),
+          MaterialPageRoute(builder: (ctx) => EmpLoginPage()),
         );
       }
     } else {
@@ -182,7 +183,7 @@ class _EmployeeForgotPasswordScreenState
     return Scaffold(
       appBar: AppBar(
         backgroundColor: red,
-        title: Text('Forgot Password'),
+        title: Text('Reset Password'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

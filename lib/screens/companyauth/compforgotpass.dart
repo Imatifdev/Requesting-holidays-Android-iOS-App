@@ -8,17 +8,17 @@ import 'dart:convert';
 
 import '../../widget/constants.dart';
 
-class CompanyForgotPasswordScreen extends StatefulWidget {
+class CompanyResetPasswordScreen extends StatefulWidget {
   final String email;
 
-  const CompanyForgotPasswordScreen({super.key, required this.email});
+  const CompanyResetPasswordScreen({super.key, required this.email});
   @override
-  _CompanyForgotPasswordScreenState createState() =>
-      _CompanyForgotPasswordScreenState();
+  _CompanyResetPasswordScreenState createState() =>
+      _CompanyResetPasswordScreenState();
 }
 
-class _CompanyForgotPasswordScreenState
-    extends State<CompanyForgotPasswordScreen> {
+class _CompanyResetPasswordScreenState
+    extends State<CompanyResetPasswordScreen> {
   TextEditingController _otpController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
 
@@ -182,7 +182,7 @@ class _CompanyForgotPasswordScreenState
     return Scaffold(
       appBar: AppBar(
         backgroundColor: red,
-        title: Text('Forgot Password'),
+        title: Text('Reset Password'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

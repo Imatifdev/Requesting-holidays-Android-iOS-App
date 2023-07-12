@@ -98,6 +98,8 @@ class _ShowEmployeeState extends State<ShowEmployee> {
       setState(() {
         showemployees.removeWhere((empy) => empy.id == em.id);
       });
+
+      Navigator.pop(context);
     } else {
       print(response.statusCode);
       // Error occurred
@@ -182,38 +184,27 @@ class _ShowEmployeeState extends State<ShowEmployee> {
             emp.firstName,
             style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
           ),
-          Expanded(
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 50,
-                  child: Text(
-                    emp.email,
-                    softWrap: true,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ).expand(),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  "Days",
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
-                ).expand(),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  emp.phone,
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
-                ).expand(),
-              ],
-            ),
+          Row(
+            children: [
+              Text(
+                emp.email,
+                style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                "Days",
+                style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                emp.phone,
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.normal),
+              ),
+            ],
           ),
           Row(
             children: [
@@ -225,7 +216,7 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                     radius: 5,
                   ),
                   SizedBox(
-                    width: 7,
+                    width: 10,
                   ),
                   Text(
                     emp.isVerified == '0' ? "Inactive" : "Active",
