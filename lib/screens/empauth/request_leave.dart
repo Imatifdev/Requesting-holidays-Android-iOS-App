@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -97,10 +99,10 @@ class _RequestLeaveState extends State<RequestLeave> {
       // leave_current_status: Pending
     });
     if (response.statusCode == 200) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => LeaveScreen()));
-
-      print(response.statusCode);
+      print("responseee: ${response.body}");
+      Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => LeaveScreen()));
+      // Handle success scenario
     } else {
       print(response.body);
       // Error occurred
@@ -111,7 +113,6 @@ class _RequestLeaveState extends State<RequestLeave> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     final empViewModel = Provider.of<EmpViewModel>(context);
     final token = empViewModel.token;
     final user = empViewModel.user;
