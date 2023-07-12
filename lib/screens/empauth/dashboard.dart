@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_final_fields
 
 import 'dart:convert';
+import 'package:holidays/screens/empauth/emp_home.dart';
 import 'package:holidays/screens/empauth/profile.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
@@ -153,7 +154,6 @@ class _LeaveScreenState extends State<LeaveScreen>
   Widget build(BuildContext context) {
     final empViewModel = Provider.of<EmpViewModel>(context);
     final user = empViewModel.user;
-
     final token = empViewModel.token;
     final empId = empViewModel.user!.id;
     if (check == 0) {
@@ -193,7 +193,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                     ),
                     ElevatedButton(
                         onPressed: () {
-                          _getallLeaveRequest(token!, empId.toString());
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => EmpHome(),));
                         },
                         child: Text("test")),
                     InkWell(

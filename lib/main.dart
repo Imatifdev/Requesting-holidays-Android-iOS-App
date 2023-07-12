@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:holidays/screens/companyauth/companyLogin.dart';
 import 'package:holidays/screens/empauth/emp_home.dart';
 import 'package:holidays/screens/empauth/home.dart';
 import 'package:holidays/screens/empauth/forgotpass.dart';
@@ -17,7 +16,7 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // var directory = await getApplicationDocumentsDirectory();
-  //   Hive.init(directory.path);
+  //  Hive.init(directory.path);
   await Hive.initFlutter();
   await Hive.openBox('box');
 

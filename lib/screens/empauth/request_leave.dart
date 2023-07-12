@@ -123,7 +123,7 @@ class _RequestLeaveState extends State<RequestLeave> {
         elevation: 0,
         backgroundColor: appbar,
         leading: IconButton(
-            onPressed: () {},
+            onPressed: () {Navigator.of(context).pop();},
             icon: const Icon(
               CupertinoIcons.left_chevron,
               color: Colors.black,
