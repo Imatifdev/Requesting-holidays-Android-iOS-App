@@ -389,18 +389,17 @@ class _AllApplicationsState extends State<AllApplications> {
             ).centered().pSymmetric(h: 20),
           ).centered().p(10),
         ),
-        widget.pendingLeaves.isEmpty
+        widget.pendingLeaves.isNotEmpty
             ? Expanded(
                 child: ListView.builder(
                   itemCount: widget.pendingLeaves.length,
-                  reverse: true,
+                  //reverse: true,
                   itemBuilder: (context, index) {
                     // String fromDate =
                     // DateFormat('EEE, MMM d, yyyy').format(leave.startDate);
                     // String toDate =
                     // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
-                    LeaveRequest leave =
-                        widget.pendingLeaves.reversed.toList()[index];
+                    LeaveRequest leave = widget.pendingLeaves[index];
                     return Padding(
                       padding: const EdgeInsets.all(13.0),
                       child: Container(
@@ -539,7 +538,11 @@ class _AllApplicationsState extends State<AllApplications> {
                   SizedBox(
                     height: 300,
                   ),
-                  Center(child: Text("No leaves to show")),
+                  Center(
+                      child: Text(
+                    "No leaves to show",
+                    style: TextStyle(color: Colors.black),
+                  )),
                 ],
               ),
       ],

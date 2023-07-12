@@ -10,6 +10,7 @@ import 'package:holidays/screens/empauth/login.dart';
 import 'package:holidays/screens/empauth/signup.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:holidays/screens/splashscreen.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
 import 'package:holidays/viewmodel/employee/empuserviewmodel.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +46,7 @@ class MyApp1 extends StatelessWidget {
             fontFamily: GoogleFonts.poppins().fontFamily,
             primarySwatch: Colors.red,
           ),
-          home: EmpLoginPage(),
+          home: SplashScreen(),
           routes: {
             EmpForgitPassword.idScreen: (context) => EmpForgitPassword(),
             EmpLoginPage.routeName: (context) => EmpLoginPage(),

@@ -134,7 +134,7 @@ class _CompanyForgitPasswordState extends State<CompanyForgitPassword> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (ctx) => CompanyForgotPasswordScreen(
+              builder: (ctx) => CompanyResetPasswordScreen(
                     email: email,
                   )),
         );

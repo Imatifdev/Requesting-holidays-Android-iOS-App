@@ -66,29 +66,6 @@ class _EmpForgitPasswordState extends State<EmpForgitPassword> {
   //     );
   //   }
   // }
-  Future<void> _forgotpass(String email) async {
-    final url = 'https://jporter.ezeelogix.com/public/api/forgot-password';
-
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {
-        'Accept': 'application/json',
-      },
-      body: {
-        'email': email,
-        'user_type': '2',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      print(response.body);
-
-      // Navigator.push(context,
-      //     MaterialPageRoute(builder: (ctx) => CompanyForgotPasswordScreen()));
-    } else {
-      print(response.body);
-    }
-  }
 
   Future<void> _forgotpass1(String email) async {
     final url = 'https://jporter.ezeelogix.com/public/api/forgot-password';

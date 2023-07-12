@@ -89,6 +89,7 @@ class _EmpOtpScreenState extends State<EmpOtpScreen> {
           children: <Widget>[
             TextField(
               controller: otpController,
+              maxLength: 4,
               decoration: InputDecoration(
                 labelText: 'OTP',
               ),
