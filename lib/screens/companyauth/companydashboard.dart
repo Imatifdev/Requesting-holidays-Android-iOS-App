@@ -389,7 +389,7 @@ class _AllApplicationsState extends State<AllApplications> {
             ).centered().pSymmetric(h: 20),
           ).centered().p(10),
         ),
-        widget.pendingLeaves.isNotEmpty
+        widget.pendingLeaves.isEmpty
             ? Expanded(
                 child: ListView.builder(
                   itemCount: widget.pendingLeaves.length,
@@ -539,7 +539,7 @@ class _AllApplicationsState extends State<AllApplications> {
                   SizedBox(
                     height: 300,
                   ),
-                  Center(child: CircularProgressIndicator()),
+                  Center(child: Text("No leaves to show")),
                 ],
               ),
       ],

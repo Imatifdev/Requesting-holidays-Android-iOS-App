@@ -51,27 +51,37 @@ class CompanyViewModel extends ChangeNotifier {
         notifyListeners();
       } else {
         // Login failed
-        print(response.body);
+        String errorMessage = jsonData['message'];
         Fluttertoast.showToast(
-            msg: "Verify your email through OTP sent to your email",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => CompanyOtpScreen(
-                    email: email,
-                  )),
+          msg: errorMessage,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
         );
-        print('');
-
         print('Login failed');
       }
     } else {
+      Fluttertoast.showToast(
+        msg: "Verify your email",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CompanyOtpScreen(email: email),
+        ),
+      );
+      print(response);
+      print('Error: ${response.reasonPhrase}');
+
       // Error occurred
       print('Error: ${response.reasonPhrase}');
     }

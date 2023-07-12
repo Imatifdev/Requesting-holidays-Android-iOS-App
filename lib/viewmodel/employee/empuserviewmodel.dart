@@ -23,6 +23,66 @@ class EmpViewModel extends ChangeNotifier {
   EmpUser? get user => _user;
   String? get token => _token;
 
+  // Future<void> performLogin(
+  //     String email, String password, BuildContext context) async {
+  //   final String apiUrl = 'https://jporter.ezeelogix.com/public/api/login';
+  //   PopupLoader.show();
+
+  //   final response = await http.post(Uri.parse(apiUrl),
+  //       body: {'email': email, 'password': password, 'user_type': '2'});
+  //   PopupLoader.hide();
+
+  //   if (response.statusCode == 200) {
+  //     final jsonData = json.decode(response.body);
+
+  //     if (jsonData['status'] == 'Success') {
+  //       final userJson = jsonData['data']['user'];
+  //       final token = jsonData['data']['token'];
+
+  //       _user = EmpUser.fromJson(userJson);
+  //       _token = token;
+
+  //       // Store data in shared preferences
+  //       SharedPreferences prefs = await SharedPreferences.getInstance();
+  //       prefs.setString('token', _token!);
+  //       // Serialize and store user object if needed
+  //       print(jsonData);
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => LeaveScreen()),
+  //       );
+  //       notifyListeners();
+  //     } else {
+  //       // Login failed
+  //       Fluttertoast.showToast(
+  //           msg: "Verify your email through OTP sent to your email",
+  //           toastLength: Toast.LENGTH_SHORT,
+  //           gravity: ToastGravity.BOTTOM,
+  //           timeInSecForIosWeb: 1,
+  //           backgroundColor: Colors.red,
+  //           textColor: Colors.white,
+  //           fontSize: 16.0);
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //             builder: (context) => EmpOtpScreen(
+  //                   email: email,
+  //                 )),
+  //       );
+  //       print(response);
+
+  //       print('Login failed');
+  //     }
+  //   } else {
+  //     // Error occurred        print(response);
+  //     print(response);
+
+  //     print('Error: ${response.reasonPhrase}');
+  //   }
+  // }
+
+// ...
+
   Future<void> performLogin(
       String email, String password, BuildContext context) async {
     final String apiUrl = 'https://jporter.ezeelogix.com/public/api/login';
@@ -54,29 +114,36 @@ class EmpViewModel extends ChangeNotifier {
         notifyListeners();
       } else {
         // Login failed
+        String errorMessage = jsonData['message'];
         Fluttertoast.showToast(
-            msg: "Verify your email through OTP sent to your email",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => EmpOtpScreen(
-                    email: email,
-                  )),
+          msg: errorMessage,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
         );
-        print(response);
-
         print('Login failed');
       }
     } else {
-      // Error occurred        print(response);
+      // Error occurred
+      Fluttertoast.showToast(
+        msg: "Verify your email",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EmpOtpScreen(email: email),
+        ),
+      );
       print(response);
-
       print('Error: ${response.reasonPhrase}');
     }
   }

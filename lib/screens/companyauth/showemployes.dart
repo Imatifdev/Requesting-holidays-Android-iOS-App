@@ -182,27 +182,38 @@ class _ShowEmployeeState extends State<ShowEmployee> {
             emp.firstName,
             style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
           ),
-          Row(
-            children: [
-              Text(
-                emp.email,
-                style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                "Days",
-                style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                emp.phone,
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.normal),
-              ),
-            ],
+          Expanded(
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 50,
+                  child: Text(
+                    emp.email,
+                    softWrap: true,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ).expand(),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "Days",
+                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
+                ).expand(),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  emp.phone,
+                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
+                ).expand(),
+              ],
+            ),
           ),
           Row(
             children: [
@@ -214,7 +225,7 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                     radius: 5,
                   ),
                   SizedBox(
-                    width: 10,
+                    width: 7,
                   ),
                   Text(
                     emp.isVerified == '0' ? "Inactive" : "Active",
@@ -238,21 +249,70 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                         padding: const EdgeInsets.all(8.0),
                         child: InkWell(
                           onTap: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(
-                              builder: (context) => EditEmployee(
-                                emp: emp,
-                                email: emp.email.toString(),
-                                first_name: emp.firstName,
-                                last_name: emp.lastName,
-                                mobile: emp.phone,
-                              ),
-                            ))
-                                .then((value) {
-                              setState(() {
-                                getEmployees(token, companyId.toString());
-                              });
-                            });
+                            showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      title: Text(
+                                        'Confirmation Message',
+                                        style: TextStyle(
+                                            color: red,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      content: SizedBox(
+                                        height: 140,
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                                'Are you sure you would like to Edit this employee details?'),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text('Go Back'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .push(MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          EditEmployee(
+                                                        emp: emp,
+                                                        email: emp.email
+                                                            .toString(),
+                                                        first_name:
+                                                            emp.firstName,
+                                                        last_name: emp.lastName,
+                                                        mobile: emp.phone,
+                                                      ),
+                                                    ))
+                                                        .then((value) {
+                                                      setState(() {
+                                                        getEmployees(
+                                                            token,
+                                                            companyId
+                                                                .toString());
+                                                      });
+                                                    });
+                                                  },
+                                                  child: Text('Edit '),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ));
                           },
                           child: Center(
                               child: Text(
@@ -267,7 +327,51 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                     ),
                     InkWell(
                       onTap: () {
-                        deleteCompanyEm(token, emp);
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            title: Text(
+                              'Confirmation Message',
+                              style: TextStyle(
+                                  color: red, fontWeight: FontWeight.bold),
+                            ),
+                            content: SizedBox(
+                              height: 120,
+                              child: Column(
+                                children: [
+                                  Text(
+                                      'Are you sure you would like to delete this employee?'),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text('Go Back'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          deleteCompanyEm(token, emp);
+                                        },
+                                        child: Text('Delete'),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+
+//                        deleteCompanyEm(token, emp);
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -287,7 +391,9 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewEmployee(employee: emp),));
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ViewEmployee(employee: emp),
+                        ));
                       },
                       child: Container(
                         decoration: BoxDecoration(
