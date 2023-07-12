@@ -6,6 +6,7 @@ import 'package:holidays/screens/companyauth/companydashboard.dart';
 import 'package:holidays/screens/empauth/all_leaves_screen.dart';
 import 'package:holidays/screens/empauth/approved_leaves_screen.dart';
 import 'package:holidays/screens/empauth/pending_leaves.dart';
+import 'package:holidays/screens/empauth/rejected_leaves_screen.dart';
 
 class EmpHome extends StatefulWidget {
   const EmpHome({super.key});
@@ -192,7 +193,7 @@ class _EmpHomeState extends State<EmpHome> with SingleTickerProviderStateMixin{
                     ),
                     InkWell(
                       onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => RejectedApplications(),));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => RejectedLeavesScreen(),));
                       },
                       child: Container(
                         height: (size.width-50)/2,

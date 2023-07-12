@@ -65,7 +65,7 @@ class _RejectedLeavesScreenState extends State<RejectedLeavesScreen> {
       check = 1;
     }
     return Scaffold(
-      appBar: AppBar(title: const Text("All Pending")),
+      appBar: AppBar(title: const Text("Rejected Screens")),
       body: leaveRequests.isNotEmpty
         ? ListView.builder(
             itemCount: leaveRequests.length,
