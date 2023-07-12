@@ -286,7 +286,9 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                       width: 10,
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewEmployee(employee: emp),));
+                      },
                       child: Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
