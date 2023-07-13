@@ -181,22 +181,22 @@ class _EmpProfileViewState extends State<EmpProfileView> {
               SizedBox(
                 height: 30,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50),
-                child: MyCustomButton(
-                    title: "Request leave ",
-                    borderrad: 10,
-                    buttontextcolr: Colors.white,
-                    onaction: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (ctx) => RequestLeaveScreen()));
-                    },
-                    color1: red,
-                    color2: red,
-                    width: MediaQuery.of(context).size.width - 40),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 50),
+              //   child: MyCustomButton(
+              //       title: "Request leave ",
+              //       borderrad: 10,
+              //       buttontextcolr: Colors.white,
+              //       onaction: () {
+              //         Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //                 builder: (ctx) => RequestLeaveScreen()));
+              //       },
+              //       color1: red,
+              //       color2: red,
+              //       width: MediaQuery.of(context).size.width - 40),
+              // ),
               const SizedBox(
                 height: 30,
               ),

@@ -100,8 +100,8 @@ class _RequestLeaveState extends State<RequestLeave> {
     });
     if (response.statusCode == 200) {
       print("responseee: ${response.body}");
-      Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => LeaveScreen()));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => LeaveScreen()));
       // Handle success scenario
     } else {
       print(response.body);
@@ -123,7 +123,9 @@ class _RequestLeaveState extends State<RequestLeave> {
         elevation: 0,
         backgroundColor: appbar,
         leading: IconButton(
-            onPressed: () {Navigator.of(context).pop();},
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
             icon: const Icon(
               CupertinoIcons.left_chevron,
               color: Colors.black,
@@ -161,6 +163,14 @@ class _RequestLeaveState extends State<RequestLeave> {
                             value: 'Lieu',
                             child: Text('Lieu'),
                           ),
+                          DropdownMenuItem<String>(
+                            value: 'Full Day',
+                            child: Text('Full Day'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Half Day',
+                            child: Text('Half Day'),
+                          ),
                         ],
                         onChanged: (value) {
                           setState(() {
@@ -176,13 +186,13 @@ class _RequestLeaveState extends State<RequestLeave> {
                             style: TextStyle(fontSize: 17, color: Colors.red),
                           ),
                           const SizedBox(
-                            width: 20,
+                            width: 33,
                           ),
                           Expanded(
                             child: InkWell(
                               onTap: () => _selectDateRange(context),
                               child: Container(
-                                height: 30,
+                                height: 44,
                                 color: Colors.grey.shade200,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -193,7 +203,7 @@ class _RequestLeaveState extends State<RequestLeave> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
-                                  ),
+                                  ).pOnly(top: 05),
                                 ),
                               ),
                             ),
@@ -210,13 +220,13 @@ class _RequestLeaveState extends State<RequestLeave> {
                             style: TextStyle(fontSize: 17, color: Colors.red),
                           ),
                           const SizedBox(
-                            width: 20,
+                            width: 35,
                           ),
                           Expanded(
                             child: InkWell(
                               onTap: () => _selectDateRange(context),
                               child: Container(
-                                height: 30,
+                                height: 44,
                                 color: Colors.grey.shade200,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -227,7 +237,7 @@ class _RequestLeaveState extends State<RequestLeave> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
-                                  ),
+                                  ).pOnly(top: 07),
                                 ),
                               ),
                             ),
@@ -256,6 +266,14 @@ class _RequestLeaveState extends State<RequestLeave> {
                               },
                               controller: causeController,
                               decoration: InputDecoration(
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.transparent),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.transparent),
+                                ),
                                 fillColor: Colors.grey.shade200,
                                 filled: true,
                                 contentPadding: const EdgeInsets.symmetric(

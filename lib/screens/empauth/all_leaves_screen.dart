@@ -59,7 +59,7 @@ class _AllLeavesScreenState extends State<AllLeavesScreen> {
 
   @override
   Widget build(BuildContext context) {
-   final empViewModel = Provider.of<EmpViewModel>(context);
+    final empViewModel = Provider.of<EmpViewModel>(context);
     //final user = empViewModel.user;
     final token = empViewModel.token;
     final empId = empViewModel.user!.id;
@@ -74,18 +74,18 @@ class _AllLeavesScreenState extends State<AllLeavesScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text("All Leaves")),
       body: leaveRequests.isNotEmpty
-        ? ListView.builder(
-            itemCount: leaveRequests.length,
-            itemBuilder: (context, index) {
-              final leave = leaveRequests[index];
-              return LeaveRequestCard(
-                leave: leave,
-              );
-            },
-          )
-        : Center(
-            child: Text("No Leaves"),
-          ),
+          ? ListView.builder(
+              itemCount: leaveRequests.length,
+              itemBuilder: (context, index) {
+                final leave = leaveRequests[index];
+                return LeaveRequestCard(
+                  leave: leave,
+                );
+              },
+            )
+          : Center(
+              child: Text("No Leaves"),
+            ),
     );
   }
 }

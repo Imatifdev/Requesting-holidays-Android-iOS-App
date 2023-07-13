@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../models/company/viewemployeedata.dart';
 import '../models/leave.dart';
 
 class LeaveRequestCard extends StatelessWidget {
   final LeaveRequest leave;
-  const LeaveRequestCard({super.key, required this.leave});
+  const LeaveRequestCard({
+    super.key,
+    required this.leave,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -64,13 +68,17 @@ class LeaveRequestCard extends StatelessWidget {
                         ? Colors.red
                         : Colors.blue),
               ),
+              Text(
+                'From: ${leave.endDate}',
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: leave.leaveType == 'Compassionate'
+                        ? Colors.red
+                        : Colors.blue),
+              ),
               const SizedBox(
                 height: 10,
-              ),
-              Text(
-                'To: ${leave.endDate},',
-                style: const TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.normal),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

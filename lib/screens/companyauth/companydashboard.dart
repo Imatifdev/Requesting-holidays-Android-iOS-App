@@ -13,6 +13,7 @@ import 'package:holidays/screens/companyauth/showemployes.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
 import 'package:holidays/widget/leave_req_card.dart';
 import 'package:provider/provider.dart';
+import '../../models/company/viewemployeedata.dart';
 import '../../models/leave.dart';
 import '../../widget/constants.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -571,6 +572,7 @@ class ApprovedApplications extends StatefulWidget {
 class _ApprovedApplicationsState extends State<ApprovedApplications> {
   List<LeaveRequest> leaves = [];
   List<LeaveRequest> approvedLeaves = [];
+  List<Employee> empstatus = [];
   int check = 0;
 
   Future<void> _getApprovedLeaves(String token) async {
@@ -658,7 +660,10 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
                     // String toDate =
                     // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
                     LeaveRequest leave = approvedLeaves[index];
-                    return LeaveRequestCard(leave: leave);
+                    Employee emp = empstatus[index];
+                    return LeaveRequestCard(
+                      leave: leave,
+                    );
                   },
                 ),
               )
@@ -774,7 +779,9 @@ class _RejectedApplicationsState extends State<RejectedApplications> {
                     // DateFormat('EEE, MMM d, yyyy').format(leave.startDate);
                     // String toDate =
                     // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
-                    return LeaveRequestCard(leave: leave);
+                    return LeaveRequestCard(
+                      leave: leave,
+                    );
                   },
                 ),
               )

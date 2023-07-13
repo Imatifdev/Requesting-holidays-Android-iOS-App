@@ -40,7 +40,7 @@ class _LeaveScreenState extends State<LeaveScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -173,8 +173,8 @@ class _LeaveScreenState extends State<LeaveScreen>
             color: Colors.grey,
           ),
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (ctx) => EmployeeDashBoard()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (ctx) => EmpProfileView()));
           },
         ),
         bottom: PreferredSize(
@@ -191,11 +191,13 @@ class _LeaveScreenState extends State<LeaveScreen>
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => EmpHome(),));
-                        },
-                        child: Text("test")),
+                    // ElevatedButton(
+                    //     onPressed: () {
+                    //       Navigator.of(context).push(MaterialPageRoute(
+                    //         builder: (context) => EmpHome(),
+                    //       ));
+                    //     },
+                    //     child: Text("test")),
                     InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
@@ -226,39 +228,39 @@ class _LeaveScreenState extends State<LeaveScreen>
                   Tab(
                     child: Text(
                       "All ",
-                      style: TextStyle(fontSize: 14, color: Colors.black),
+                      style: TextStyle(fontSize: 12, color: Colors.black),
                     ),
                   ),
                   Tab(
                     child: SizedBox(
                       child: Text(
                         "Compassionate",
-                        style: TextStyle(fontSize: 14, color: Colors.black),
+                        style: TextStyle(fontSize: 12, color: Colors.black),
                       ),
                     ),
                   ),
                   Tab(
                     child: Text(
                       "Lieu",
-                      style: TextStyle(fontSize: 14, color: Colors.black),
+                      style: TextStyle(fontSize: 12, color: Colors.black),
                     ),
                   ),
-                  Tab(
-                    child: SizedBox(
-                      child: Text(
-                        "Approved",
-                        style: TextStyle(fontSize: 14, color: Colors.black),
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: SizedBox(
-                      child: Text(
-                        "Rejected",
-                        style: TextStyle(fontSize: 14, color: Colors.black),
-                      ),
-                    ),
-                  ),
+                  // Tab(
+                  //   child: SizedBox(
+                  //     child: Text(
+                  //       "Approved",
+                  //       style: TextStyle(fontSize: 14, color: Colors.black),
+                  //     ),
+                  //   ),
+                  // ),
+                  // Tab(
+                  //   child: SizedBox(
+                  //     child: Text(
+                  //       "Rejected",
+                  //       style: TextStyle(fontSize: 14, color: Colors.black),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ],
@@ -271,8 +273,8 @@ class _LeaveScreenState extends State<LeaveScreen>
           _buildLeaveList(leaveRequests),
           _buildLeaveList(commpassionateLeaves),
           _buildLeaveList(lieuLeaves),
-          _buildLeaveList(approvedLeaves),
-          _buildLeaveList(rejectedLeaves),
+//          _buildLeaveList(approvedLeaves),
+          //        _buildLeaveList(rejectedLeaves),
           //_buildLeaveList(lieuLeaves),
         ],
       ),

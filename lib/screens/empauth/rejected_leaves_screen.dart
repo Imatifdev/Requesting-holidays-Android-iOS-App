@@ -49,10 +49,9 @@ class _RejectedLeavesScreenState extends State<RejectedLeavesScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-   final empViewModel = Provider.of<EmpViewModel>(context);
+    final empViewModel = Provider.of<EmpViewModel>(context);
     //final user = empViewModel.user;
     final token = empViewModel.token;
     final empId = empViewModel.user!.id;
@@ -65,20 +64,20 @@ class _RejectedLeavesScreenState extends State<RejectedLeavesScreen> {
       check = 1;
     }
     return Scaffold(
-      appBar: AppBar(title: const Text("Rejected Screens")),
+      appBar: AppBar(title: const Text("All Rejected Leaves")),
       body: leaveRequests.isNotEmpty
-        ? ListView.builder(
-            itemCount: leaveRequests.length,
-            itemBuilder: (context, index) {
-              final leave = leaveRequests[index];
-              return LeaveRequestCard(
-                leave: leave,
-              );
-            },
-          )
-        : const Center(
-            child: Text("No Leaves"),
-          ),
+          ? ListView.builder(
+              itemCount: leaveRequests.length,
+              itemBuilder: (context, index) {
+                final leave = leaveRequests[index];
+                return LeaveRequestCard(
+                  leave: leave,
+                );
+              },
+            )
+          : const Center(
+              child: Text("No Leaves"),
+            ),
     );
   }
 }
