@@ -19,6 +19,7 @@ import 'package:velocity_x/velocity_x.dart';
 
 import 'package:http/http.dart' as http;
 
+import '../../widget/company_leave_card.dart';
 import 'companylogo.dart';
 import 'createcompanyleaves.dart';
 import 'createfinancialyear.dart';
@@ -571,8 +572,8 @@ class ApprovedApplications extends StatefulWidget {
 }
 
 class _ApprovedApplicationsState extends State<ApprovedApplications> {
-  List<LeaveRequest> leaves = [];
-  List<LeaveRequest> approvedLeaves = [];
+  List<CompanyLeaveRequest> leaves = [];
+  List<CompanyLeaveRequest> approvedLeaves = [];
   List<Employee> empstatus = [];
   int check = 0;
 
@@ -596,8 +597,8 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
           jsonData["data"]["employee_requested_leaves"];
       setState(() {
         leaves =
-            requestedLeaves.map((json) => LeaveRequest.fromJson(json)).toList();
-        for (LeaveRequest leave in leaves) {
+            requestedLeaves.map((json) => CompanyLeaveRequest.fromJson(json)).toList();
+        for (CompanyLeaveRequest leave in leaves) {
           if (leave.leaveCurrentStatus == "Accepted") {
             approvedLeaves.add(leave);
           }
@@ -660,8 +661,8 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
                     // DateFormat('EEE, MMM d, yyyy').format(leave.startDate);
                     // String toDate =
                     // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
-                    LeaveRequest leave = approvedLeaves[index];
-                    return LeaveRequestCard(
+                    CompanyLeaveRequest leave = approvedLeaves[index];
+                    return CompanyLeaveRequestCard(
                       leave: leave,
                     );
                   },

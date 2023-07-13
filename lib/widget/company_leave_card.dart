@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:holidays/models/company_leave.dart';
 
-import '../models/leave.dart';
 import 'constants.dart';
 
 class CompanyLeaveRequestCard extends StatelessWidget {
