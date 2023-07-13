@@ -105,7 +105,7 @@ class EmployeeCLR {
       emailVerifiedAt: DateTime.tryParse(json['email_verified_at']) as DateTime,
       password: json['password'],
       logo: json['logo'],
-      passwordRandomToken: json['password_random_token'],
+      passwordRandomToken: json['password_random_token'] ?? "null",
       isVerified: json['isVerified'],
       otp: json['otp'],
       otpCreatedAt: DateTime.tryParse(json['otp_created_at']) as DateTime,
