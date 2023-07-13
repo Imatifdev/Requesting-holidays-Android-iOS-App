@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:holidays/screens/empauth/emp_home.dart';
 import 'package:holidays/screens/empauth/home.dart';
 import 'package:holidays/screens/empauth/forgotpass.dart';
 import 'package:holidays/screens/empauth/login.dart';

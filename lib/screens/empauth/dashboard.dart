@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_final_fields
 
 import 'dart:convert';
-import 'package:holidays/screens/empauth/emp_home.dart';
-import 'package:holidays/screens/empauth/profile.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +13,6 @@ import 'package:provider/provider.dart';
 import '../../models/leave.dart';
 import '../../viewmodel/employee/empuserviewmodel.dart';
 import '../../widget/leave_req_card.dart';
-import 'employeeDashboard.dart';
 
 class LeaveScreen extends StatefulWidget {
   @override
@@ -153,7 +150,7 @@ class _LeaveScreenState extends State<LeaveScreen>
   @override
   Widget build(BuildContext context) {
     final empViewModel = Provider.of<EmpViewModel>(context);
-    final user = empViewModel.user;
+    //final user = empViewModel.user;
     final token = empViewModel.token;
     final empId = empViewModel.user!.id;
     if (check == 0) {
@@ -167,16 +164,16 @@ class _LeaveScreenState extends State<LeaveScreen>
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(
-            CupertinoIcons.profile_circled,
-            color: Colors.grey,
-          ),
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (ctx) => EmpProfileView()));
-          },
-        ),
+        // leading: IconButton(
+        //   icon: Icon(
+        //     CupertinoIcons.profile_circled,
+        //     color: Colors.grey,
+        //   ),
+        //   onPressed: () {
+        //     Navigator.push(
+        //         context, MaterialPageRoute(builder: (ctx) => EmpProfileView()));
+        //   },
+        // ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight + 40),
           child: Column(
@@ -228,21 +225,21 @@ class _LeaveScreenState extends State<LeaveScreen>
                   Tab(
                     child: Text(
                       "All ",
-                      style: TextStyle(fontSize: 12, color: Colors.black),
+                      style: TextStyle(fontSize: 11, color: Colors.black),
                     ),
                   ),
                   Tab(
                     child: SizedBox(
                       child: Text(
                         "Compassionate",
-                        style: TextStyle(fontSize: 12, color: Colors.black),
+                        style: TextStyle(fontSize: 11, color: Colors.black),
                       ),
                     ),
                   ),
                   Tab(
                     child: Text(
                       "Lieu",
-                      style: TextStyle(fontSize: 12, color: Colors.black),
+                      style: TextStyle(fontSize: 11, color: Colors.black),
                     ),
                   ),
                   // Tab(

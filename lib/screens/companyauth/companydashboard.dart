@@ -5,7 +5,6 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:holidays/screens/companyauth/api_test.dart';
 import 'package:holidays/screens/companyauth/createnewemployee.dart';
 import 'package:holidays/screens/companyauth/profile.dart';
 import 'package:holidays/screens/companyauth/search_screen.dart';
@@ -14,8 +13,8 @@ import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
 import 'package:holidays/widget/leave_req_card.dart';
 import 'package:provider/provider.dart';
 import '../../models/company/viewemployeedata.dart';
+import '../../models/company_leave.dart';
 import '../../models/leave.dart';
-import '../../widget/constants.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'package:http/http.dart' as http;
@@ -33,10 +32,10 @@ class CompanyDashBoard extends StatefulWidget {
 }
 
 class _CompanyDashBoardState extends State<CompanyDashBoard> {
-  List<LeaveRequest> leaves = [];
-  List<LeaveRequest> pendingLeaves = [];
-  List<LeaveRequest> approvedLeaves = [];
-  List<LeaveRequest> rejectedLeaves = [];
+  List<CompanyLeaveRequest> leaves = [];
+  List<CompanyLeaveRequest> pendingLeaves = [];
+  List<CompanyLeaveRequest> approvedLeaves = [];
+  List<CompanyLeaveRequest> rejectedLeaves = [];
   int check = 0;
   int _currentIndex = 0;
 
@@ -59,18 +58,18 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           jsonData["data"]["employee_requested_leaves"];
       setState(() {
         leaves =
-            requestedLeaves.map((json) => LeaveRequest.fromJson(json)).toList();
-        for (LeaveRequest leave in leaves) {
+            requestedLeaves.map((json) => CompanyLeaveRequest.fromJson(json)).toList();
+        for (CompanyLeaveRequest leave in leaves) {
           if (leave.leaveCurrentStatus == "Pending") {
             pendingLeaves.add(leave);
           }
         }
-        for (LeaveRequest leave in leaves) {
+        for (CompanyLeaveRequest leave in leaves) {
           if (leave.leaveCurrentStatus == "Accepted") {
             approvedLeaves.add(leave);
           }
         }
-        for (LeaveRequest leave in leaves) {
+        for (CompanyLeaveRequest leave in leaves) {
           if (leave.leaveCurrentStatus == "Rejected") {
             rejectedLeaves.add(leave);
           }
@@ -317,7 +316,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
 }
 
 class AllApplications extends StatefulWidget {
-  final List<LeaveRequest> pendingLeaves;
+  final List<CompanyLeaveRequest> pendingLeaves;
   const AllApplications({super.key, required this.pendingLeaves});
 
   @override
@@ -326,7 +325,7 @@ class AllApplications extends StatefulWidget {
 
 class _AllApplicationsState extends State<AllApplications> {
   void _changeLeaveStatus(
-      String token, int companyId, int status, LeaveRequest leave) async {
+      String token, int companyId, int status, CompanyLeaveRequest leave) async {
     final String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/company-change-leave-request-status';
 
@@ -400,7 +399,7 @@ class _AllApplicationsState extends State<AllApplications> {
                     // DateFormat('EEE, MMM d, yyyy').format(leave.startDate);
                     // String toDate =
                     // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
-                    LeaveRequest leave = widget.pendingLeaves[index];
+                    CompanyLeaveRequest leave = widget.pendingLeaves[index];
                     return Padding(
                       padding: const EdgeInsets.all(13.0),
                       child: Container(
@@ -432,6 +431,7 @@ class _AllApplicationsState extends State<AllApplications> {
                                       ),
                                     ],
                                   ),
+                                  Text(leave.employee.firstName),
                                   Text(
                                     'From: ${leave.startDate}',
                                     style: TextStyle(
@@ -660,7 +660,7 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
                     // String toDate =
                     // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
                     LeaveRequest leave = approvedLeaves[index];
-                    Employee emp = empstatus[index];
+                    //Employee emp = empstatus[index];
                     return LeaveRequestCard(
                       leave: leave,
                     );

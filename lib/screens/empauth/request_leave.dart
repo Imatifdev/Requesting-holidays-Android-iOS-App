@@ -23,6 +23,7 @@ class _RequestLeaveState extends State<RequestLeave> {
   var startDateFormatted = "Select from date";
   var endDateFormatted = "Select to date";
   String errMsg = "";
+  bool isLoading = false;
   DateTime _firstDate = DateTime(2022, 11, 22);
   DateTime _lastDate = DateTime(2023, 11, 23);
   String? selectedLeaveType;
@@ -53,14 +54,14 @@ class _RequestLeaveState extends State<RequestLeave> {
     );
     if (dateRange != null) {
       setState(() {
-        startDateFormatted = DateFormat('d-MMM-yyyy').format(dateRange.start);
+        startDateFormatted = DateFormat('dd-MM-yyyy').format(dateRange.start);
         print(startDateFormatted);
         _firstDate = dateRange.start;
-        endDateFormatted = DateFormat('d-MMM-yyyy').format(dateRange.end);
+        endDateFormatted = DateFormat('dd-MM-yyyy').format(dateRange.end);
         print(endDateFormatted);
         _lastDate = dateRange.end;
-        var diff = dateRange.end.difference(dateRange.end);
-        totalLeaveCount = diff.inDays;
+        var diff = dateRange.end.difference(dateRange.start);
+        totalLeaveCount = diff.inDays+1;
       });
     }
   }
@@ -82,21 +83,10 @@ class _RequestLeaveState extends State<RequestLeave> {
     }, body: {
       'employee_id': id,
       'leave_type': leaveType,
-      'start_date': startDate,
-      'end_date': endDate,
+      'start_date': startDateFormatted,
+      'end_date': endDateFormatted,
       'total_leave_count': totalLeaveCount,
       'comment': comment,
-      // id: 20,
-      // employee_id: 1,
-      // leave_type: Compassionate,
-      // start_date: 29-06-2023,
-      // end_date: 29-06-2023,
-      // total_request_leave: 1,
-      // comment: thired,
-      // status: 0,
-      // created_at: 2023-06-23T12:08:41.000000Z,
-      // updated_at: 2023-06-23T12:08:41.000000Z,
-      // leave_current_status: Pending
     });
     if (response.statusCode == 200) {
       print("responseee: ${response.body}");
@@ -216,7 +206,7 @@ class _RequestLeaveState extends State<RequestLeave> {
                       Row(
                         children: [
                           const Text(
-                            "To:    ",
+                            "End:  ",
                             style: TextStyle(fontSize: 17, color: Colors.red),
                           ),
                           const SizedBox(
@@ -266,11 +256,11 @@ class _RequestLeaveState extends State<RequestLeave> {
                               },
                               controller: causeController,
                               decoration: InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
+                                enabledBorder: const UnderlineInputBorder(
                                   borderSide:
                                       BorderSide(color: Colors.transparent),
                                 ),
-                                focusedBorder: UnderlineInputBorder(
+                                focusedBorder: const UnderlineInputBorder(
                                   borderSide:
                                       BorderSide(color: Colors.transparent),
                                 ),
@@ -306,6 +296,8 @@ class _RequestLeaveState extends State<RequestLeave> {
                               if (_formKey.currentState!.validate() &&
                                   _firstDate != DateTime(2022, 11, 22) &&
                                   _lastDate != DateTime(2022, 11, 23)) {
+                                // print(startDateFormatted);
+                                 //print(totalLeaveCount);
                                 await _submitLeaveRequest(
                                   token!,
                                   selectedLeaveType!,
@@ -321,7 +313,7 @@ class _RequestLeaveState extends State<RequestLeave> {
                                 });
                               }
                             },
-                            child: const Text("Apply")),
+                            child: isLoading? const CircularProgressIndicator(color: Colors.white,) :const Text("Apply")),
                       ),
                     ],
                   ),

@@ -17,6 +17,7 @@ class PendingLeavesScreen extends StatefulWidget {
 
 class _PendingLeavesScreenState extends State<PendingLeavesScreen> {
   List<LeaveRequest> leaveRequests = [];
+  List<LeaveRequest> leavesRejected = [];
   int check = 0;
   Future<void> _getallLeaveRequest(String token, String id) async {
     //final empViewModel = Provider.of<EmpViewModel>(context);
@@ -41,13 +42,11 @@ class _PendingLeavesScreenState extends State<PendingLeavesScreen> {
         leaveRequests =
             requestedLeaves.map((json) => LeaveRequest.fromJson(json)).toList();
 
-        // for (LeaveRequest request in leaveRequests) {
-        //   if (request.leaveType == "Compassionate") {
-        //     commpassionateLeaves.add(request);
-        //   } else if (request.leaveType == "Lieu") {
-        //     lieuLeaves.add(request);
-        //   }
-        // }
+        for (LeaveRequest request in leaveRequests) {
+          if (request.leaveCurrentStatus == "Pending") {
+            leavesRejected.add(request);
+          } 
+        }
       });
       // Handle success scenario
     } else {
@@ -73,17 +72,17 @@ class _PendingLeavesScreenState extends State<PendingLeavesScreen> {
     }
     return Scaffold(
       appBar: AppBar(title: const Text("All Pending Leaves")),
-      body: leaveRequests.isNotEmpty
+      body: leavesRejected.isNotEmpty
           ? ListView.builder(
-              itemCount: leaveRequests.length,
+              itemCount: leavesRejected.length,
               itemBuilder: (context, index) {
-                final leave = leaveRequests[index];
+                final leave = leavesRejected[index];
                 return LeaveRequestCard(
                   leave: leave,
                 );
               },
             )
-          : Center(
+          : const Center(
               child: Text("No Leaves"),
             ),
     );

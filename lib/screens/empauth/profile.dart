@@ -158,7 +158,7 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                 ]),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height / 4,
+                height: 50,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -177,9 +177,6 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                     color1: red,
                     color2: red,
                     width: MediaQuery.of(context).size.width - 40),
-              ),
-              SizedBox(
-                height: 30,
               ),
               // Padding(
               //   padding: const EdgeInsets.symmetric(horizontal: 50),
