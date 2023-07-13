@@ -660,7 +660,6 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
                     // String toDate =
                     // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
                     LeaveRequest leave = approvedLeaves[index];
-                    Employee emp = empstatus[index];
                     return LeaveRequestCard(
                       leave: leave,
                     );
