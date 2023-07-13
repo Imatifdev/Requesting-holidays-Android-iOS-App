@@ -16,13 +16,17 @@ import '../../widget/popuploader.dart';
 class CompanyViewModel extends ChangeNotifier {
   CompanyUser? _user;
   String? _token;
+  String? _logoUrl;
 
   CompanyUser? get user => _user;
   String? get token => _token;
+  String? get logoUrl => _logoUrl;
 
   Future<void> performLogin(
       String email, String password, BuildContext context) async {
     final String apiUrl = 'https://jporter.ezeelogix.com/public/api/login';
+    final String imgurl = "https://jporter.ezeelogix.com/public/upload/logo/";
+
     PopupLoader.show();
 
     final response = await http.post(Uri.parse(apiUrl),
@@ -35,9 +39,11 @@ class CompanyViewModel extends ChangeNotifier {
       if (jsonData['status'] == 'Success') {
         final userJson = jsonData['data']['user'];
         final token = jsonData['data']['token'];
+        final logoUrl = jsonData['data']['user']['logo'];
 
         _user = CompanyUser.fromJson(userJson);
         _token = token;
+        _logoUrl = '$imgurl';
 
         // Store data in shared preferences
         SharedPreferences prefs = await SharedPreferences.getInstance();
