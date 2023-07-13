@@ -180,11 +180,13 @@ class _CompanyLoginPageState extends State<CompanyLoginPage> {
                     padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                     child: ElevatedButton(
                       onPressed: () {
-                        final email = _emailController.text;
-                        final password = _passwordController.text;
+                        if (_formKey.currentState!.validate()) {
+                          final email = _emailController.text;
+                          final password = _passwordController.text;
 
-                        Provider.of<CompanyViewModel>(context, listen: false)
-                            .performLogin(email, password, context);
+                          Provider.of<CompanyViewModel>(context, listen: false)
+                              .performLogin(email, password, context);
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: red,

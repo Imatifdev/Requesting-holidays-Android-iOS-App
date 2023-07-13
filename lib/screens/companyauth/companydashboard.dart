@@ -38,8 +38,9 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
   List<CompanyLeaveRequest> rejectedLeaves = [];
   int check = 0;
   int _currentIndex = 0;
+  final String imgurl = "https://jporter.ezeelogix.com/public/upload/logo/";
 
-  Future<void> _getallLeaveRequest(String token) async {
+  Future<void> _getallLeaveRequest(String token, String id) async {
     final String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/company-get-all-requested-leaves';
 
@@ -47,7 +48,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
       'Authorization': 'Bearer $token',
       'Accept': 'application/json',
     }, body: {
-      'company_id': '1',
+      'company_id': id,
     });
     if (response.statusCode == 200) {
       // Leave request successful
@@ -89,10 +90,12 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
     final empViewModel = Provider.of<CompanyViewModel>(context);
     final token = empViewModel.token;
     final user = empViewModel.user;
+    final logoUrl = empViewModel.logoUrl;
+    print('${logoUrl}${user!.logo}'); // Get the logo URL
 
     if (check == 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _getallLeaveRequest(token!);
+        _getallLeaveRequest(token!, user!.id.toString());
       });
       check = 1;
     }
@@ -126,12 +129,10 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
               SizedBox(
                 height: 80,
               ),
-              Image.asset(
-                'assets/images/logo.png',
-                height: 120,
-                width: 90,
-                fit: BoxFit.contain,
-              ).pOnly(left: 20),
+              CircleAvatar(
+                radius: 50,
+                backgroundImage: NetworkImage('${logoUrl}${user!.logo}'),
+              ).pOnly(left: 20, bottom: 20),
               Text(
                 '${user!.firstName} ' + ' ${user.lastName}',
                 style: TextStyle(
@@ -660,7 +661,6 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
                     // String toDate =
                     // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
                     LeaveRequest leave = approvedLeaves[index];
-                    //Employee emp = empstatus[index];
                     return LeaveRequestCard(
                       leave: leave,
                     );
@@ -694,7 +694,7 @@ class _RejectedApplicationsState extends State<RejectedApplications> {
   List<LeaveRequest> rejectedLeaves = [];
   int check = 0;
 
-  Future<void> _getApprovedLeaves(String token) async {
+  Future<void> _getApprovedLeaves(String token, String id) async {
     final String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/company-get-all-requested-leaves';
 
@@ -702,7 +702,7 @@ class _RejectedApplicationsState extends State<RejectedApplications> {
       'Authorization': 'Bearer $token',
       'Accept': 'application/json',
     }, body: {
-      'company_id': '1',
+      'company_id': id,
     });
 
     if (response.statusCode == 200) {
@@ -734,9 +734,10 @@ class _RejectedApplicationsState extends State<RejectedApplications> {
   Widget build(BuildContext context) {
     final empViewModel = Provider.of<CompanyViewModel>(context);
     final token = empViewModel.token;
+    final user = empViewModel.user;
     if (check == 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _getApprovedLeaves(token!);
+        _getApprovedLeaves(token!, user!.id.toString());
       });
       check = 1;
     }
