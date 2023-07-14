@@ -90,22 +90,32 @@ class _EmpForgitPasswordState extends State<EmpForgitPassword> {
         print(response.body);
 
         final errorMessage = responseData['message'];
-
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Error'),
-            content: Text(errorMessage != null
-                ? errorMessage.toString()
-                : 'Failed to send password reset email.'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('OK'),
-              ),
-            ],
-          ),
+        Fluttertoast.showToast(
+          msg: errorMessage != null
+              ? errorMessage.toString()
+              : 'Failed to send password reset email.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
         );
+        // showDialog(
+        //   context: context,
+        //   builder: (context) => AlertDialog(
+        //     title: Text('Error'),
+        //     content: Text(errorMessage != null
+        //         ? errorMessage.toString()
+        //         : 'Failed to send password reset email.'),
+        //     actions: [
+        //       TextButton(
+        //         onPressed: () => Navigator.pop(context),
+        //         child: Text('OK'),
+        //       ),
+        //     ],
+        //   ),
+        //);
       } else {
         print(response.body);
 
@@ -194,8 +204,8 @@ class _EmpForgitPasswordState extends State<EmpForgitPassword> {
                 ),
                 MyCustomButton(
                     buttontextcolr: Colors.white,
-                    title: "Send Forgot Pass Request",
-                    borderrad: 25,
+                    title: "Submit",
+                    borderrad: 15,
                     onaction: () {
                       _forgotpass1(_email.text);
                       // if (formGlobalKey.currentState!.validate()) {

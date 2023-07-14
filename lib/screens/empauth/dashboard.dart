@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/leave.dart';
 import '../../viewmodel/employee/empuserviewmodel.dart';
+import '../../widget/constants.dart';
 import '../../widget/leave_req_card.dart';
 
 class LeaveScreen extends StatefulWidget {
@@ -153,7 +154,9 @@ class _LeaveScreenState extends State<LeaveScreen>
     //final user = empViewModel.user;
     final token = empViewModel.token;
     final empId = empViewModel.user!.id;
+    final height = MediaQuery.of(context).size.height;
 
+    final width = MediaQuery.of(context).size.width;
     if (check == 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _getallLeaveRequest(token!, empId.toString());
@@ -204,7 +207,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                            color: Colors.red,
+                            color: red,
                             borderRadius: BorderRadius.circular(10)),
                         height: 30,
                         width: 30,
@@ -222,25 +225,60 @@ class _LeaveScreenState extends State<LeaveScreen>
               ),
               TabBar(
                 controller: _tabController,
+                indicatorColor: Colors.white,
                 tabs: [
-                  Tab(
-                    child: Text(
-                      "All ",
-                      style: TextStyle(fontSize: 11, color: Colors.black),
-                    ),
-                  ),
-                  Tab(
-                    child: SizedBox(
-                      child: Text(
-                        "Compassionate",
-                        style: TextStyle(fontSize: 11, color: Colors.black),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14)),
+                    elevation: 5,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(14)),
+                      height: height / 20,
+                      width: width,
+                      child: Center(
+                        child: Text(
+                          "All",
+                          style: TextStyle(color: Colors.red, fontSize: 18),
+                        ),
                       ),
                     ),
                   ),
-                  Tab(
-                    child: Text(
-                      "Lieu",
-                      style: TextStyle(fontSize: 11, color: Colors.black),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14)),
+                    elevation: 5,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(14)),
+                      height: height / 20,
+                      width: width,
+                      child: Center(
+                        child: Text(
+                          "Compasionate",
+                          style: TextStyle(color: Colors.red, fontSize: 11),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14)),
+                    elevation: 5,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(14)),
+                      height: height / 20,
+                      width: width,
+                      child: Center(
+                        child: Text(
+                          "Liue",
+                          style: TextStyle(color: Colors.red, fontSize: 18),
+                        ),
+                      ),
                     ),
                   ),
                   // Tab(

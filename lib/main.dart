@@ -41,6 +41,7 @@ class MyApp1 extends StatelessWidget {
           builder: EasyLoading.init(),
           title: 'Holiday Request',
           theme: ThemeData(
+            useMaterial3: false,
             fontFamily: GoogleFonts.poppins().fontFamily,
             primarySwatch: Colors.red,
           ),
