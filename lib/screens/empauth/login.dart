@@ -120,38 +120,26 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   const Text(
-                    "Sign In",
+                    "Sign In Employee",
                     style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
-                  ).pSymmetric(h: 20),
+                  ).centered(),
                   const SizedBox(
                     height: 10,
                   ),
                   const Text(
                     "Welcome Back",
                     style: TextStyle(color: Colors.black, fontSize: 18),
-                  ).pSymmetric(h: 20),
+                  ).pSymmetric(h: 20).centered(),
                   const SizedBox(
                     height: 20,
                   ),
-                  Container(
-                    height: 40,
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Center(
-                      child: const Text(
-                        "Employee Pannel",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    ),
-                  ).pSymmetric(h: 80),
                   SizedBox(
                     height: 20,
                   ),

@@ -24,6 +24,7 @@ import '../../widget/custombutton.dart';
 import 'package:hive/hive.dart';
 
 import '../testingscreen.dart';
+import 'forgotpass.dart';
 import 'leaverequest.dart';
 import 'login.dart';
 
@@ -128,7 +129,7 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                     height: MediaQuery.of(context).size.height / 14,
                     width: MediaQuery.of(context).size.width,
                     child: ListTile(
-                      leading: Icon(CupertinoIcons.person_alt_circle),
+                      leading: Icon(CupertinoIcons.phone),
                       title: Padding(
                         padding: const EdgeInsets.only(left: 30),
                         child: Text(
@@ -140,20 +141,6 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 50,
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height / 14,
-                    width: MediaQuery.of(context).size.width,
-                    child: ListTile(
-                      leading: Icon(CupertinoIcons.person_alt_circle),
-                      title: Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: Text(
-                          '${user?.id}',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ),
-                    ),
                   ),
                 ]),
               ),
@@ -170,9 +157,7 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (ctx) => EmpForgotResetPasswordScreen(
-                                    email: user!.email.toString(),
-                                  )));
+                              builder: (ctx) => EmpForgitPassword()));
                     },
                     color1: red,
                     color2: red,

@@ -15,23 +15,28 @@ class _DeclinedLeavesState extends State<DeclinedLeaves> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return SafeArea(child: 
-      SizedBox(
-        width: size.width,
-        child:  Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child:  Column(
+    return SafeArea(
+        child: SizedBox(
+      width: size.width,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("Declined Requests", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
-              )),
-              if (widget.rejectedLeaves.isNotEmpty) Expanded(
-                child: ListView.builder(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      "Declined Requests",
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                  )),
+              if (widget.rejectedLeaves.isNotEmpty)
+                Expanded(
+                    child: ListView.builder(
                   itemCount: widget.rejectedLeaves.length,
                   itemBuilder: (context, index) {
                     LeaveRequest leave = widget.rejectedLeaves[index];
@@ -47,15 +52,23 @@ class _DeclinedLeavesState extends State<DeclinedLeaves> {
                             children: [
                               Column(
                                 children: [
-                                    Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text("${leave.totalRequestLeave} Day of Application")),
-                                    Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(leave.startDate, style: TextStyle( fontSize: 22, fontWeight: FontWeight.bold, color: leave.leaveType == "Sick"? const Color.fromRGBO(100, 121, 198, 1 ):Colors.red))),
-                                    Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(leave.leaveType)),
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                          "${leave.totalRequestLeave} Day of Application")),
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(leave.startDate.toString(),
+                                          style: TextStyle(
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.bold,
+                                              color: leave.leaveType == "Sick"
+                                                  ? const Color.fromRGBO(
+                                                      100, 121, 198, 1)
+                                                  : Colors.red))),
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(leave.leaveType)),
                                 ],
                               ),
                               Column(
@@ -66,15 +79,19 @@ class _DeclinedLeavesState extends State<DeclinedLeaves> {
                                       Column(
                                         children: [
                                           ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.white
-                                          ),  
-                                          onPressed: (){}, child:  Text("Declined", style: TextStyle(color: Colors.red[900]),)),
-                                  ],
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Colors.white),
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Declined",
+                                                style: TextStyle(
+                                                    color: Colors.red[900]),
+                                              )),
+                                        ],
                                       ),
                                     ],
                                   )
-                                  
                                 ],
                               )
                             ],
@@ -82,11 +99,14 @@ class _DeclinedLeavesState extends State<DeclinedLeaves> {
                         ),
                       ),
                     );
-                  },) ) else const SizedBox(
+                  },
+                ))
+              else
+                const SizedBox(
                     height: 600,
                     child: Center(child: Text("No rejected leaves")))
             ]),
-        ),
-      ));
+      ),
+    ));
   }
 }

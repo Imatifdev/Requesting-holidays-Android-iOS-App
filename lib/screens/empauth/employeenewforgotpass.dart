@@ -144,21 +144,15 @@ class _EmployeeForgotPasswordScreenState
 
       if (responseData['status'] == 'Error') {
         final errorMessage = responseData['message'];
-
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Error'),
-            content: Text(errorMessage != null
-                ? errorMessage.toString()
-                : 'OTP not found.'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('OK'),
-              ),
-            ],
-          ),
+        Fluttertoast.showToast(
+          msg:
+              errorMessage != null ? errorMessage.toString() : 'OTP not found.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
         );
       } else {
         // Password reset successful
@@ -260,18 +254,14 @@ class _EmployeeForgotPasswordScreenState
                         _confirmPasswordController.text) {
                       _resetPass();
                     } else {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: Text('Error'),
-                          content: Text('Passwords do not match.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text('OK'),
-                            ),
-                          ],
-                        ),
+                      Fluttertoast.showToast(
+                        msg: 'Password do not match ',
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0,
                       );
                     }
                   },
@@ -293,14 +283,6 @@ class _EmployeeForgotPasswordScreenState
                 ),
               ],
             ),
-            if (_isOTPSuccessful)
-              Text(
-                'Password reset successful!',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.0,
-                ),
-              ),
           ],
         ),
       ),

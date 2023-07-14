@@ -180,7 +180,7 @@ class _CompanyProfileViewState extends State<CompanyProfileView> {
               ),
               InkWell(
                 onTap: () {
-                  companyViewModel.signOut();
+                  // companyViewModel.signOut();
                   Fluttertoast.showToast(
                       msg: "User LogOut",
                       toastLength: Toast.LENGTH_SHORT,
