@@ -18,7 +18,7 @@ class _StripeScreenState extends State<StripeScreen> {
         children: [
           ElevatedButton(onPressed: (){
             print("All Ok");
-          }, child: Text("test")),
+          }, child: const Text("test")),
           Center(
             child: ElevatedButton(
               onPressed: ()async{

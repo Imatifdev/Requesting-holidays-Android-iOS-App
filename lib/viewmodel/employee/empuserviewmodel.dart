@@ -108,8 +108,17 @@ class EmpViewModel extends ChangeNotifier {
           MaterialPageRoute(builder: (context) => EmpHome()),
         );
         notifyListeners();
-      } else {
-        // Login failed
+      } 
+      else if(response.statusCode == 401){
+        print("responseee: $jsonData");
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => EmpHome()),
+        );
+      }
+      else {
+       print(jsonData);
         String errorMessage = jsonData['message'];
         Fluttertoast.showToast(
           msg: errorMessage,

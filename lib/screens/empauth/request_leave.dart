@@ -20,9 +20,10 @@ class RequestLeave extends StatefulWidget {
 
 class _RequestLeaveState extends State<RequestLeave> {
   final _formKey = GlobalKey<FormState>();
-  var startDateFormatted = "Select from date";
-  var endDateFormatted = "Select to date";
+  var startDateFormatted = "";
+  var endDateFormatted = "";
   String errMsg = "";
+  String errMsg2 = "";
   bool isLoading = false;
   DateTime _firstDate = DateTime(2022, 11, 22);
   DateTime _lastDate = DateTime(2023, 11, 23);
@@ -74,6 +75,11 @@ class _RequestLeaveState extends State<RequestLeave> {
       String id,
       String totalLeaveCount,
       String comment) async {
+        setState(() {
+          isLoading = true;
+          errMsg = "";
+          errMsg2 = "";
+        });
     const String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/employee-request-leave';
 
@@ -90,10 +96,16 @@ class _RequestLeaveState extends State<RequestLeave> {
     });
     if (response.statusCode == 200) {
       print("responseee: ${response.body}");
+      setState(() {
+        isLoading = false;
+      });
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => LeaveScreen()));
       // Handle success scenario
     } else {
+      setState(() {
+        isLoading = false;
+      });
       print(response.body);
       // Error occurred
       print('Error: ${response.reasonPhrase}');
@@ -106,7 +118,7 @@ class _RequestLeaveState extends State<RequestLeave> {
     final empViewModel = Provider.of<EmpViewModel>(context);
     final token = empViewModel.token;
     final user = empViewModel.user;
-
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: appbar,
       appBar: AppBar(
@@ -121,206 +133,240 @@ class _RequestLeaveState extends State<RequestLeave> {
               color: Colors.black,
             )),
       ),
-      body: SafeArea(
-        child: SizedBox(
-          width: double.infinity,
-          child: Column(
-            children: [
-              const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("New Leave",
-                      style: TextStyle(
-                          fontSize: 24, fontWeight: FontWeight.bold))),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 16),
-                      DropdownButtonFormField<String>(
-                        value: selectedLeaveType,
-                        hint: const Text(
-                          'Type',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                        items: const [
-                          DropdownMenuItem<String>(
-                            value: 'Compassionate',
-                            child: Text('Compassionate'),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'Lieu',
-                            child: Text('Lieu'),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'Full Day',
-                            child: Text('Full Day'),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'Half Day',
-                            child: Text('Half Day'),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            selectedLeaveType = value;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: SizedBox(
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("New Leave",
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold))),
+                const SizedBox(height: 50,),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all()),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
                         children: [
-                          const Text(
-                            "Start:",
-                            style: TextStyle(fontSize: 17, color: Colors.red),
-                          ),
-                          const SizedBox(
-                            width: 33,
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              onTap: () => _selectDateRange(context),
-                              child: Container(
-                                height: 44,
-                                color: Colors.grey.shade200,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 4),
-                                  child: Text(
-                                    startDateFormatted,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                          const SizedBox(height: 30),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(20)
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Icon(Icons.window, color: Colors.white,),
+                                ),
+                              ),
+                              SizedBox(
+                                width: size.width/1.5,
+                                child: DropdownButtonFormField<String>(
+                                  focusColor: Colors.grey.shade100,
+                                  dropdownColor:Colors.grey.shade100,
+                                  value: selectedLeaveType,
+                                  hint: const Text(
+                                    'Type',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  items: const [
+                                    DropdownMenuItem<String>(
+                                      value: 'Compassionate',
+                                      child: Text('Compassionate'),
                                     ),
-                                  ).pOnly(top: 05),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            "End:  ",
-                            style: TextStyle(fontSize: 17, color: Colors.red),
-                          ),
-                          const SizedBox(
-                            width: 35,
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              onTap: () => _selectDateRange(context),
-                              child: Container(
-                                height: 44,
-                                color: Colors.grey.shade200,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 4),
-                                  child: Text(
-                                    endDateFormatted,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                                    DropdownMenuItem<String>(
+                                      value: 'Lieu',
+                                      child: Text('Lieu'),
                                     ),
-                                  ).pOnly(top: 07),
+                                    DropdownMenuItem<String>(
+                                      value: 'Full Day',
+                                      child: Text('Full Day'),
+                                    ),
+                                    DropdownMenuItem<String>(
+                                      value: 'Half Day',
+                                      child: Text('Half Day'),
+                                    ),
+                                  ],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedLeaveType = value;
+                                    });
+                                  },
                                 ),
                               ),
-                            ),
+                            ],
+                          ),
+                          Text(errMsg2, style: const TextStyle(color: Colors.red)),
+                          const SizedBox(height: 26),
+                          Divider(color: Colors.grey.shade500,),
+                          const SizedBox(height: 30),
+                          Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(20)
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Icon(Icons.calendar_month_outlined, color: Colors.white,),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 33,
+                              ),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: (){ 
+                                    if(endDateFormatted==""){
+                                      _selectDateRange(context);
+                                    }
+                                    },
+                                  child: Container(
+                                    height: 70,
+                                    color: Colors.grey.shade100,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 4),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                              endDateFormatted == ""? "Calender":"Selected Dates:", style: const TextStyle(color: Colors.red),),
+                                          Text(
+                                            endDateFormatted == ""? "Select Leaves" :"$startDateFormatted to $endDateFormatted",
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ).pOnly(top: 05),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        Text(errMsg, style: const TextStyle(color: Colors.red)),
+                          const SizedBox(height: 30),
+                          Divider(color: Colors.grey.shade500,),
+                          const SizedBox(height: 30),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(20)
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Icon(Icons.edit_note_rounded, color: Colors.white,size: 25,),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              SizedBox(
+                                width: size.width/1.5,
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter your cause for leave';
+                                    }
+                                    return null;
+                                  },
+                                  controller: causeController,
+                                  decoration: InputDecoration(
+                                    label: const Text("Cause"),
+                                    enabledBorder: const UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.transparent),
+                                    ),
+                                    focusedBorder: const UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.transparent),
+                                    ),
+                                    fillColor: Colors.grey.shade100,
+                                    filled: true,
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 0, horizontal: 10),
+                                    hintText: 'Provide Cause of Leave',
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 30),
+                          // Center(
+                          //   child: ElevatedButton(
+                          //     style:
+                          //         ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                          //     onPressed: () => _selectDateRange(context),
+                          //     child: const Text('Select Date'),
+                          //   ),
+                          // ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width - 50,
+                            height: 50,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                ),
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate() &&
+                                      _firstDate != DateTime(2022, 11, 22) &&
+                                      _lastDate != DateTime(2022, 11, 23) && selectedLeaveType!=null) {
+                                    // print(startDateFormatted);
+                                     //print(totalLeaveCount);
+                                    setState(() {
+                                      errMsg = "";
+          errMsg2 = "";
+                                    });
+                                    await _submitLeaveRequest(
+                                      token!,
+                                      selectedLeaveType!,
+                                      startDateFormatted,
+                                      endDateFormatted,
+                                      user!.id.toString(),
+                                      totalLeaveCount.toString(),
+                                      causeController.text.trim(),
+                                    );
+                                  } 
+                                  else if(selectedLeaveType==null){
+                                    setState(() {
+                                    errMsg2 = "Please select a type";
+                                    });
+                                  }
+                                  else {
+                                    setState(() {
+                                      errMsg = "please select leave dates";
+                                    });
+                                  }
+                                },
+                                child: isLoading? const CircularProgressIndicator(color: Colors.white,) :const Text("Apply")),
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            "Cause:",
-                            style: TextStyle(fontSize: 17, color: Colors.red),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter your cause for leave';
-                                }
-                                return null;
-                              },
-                              controller: causeController,
-                              decoration: InputDecoration(
-                                enabledBorder: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.transparent),
-                                ),
-                                focusedBorder: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.transparent),
-                                ),
-                                fillColor: Colors.grey.shade200,
-                                filled: true,
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 0, horizontal: 10),
-                                hintText: 'Enter Cause',
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 30),
-                      // Center(
-                      //   child: ElevatedButton(
-                      //     style:
-                      //         ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                      //     onPressed: () => _selectDateRange(context),
-                      //     child: const Text('Select Date'),
-                      //   ),
-                      // ),
-                      Text(errMsg, style: const TextStyle(color: Colors.red)),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width - 50,
-                        height: 50,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate() &&
-                                  _firstDate != DateTime(2022, 11, 22) &&
-                                  _lastDate != DateTime(2022, 11, 23)) {
-                                // print(startDateFormatted);
-                                 //print(totalLeaveCount);
-                                await _submitLeaveRequest(
-                                  token!,
-                                  selectedLeaveType!,
-                                  startDateFormatted,
-                                  endDateFormatted,
-                                  user!.id.toString(),
-                                  totalLeaveCount.toString(),
-                                  causeController.text.trim(),
-                                );
-                              } else {
-                                setState(() {
-                                  errMsg = "please select a valid date";
-                                });
-                              }
-                            },
-                            child: isLoading? const CircularProgressIndicator(color: Colors.white,) :const Text("Apply")),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ).p(20),
+              ],
+            ).p(20),
+          ),
         ),
       ),
     );
