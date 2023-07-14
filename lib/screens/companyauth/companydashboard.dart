@@ -92,7 +92,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
     final token = empViewModel.token;
     final user = empViewModel.user;
     final logoUrl = empViewModel.logoUrl;
-    print('${logoUrl}${user!.logo}'); // Get the logo URL
+    //print('${logoUrl}${user!.logo}'); // Get the logo URL
 
     if (check == 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {

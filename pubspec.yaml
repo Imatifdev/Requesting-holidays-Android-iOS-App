@@ -55,6 +55,8 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   floating_action_bubble: ^1.1.4
   cached_network_image: ^3.2.3
+  stripe_checkout: ^1.0.2
+  flutter_stripe: ^9.2.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:holidays/screens/companyauth/stripe_screen.dart';
 import 'package:holidays/screens/empauth/home.dart';
 import 'package:holidays/screens/empauth/forgotpass.dart';
 import 'package:holidays/screens/empauth/login.dart';
@@ -44,7 +45,7 @@ class MyApp1 extends StatelessWidget {
             fontFamily: GoogleFonts.poppins().fontFamily,
             primarySwatch: Colors.red,
           ),
-          home: SplashScreen(),
+          home: StripeScreen(),
           routes: {
             EmpForgitPassword.idScreen: (context) => EmpForgitPassword(),
             EmpLoginPage.routeName: (context) => EmpLoginPage(),

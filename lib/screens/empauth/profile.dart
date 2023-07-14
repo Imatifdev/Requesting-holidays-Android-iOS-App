@@ -149,7 +149,7 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                       title: Padding(
                         padding: const EdgeInsets.only(left: 30),
                         child: Text(
-                          '${user?.id}',
+                          "",//'${user?.}',
                           style: TextStyle(fontSize: 14),
                         ),
                       ),

@@ -2,19 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:holidays/screens/companyauth/home_company.dart';
-import 'package:holidays/screens/companyauth/profile.dart';
-import 'package:holidays/screens/empauth/dashboard.dart';
 import 'package:holidays/screens/empauth/emp_home.dart';
 import 'package:holidays/screens/empauth/otpscreen.dart';
-import 'package:holidays/screens/empauth/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import '../../models/company/compusermodel.dart';
 import '../../models/emp/empusermodel.dart';
-import '../../screens/companyauth/leave_requests_company.dart';
 import '../../widget/popuploader.dart';
 
 class EmpViewModel extends ChangeNotifier {
@@ -99,7 +93,8 @@ class EmpViewModel extends ChangeNotifier {
       if (jsonData['status'] == 'Success') {
         final userJson = jsonData['data']['user'];
         final token = jsonData['data']['token'];
-
+        print("userrrrr          ");
+        print(userJson);
         _user = EmpUser.fromJson(userJson);
         _token = token;
 
