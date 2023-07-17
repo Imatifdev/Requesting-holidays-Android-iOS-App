@@ -177,7 +177,7 @@ class LeaveRequestCard extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            '${leave.startDate.day} to ',
+                            '${leave.startDate} to ',
                             style: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.bold,

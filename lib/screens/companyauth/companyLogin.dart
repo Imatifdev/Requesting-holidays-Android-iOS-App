@@ -65,34 +65,34 @@ class _CompanyLoginPageState extends State<CompanyLoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   const Text(
-                    "Sign In",
+                    "Sign In As Admin", textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
                   ).pSymmetric(h: 20),
                   const SizedBox(
                     height: 10,
                   ),
                   const Text(
-                    "Welcome Back",
+                    "Welcome Back", textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.black, fontSize: 18),
                   ).pSymmetric(h: 20),
                   SizedBox(
                     height: 20,
                   ),
-                  Container(
-                    height: 40,
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Center(
-                      child: const Text(
-                        "Company Pannel",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    ),
-                  ).pSymmetric(h: 80),
-                  const SizedBox(
-                    height: 44,
-                  ),
+                  // Container(
+                  //   height: 40,
+                  //   decoration: BoxDecoration(
+                  //       color: Colors.red,
+                  //       borderRadius: BorderRadius.circular(20)),
+                  //   child: Center(
+                  //     child: const Text(
+                  //       "Company Pannel",
+                  //       style: TextStyle(color: Colors.white, fontSize: 16),
+                  //     ),
+                  //   ),
+                  // ).pSymmetric(h: 80),
+                  // const SizedBox(
+                  //   height: 44,
+                  // ),
                   TextFormField(
                     //keyboardType: TextInputType.visiblePassword,
                     controller: _emailController,

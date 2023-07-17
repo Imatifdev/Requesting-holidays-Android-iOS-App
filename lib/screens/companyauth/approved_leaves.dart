@@ -59,7 +59,7 @@ class _ApprovedLeavesState extends State<ApprovedLeaves> {
                                         "${leave.totalRequestLeave} Day of Application")),
                                 Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(leave.startDate.day.toString(),
+                                    child: Text(leave.startDate,
                                         style: TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.bold,

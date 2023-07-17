@@ -121,18 +121,18 @@ class _RequestLeaveState extends State<RequestLeave> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: appbar,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: appbar,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(
-              CupertinoIcons.left_chevron,
-              color: Colors.black,
-            )),
-      ),
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   backgroundColor: appbar,
+      //   leading: IconButton(
+      //       onPressed: () {
+      //         Navigator.of(context).pop();
+      //       },
+      //       icon: const Icon(
+      //         CupertinoIcons.left_chevron,
+      //         color: Colors.black,
+      //       )),
+      // ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: SizedBox(

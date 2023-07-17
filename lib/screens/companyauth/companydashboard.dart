@@ -9,6 +9,7 @@ import 'package:holidays/screens/companyauth/createnewemployee.dart';
 import 'package:holidays/screens/companyauth/profile.dart';
 import 'package:holidays/screens/companyauth/search_screen.dart';
 import 'package:holidays/screens/companyauth/showemployes.dart';
+import 'package:holidays/screens/companyauth/stripe_screen.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
 import 'package:holidays/widget/leave_req_card.dart';
 import 'package:provider/provider.dart';
@@ -37,8 +38,10 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
   List<CompanyLeaveRequest> pendingLeaves = [];
   List<CompanyLeaveRequest> approvedLeaves = [];
   List<CompanyLeaveRequest> rejectedLeaves = [];
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   int check = 0;
   int _currentIndex = 0;
+  bool currentStatus = false;
   final String imgurl = "https://jporter.ezeelogix.com/public/upload/logo/";
 
   Future<void> _getallLeaveRequest(String token, String id) async {
@@ -86,6 +89,35 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
     }
   }
 
+  Future<void> _getSubscriptionStatus(String token, String id) async {
+    final String requestLeaveUrl =
+        'https://jporter.ezeelogix.com/public/api/check-subscription-status';
+
+    final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    }, body: {
+      'company_id': id,
+    });
+    if (response.statusCode == 200) {
+      // Leave request successful
+      final jsonData = json.decode(response.body);
+      //print(jsonData);
+      // Handle success scenario
+      bool status =
+          jsonData["data"]["status"];
+      print("status: $status");
+      setState(() {
+        currentStatus = status;
+      });
+    } else {
+      print(response.statusCode);
+      // Error occurred
+      print('Error: ${response.reasonPhrase}');
+      // Handle error scenario
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final empViewModel = Provider.of<CompanyViewModel>(context);
@@ -94,12 +126,14 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
     final logoUrl = empViewModel.logoUrl;
     //print('${logoUrl}${user!.logo}'); // Get the logo URL
 
-    if (check == 0) {
+     
       WidgetsBinding.instance.addPostFrameCallback((_) {
+       if (check == 0){
         _getallLeaveRequest(token!, user!.id.toString());
+        check = 1;
+       }
+       _getSubscriptionStatus(token!, user!.id.toString());
       });
-      check = 1;
-    }
     final List<Widget> _pages = [
       AllApplications(
         pendingLeaves: pendingLeaves,
@@ -110,8 +144,43 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
       CompanyProfileView()
     ];
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         title: Text("Leave Requests"),
+      leading: IconButton(onPressed: (){
+        if(!currentStatus){
+          scaffoldKey.currentState?.openDrawer();
+        }else{
+          showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Access Denied'),
+        content: Text('You do not have access. Please buy our package to get access.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              // Action when Buy button is pressed
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => StripeScreen() ,));
+              // Add code here to navigate to the Buy screen or perform the desired action
+            },
+            child: Text('Buy'),
+          ),
+          TextButton(
+            onPressed: () {
+              // Action when Cancel button is pressed
+              Navigator.of(context).pop();
+              // Add code here to perform the desired action when Cancel is pressed
+            },
+            child: Text('Cancel'),
+          ),
+        ],
+      );
+    },
+  );
+        }
+         
+      }, icon: Icon(Icons.menu_rounded)),
       ),
       drawer: Drawer(
           child: ListView(padding: EdgeInsets.zero, children: [

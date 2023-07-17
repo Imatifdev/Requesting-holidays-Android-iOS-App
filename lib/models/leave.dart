@@ -3,8 +3,8 @@ class LeaveRequest {
   int employeeId;
 
   String leaveType;
-  DateTime startDate;
-  DateTime endDate;
+  String startDate;
+  String endDate;
   int totalRequestLeave;
   String comment;
   String status;
@@ -31,8 +31,8 @@ class LeaveRequest {
       id: json['id'],
       employeeId: json['employee_id'],
       leaveType: json['leave_type'],
-      startDate: DateTime.parse(json['start_date']),
-      endDate: DateTime.parse(json['end_date']),
+      startDate: (json['start_date']),
+      endDate: (json['end_date']),
       totalRequestLeave: json['total_request_leave'],
       comment: json['comment'],
       status: json['status'],

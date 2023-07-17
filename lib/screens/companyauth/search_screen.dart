@@ -375,9 +375,9 @@ class _SearchScreenState extends State<SearchScreen>
                                                             LeaveRequest leave =
                                                                 tomorrowLeaveRequests[
                                                                     index];
-                                                            Employee emp =
-                                                                empstatus[
-                                                                    index];
+                                                            // Employee emp =
+                                                            //     empstatus[
+                                                            //         index];
                                                             return LeaveRequestCard(
                                                               leave: leave,
                                                             );
@@ -397,9 +397,9 @@ class _SearchScreenState extends State<SearchScreen>
                                                             LeaveRequest leave =
                                                                 weekLeaveRequests[
                                                                     index];
-                                                            Employee emp =
-                                                                empstatus[
-                                                                    index];
+                                                            // Employee emp =
+                                                            //     empstatus[
+                                                            //         index];
 
                                                             return LeaveRequestCard(
                                                               leave: leave,
@@ -420,9 +420,9 @@ class _SearchScreenState extends State<SearchScreen>
                                                             LeaveRequest leave =
                                                                 monthLeaveRequests[
                                                                     index];
-                                                            Employee emp =
-                                                                empstatus[
-                                                                    index];
+                                                            // Employee emp =
+                                                            //     empstatus[
+                                                            //         index];
 
                                                             return LeaveRequestCard(
                                                               leave: leave,

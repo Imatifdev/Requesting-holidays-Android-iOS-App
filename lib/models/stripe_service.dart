@@ -17,7 +17,7 @@ class StripeService{
     productItems.forEach((val){
       var productPrice = (val["productPrice"]*100).round().toString();
       lineItems += "&line_items[$index][price_data][product_data][name]=${val["productName"]}&line_items[$index][price_data][unit_amount]=$productPrice";
-      lineItems += "&line_items[$index][price_data][currency]=EUR";
+      lineItems += "&line_items[$index][price_data][currency]=USD";
       lineItems += "&line_items[$index][quantity]=${val["qty"].toString()}";
       index++;
     });
