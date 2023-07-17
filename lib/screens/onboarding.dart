@@ -32,9 +32,39 @@ class _OnboardScreenState extends State<OnboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
 
-    final width = MediaQuery.of(context).size.width;
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 20;
+      heading = 30; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 28;
+
+      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 32;
+
+      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 36;
+
+      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 40;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     return Scaffold(
       backgroundColor: const Color.fromRGBO(236, 240, 243, 1),
       body: SafeArea(
@@ -42,7 +72,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: height / 1.4,
+              height: screenheight / 1.4,
               child: PageView.builder(
                 controller: _controller,
                 itemCount: contents.length,
@@ -59,30 +89,36 @@ class _OnboardScreenState extends State<OnboardScreen> {
                       children: [
                         Image.asset(
                           "assets/images/logo.png",
-                          height: 90,
+                          height: screenheight / 9,
                         ),
                         Image.asset(
                           contents[i].image,
-                          height: 330,
+                          height: screenheight / 2.3,
+                          width: screenWidth,
                         ),
-                        Text(
-                          contents[i].title,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w500,
+                        SizedBox(
+                          width: screenWidth,
+                          child: Text(
+                            contents[i].title,
+                            textAlign: TextAlign.center,
+                            softWrap: true,
+                            style: TextStyle(
+                              fontSize: heading,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 10,
+                        SizedBox(
+                          height: screenheight / 40,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
+                        SizedBox(
+                          width: screenWidth,
                           child: Text(
                             contents[i].discription,
                             textAlign: TextAlign.center,
+                            softWrap: true,
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: fontSize,
                               fontWeight: FontWeight.w400,
                               color: Color.fromARGB(255, 2, 2, 2),
                             ),
@@ -100,8 +136,9 @@ class _OnboardScreenState extends State<OnboardScreen> {
             //     child: Text('Enable Location'),
             //   ),
             // ),
-            const SizedBox(
-              height: 20,
+
+            SizedBox(
+              height: screenheight / 30,
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -113,25 +150,27 @@ class _OnboardScreenState extends State<OnboardScreen> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 30,
+            SizedBox(
+              height: screenheight / 30,
             ),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (ctx) => WelcomeScreen()));
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: red,
-                  padding: const EdgeInsets.fromLTRB(100, 20, 100, 20),
-                  shape: RoundedRectangleBorder(
-                      //to set border radius to button
-                      borderRadius: BorderRadius.circular(50)),
+            InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (ctx) => WelcomeScreen()));
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: red, borderRadius: BorderRadius.circular(10)),
+                height: screenheight / 15,
+                width: screenWidth - 100,
+                child: Center(
+                  child: Text(
+                    "Skip",
+                    style: TextStyle(color: Colors.white, fontSize: fontSize),
+                  ),
                 ),
-                child: const Text(
-                  "Skip",
-                  style: TextStyle(color: Colors.white),
-                ))
+              ),
+            ),
           ],
         ),
       ),

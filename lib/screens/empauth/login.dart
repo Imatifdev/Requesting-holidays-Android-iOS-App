@@ -110,6 +110,39 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 20;
+      heading = 30; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 28;
+
+      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 32;
+
+      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 36;
+
+      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 40;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -224,28 +257,54 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
                         },
                       )),
                   const SizedBox(height: 16.0),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: ElevatedButton(
-                      onPressed: () {
+                  InkWell(
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
                         final email = _emailController.text;
                         final password = _passwordController.text;
 
                         Provider.of<EmpViewModel>(context, listen: false)
                             .performLogin(email, password, context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: red,
-                        padding: EdgeInsets.fromLTRB(100, 20, 100, 20),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                      child: Text(
-                        'Sign In',
-                        style: TextStyle(color: Colors.white),
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: red, borderRadius: BorderRadius.circular(10)),
+                      height: screenheight / 15,
+                      width: screenWidth - 100,
+                      child: Center(
+                        child: Text(
+                          "Sign In",
+                          style: TextStyle(
+                              color: Colors.white, fontSize: fontSize),
+                        ),
                       ),
                     ),
                   ),
+                  // Padding(
+                  //   padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  //   child: ElevatedButton(
+                  //     onPressed: () {
+                  //       if (_formKey.currentState!.validate()) {
+                  //         final email = _emailController.text;
+                  //         final password = _passwordController.text;
+
+                  //         Provider.of<EmpViewModel>(context, listen: false)
+                  //             .performLogin(email, password, context);
+                  //       }
+                  //     },
+                  //     style: ElevatedButton.styleFrom(
+                  //       backgroundColor: red,
+                  //       padding: EdgeInsets.fromLTRB(100, 20, 100, 20),
+                  //       shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(10)),
+                  //     ),
+                  //     child: Text(
+                  //       'Sign In',
+                  //       style: TextStyle(color: Colors.white),
+                  //     ),
+                  //   ),
+                  // ),
                   const SizedBox(height: 16.0),
                   TextButton(
                     onPressed: () {

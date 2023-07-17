@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, prefer_const_constructors
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:holidays/screens/companyauth/companyLogin.dart';
@@ -92,6 +93,7 @@ class _EmployeeForgotPasswordScreenState
   //     print(response.body);
   //   }
   // }
+  final _formKey = GlobalKey<FormState>();
 
   final String baseUrl = 'https://jporter.ezeelogix.com/public/api';
   final String resendOtpEndpoint = '/resend-otp';
@@ -138,7 +140,6 @@ class _EmployeeForgotPasswordScreenState
     if (response.statusCode == 200) {
       print(response.statusCode);
       print(response.body);
-      Fluttertoast.showToast(msg: 'Password Reset Successfully');
 
       final responseData = jsonDecode(response.body);
 
@@ -159,6 +160,7 @@ class _EmployeeForgotPasswordScreenState
         setState(() {
           _isOTPSuccessful = true;
         });
+        Fluttertoast.showToast(msg: 'Password Reset Successfully');
 
         // Navigate to the desired screen
         Navigator.push(
@@ -174,18 +176,59 @@ class _EmployeeForgotPasswordScreenState
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 20;
+      heading = 30; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 26;
+
+      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 28;
+
+      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 36;
+
+      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 40;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: red,
-        title: Text('Reset Password'),
+        iconTheme: IconThemeData(color: red),
+        elevation: 0,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              CupertinoIcons.left_chevron,
+              size: 34,
+            )),
+        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 16.0),
+            //SizedBox(height: screenheight / 30),
             // if (!_isOTPSent)
             //   ElevatedButton(
             //     style: ElevatedButton.styleFrom(
@@ -196,19 +239,51 @@ class _EmployeeForgotPasswordScreenState
             //   ),
             Column(
               children: [
-                TextField(
-                  keyboardType: TextInputType.number,
-                  maxLength: 4,
-                  controller: _otpController,
-                  decoration: InputDecoration(
-                    labelText: 'OTP',
+                SizedBox(
+                  width: screenWidth,
+                  child: Text(
+                    "Reset Your Password",
+                    softWrap: true,
+                    style: TextStyle(fontSize: title),
                   ),
                 ),
+                SizedBox(
+                  height: 24,
+                ),
+                TextFormField(
+                  controller: _otpController,
+                  maxLength: 4,
+                  decoration: InputDecoration(
+                    hintText: "OTP",
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xffeceff6),
+                    contentPadding: const EdgeInsets.all(8),
+                    hintStyle: TextStyle(color: Colors.grey.shade400),
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
                 SizedBox(height: 16.0),
-                TextField(
+
+                TextFormField(
                   controller: _passwordController,
                   decoration: InputDecoration(
-                    labelText: 'New Password',
                     suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
@@ -221,12 +296,35 @@ class _EmployeeForgotPasswordScreenState
                             : Icons.visibility_off,
                       ),
                     ),
+                    hintText: "New Password",
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xffeceff6),
+                    contentPadding: const EdgeInsets.all(8),
+                    hintStyle: TextStyle(color: Colors.grey.shade400),
                   ),
+                  keyboardType: TextInputType.visiblePassword,
                   obscureText: !_isPasswordVisible,
                 ),
                 SizedBox(height: 16.0),
-                TextField(
-                  obscureText: !_isPasswordVisible,
+
+                TextFormField(
                   controller: _confirmPasswordController,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
@@ -241,15 +339,84 @@ class _EmployeeForgotPasswordScreenState
                             : Icons.visibility_off,
                       ),
                     ),
-                    labelText: 'Confirm Password',
+                    hintText: "Confirm Password",
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xffeceff6),
+                    contentPadding: const EdgeInsets.all(8),
+                    hintStyle: TextStyle(color: Colors.grey.shade400),
                   ),
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: !_isPasswordVisible,
                 ),
+                // TextField(
+                //   keyboardType: TextInputType.number,
+                //   maxLength: 4,
+                //   controller: _otpController,
+                //   decoration: InputDecoration(
+                //     labelText: 'OTP',
+                //   ),
+                // ),
+                // SizedBox(height: 16.0),
+                // // TextField(
+                // //   controller: _passwordController,
+                // //   decoration: InputDecoration(
+                // //     labelText: 'New Password',
+                // //     suffixIcon: IconButton(
+                // //       onPressed: () {
+                // //         setState(() {
+                // //           _isPasswordVisible = !_isPasswordVisible;
+                // //         });
+                // //       },
+                // //       icon: Icon(
+                // //         _isPasswordVisible
+                // //             ? Icons.visibility
+                // //             : Icons.visibility_off,
+                // //       ),
+                // //     ),
+                // //   ),
+                // //   obscureText: !_isPasswordVisible,
+                // // ),
+                // SizedBox(height: 16.0),
+                // TextField(
+                //   obscureText: !_isPasswordVisible,
+                //   controller: _confirmPasswordController,
+                //   decoration: InputDecoration(
+                //     suffixIcon: IconButton(
+                //       onPressed: () {
+                //         setState(() {
+                //           _isPasswordVisible = !_isPasswordVisible;
+                //         });
+                //       },
+                //       icon: Icon(
+                //         _isPasswordVisible
+                //             ? Icons.visibility
+                //             : Icons.visibility_off,
+                //       ),
+                //     ),
+                //     labelText: 'Confirm Password',
+                //   ),
+                // ),
                 SizedBox(height: 16.0),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: red,
-                  ),
-                  onPressed: () {
+                Center(
+                    child: InkWell(
+                  onTap: () {
                     if (_passwordController.text ==
                         _confirmPasswordController.text) {
                       _resetPass();
@@ -265,8 +432,42 @@ class _EmployeeForgotPasswordScreenState
                       );
                     }
                   },
-                  child: Text('Reset Password'),
-                ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: red, borderRadius: BorderRadius.circular(10)),
+                    height: screenheight / 15,
+                    width: screenWidth - 100,
+                    child: Center(
+                      child: Text(
+                        "Reset Password",
+                        style:
+                            TextStyle(color: Colors.white, fontSize: fontSize),
+                      ),
+                    ),
+                  ),
+                )),
+                // ElevatedButton(
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: red,
+                //   ),
+                //   onPressed: () {
+                //     if (_passwordController.text ==
+                //         _confirmPasswordController.text) {
+                //       _resetPass();
+                //     } else {
+                //       Fluttertoast.showToast(
+                //         msg: 'Password do not match ',
+                //         toastLength: Toast.LENGTH_SHORT,
+                //         gravity: ToastGravity.BOTTOM,
+                //         timeInSecForIosWeb: 1,
+                //         backgroundColor: Colors.red,
+                //         textColor: Colors.white,
+                //         fontSize: 16.0,
+                //       );
+                //     }
+                //   },
+                //   child: Text('Reset Password'),
+                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

@@ -15,6 +15,36 @@ class LeaveRequestCard extends StatelessWidget {
   });
 
   void popUp(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 13;
+      heading = 30; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 16;
+
+      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 18;
+
+      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 20;
+
+      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 20;
+
+      heading = 30; // Extra large screen or unknown device
+    }
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -22,15 +52,15 @@ class LeaveRequestCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               content: SizedBox(
-                height: 200,
-                width: 300,
+                height: screenheight / 3,
+                width: screenWidth - 50,
                 child: Column(
                   children: [
-                    const Text(
+                    Text(
                       'Leave Request Details',
                       style: TextStyle(
                           color: red,
-                          fontSize: 18,
+                          fontSize: title,
                           fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(
@@ -39,10 +69,10 @@ class LeaveRequestCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          "Leave Type",
+                        Text(
+                          "Leave Type:",
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
+                              fontSize: fontSize, fontWeight: FontWeight.bold),
                         ),
                         Text(leave.leaveType),
                       ],
@@ -50,10 +80,10 @@ class LeaveRequestCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          "Leave Status",
+                        Text(
+                          "Leave Status:",
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
+                              fontSize: fontSize, fontWeight: FontWeight.bold),
                         ),
                         Text(leave.leaveCurrentStatus),
                       ],
@@ -61,46 +91,60 @@ class LeaveRequestCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          "From",
+                        Text(
+                          "From:",
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
+                              fontSize: fontSize, fontWeight: FontWeight.bold),
                         ),
-                        Text(leave.startDate.toString()),
+                        Text(leave.startDate.toString(),
+                            style: TextStyle(fontSize: fontSize)),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          "To",
+                        Text(
+                          "To:",
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
+                              fontSize: fontSize, fontWeight: FontWeight.bold),
                         ),
-                        Text(leave.endDate.toString()),
+                        Text(leave.endDate.toString(),
+                            style: TextStyle(fontSize: fontSize)),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          "Total Leave Days",
+                        Text(
+                          "Total Leave Days:",
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
+                              fontSize: fontSize, fontWeight: FontWeight.bold),
                         ),
-                        Text(leave.totalRequestLeave.toString()),
+                        Text(leave.totalRequestLeave.toString(),
+                            style: TextStyle(fontSize: fontSize)),
                       ],
+                    ),
+                    Divider(
+                      color: Colors.grey,
+                      thickness: 0.5,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           "Comment",
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
+                              fontSize: fontSize, fontWeight: FontWeight.bold),
                         ),
-                        Text(leave.comment),
                       ],
+                    ),
+                    SizedBox(
+                      width: screenWidth - 20,
+                      child: Text(
+                        leave.comment,
+                        softWrap: true,
+                        style: TextStyle(fontSize: fontSize),
+                      ),
                     ),
                   ],
                 ),
@@ -110,8 +154,40 @@ class LeaveRequestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 13;
+      heading = 30; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 14;
+
+      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 16;
+
+      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 17;
+
+      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 19;
+
+      heading = 30; // Extra large screen or unknown device
+    }
     return Padding(
-      padding: const EdgeInsets.all(5.0),
+      padding: EdgeInsets.all(5.0),
       child: InkWell(
         onTap: () {
           popUp(context);
@@ -142,36 +218,71 @@ class LeaveRequestCard extends StatelessWidget {
                             leave.totalRequestLeave > 1
                                 ? '${leave.totalRequestLeave} days Application '
                                 : '${leave.totalRequestLeave} day Application ',
-                            style: const TextStyle(
-                                fontSize: 16,
+                            style: TextStyle(
+                                fontSize: title,
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold),
                           ),
-                          Container(
-                            height: 35,
-                            width: 80,
-                            decoration: BoxDecoration(
-                                color: leave.leaveCurrentStatus == 'Rejected'
-                                    ? Colors.red.shade100
-                                    : Colors.green.shade100,
-                                // border: Border.all(
-                                //   color: leave.leaveCurrentStatus == 'Rejected'
-                                //       ? Colors.red
-                                //       : Colors.green,
-                                // ),
-                                borderRadius: BorderRadius.circular(5)),
-                            child: Center(
-                                child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(leave.leaveCurrentStatus,
-                                  style: TextStyle(
-                                      color:
-                                          leave.leaveCurrentStatus == 'Rejected'
-                                              ? Colors.red
-                                              : Colors.green,
-                                      fontSize: 12)),
-                            )),
-                          )
+                          if (leave.leaveCurrentStatus == 'Rejected')
+                            Container(
+                              height: screenheight / 26.5,
+                              width: screenWidth / 4.5,
+                              decoration: BoxDecoration(
+                                  color: Colors.red.shade100,
+                                  // border: Border.all(
+                                  //   color: leave.leaveCurrentStatus == 'Rejected'
+                                  //       ? Colors.red
+                                  //       : Colors.green,
+                                  // ),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Center(
+                                  child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(leave.leaveCurrentStatus,
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 12)),
+                              )),
+                            ),
+                          if (leave.leaveCurrentStatus == 'Accepted')
+                            Container(
+                              height: screenheight / 26.5,
+                              width: screenWidth / 4.5,
+                              decoration: BoxDecoration(
+                                  color: Colors.green.shade100,
+                                  // border: Border.all(
+                                  //   color: leave.leaveCurrentStatus == 'Rejected'
+                                  //       ? Colors.red
+                                  //       : Colors.green,
+                                  // ),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Center(
+                                  child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(leave.leaveCurrentStatus,
+                                    style: TextStyle(
+                                        color: Colors.green, fontSize: 12)),
+                              )),
+                            ),
+                          if (leave.leaveCurrentStatus == 'Pending')
+                            Container(
+                              height: screenheight / 26.5,
+                              width: screenWidth / 4.5,
+                              decoration: BoxDecoration(
+                                  color: Colors.yellow.shade200,
+                                  // border: Border.all(
+                                  //   color: leave.leaveCurrentStatus == 'Rejected'
+                                  //       ? Colors.red
+                                  //       : Colors.green,
+                                  // ),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Center(
+                                  child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(leave.leaveCurrentStatus,
+                                    style: TextStyle(
+                                        color: Colors.orange, fontSize: 12)),
+                              )),
+                            )
                         ],
                       ),
                       Row(
@@ -179,14 +290,14 @@ class LeaveRequestCard extends StatelessWidget {
                           Text(
                             '${leave.startDate} to ',
                             style: TextStyle(
-                                fontSize: 17,
+                                fontSize: fontSize,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
                           ),
                           Text(
                             '${leave.endDate}',
                             style: TextStyle(
-                                fontSize: 18,
+                                fontSize: fontSize,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
                           ),
@@ -195,15 +306,54 @@ class LeaveRequestCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            leave.leaveType,
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: leave.leaveType == 'Compassionate'
-                                    ? Colors.red
-                                    : Colors.blue,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          if (leave.leaveType == 'Compasionate' ||
+                              leave.leaveType == 'compasionate' ||
+                              leave.leaveType == 'Compassionate' ||
+                              leave.leaveType == 'compassionate')
+                            Text(
+                              "Compassionate",
+                              style: TextStyle(
+                                  fontSize: fontSize,
+                                  color: leave.leaveType == 'Compassionate'
+                                      ? Colors.red
+                                      : Colors.blue,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          if (leave.leaveType == 'full day' ||
+                              leave.leaveType == 'Full Day')
+                            Text(
+                              "Full Day",
+                              style: TextStyle(
+                                  fontSize: fontSize,
+                                  color: leave.leaveType == 'compassionate'
+                                      ? Colors.red
+                                      : Colors.blue,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          if (leave.leaveType == 'half day' ||
+                              leave.leaveType == 'Half Day')
+                            Text(
+                              "Half Day",
+                              style: TextStyle(
+                                  fontSize: fontSize,
+                                  color: leave.leaveType == 'Compassionate'
+                                      ? Colors.red
+                                      : Colors.blue,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          if (leave.leaveType == 'Lieu' ||
+                              leave.leaveType == 'lieu')
+                            Text(
+                              "Liue",
+                              style: TextStyle(
+                                  fontSize: fontSize,
+                                  color: leave.leaveType == 'Lieu' ||
+                                          leave.leaveType == 'lieu'
+                                      ? Colors.blue
+                                      : Colors.red,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          //   Text(leave.leaveType),
                           Container(
                             height: 30,
                             width: 30,

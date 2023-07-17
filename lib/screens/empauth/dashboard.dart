@@ -150,6 +150,38 @@ class _LeaveScreenState extends State<LeaveScreen>
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 22;
+      heading = 30; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 24;
+
+      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 28;
+
+      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 30;
+
+      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 34;
+
+      heading = 30; // Extra large screen or unknown device
+    }
     final empViewModel = Provider.of<EmpViewModel>(context);
     //final user = empViewModel.user;
     final token = empViewModel.token;
@@ -167,7 +199,17 @@ class _LeaveScreenState extends State<LeaveScreen>
     }
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: red),
         backgroundColor: Colors.white,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              CupertinoIcons.left_chevron,
+              size: 34,
+            )),
+
         // leading: IconButton(
         //   icon: Icon(
         //     CupertinoIcons.profile_circled,
@@ -189,8 +231,8 @@ class _LeaveScreenState extends State<LeaveScreen>
                   children: [
                     Text(
                       "Leaves",
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: title, fontWeight: FontWeight.bold),
                     ),
                     // ElevatedButton(
                     //     onPressed: () {
@@ -208,9 +250,9 @@ class _LeaveScreenState extends State<LeaveScreen>
                       child: Container(
                         decoration: BoxDecoration(
                             color: red,
-                            borderRadius: BorderRadius.circular(10)),
-                        height: 30,
-                        width: 30,
+                            borderRadius: BorderRadius.circular(05)),
+                        height: screenheight / 20,
+                        width: screenWidth / 10,
                         child: Icon(
                           Icons.add,
                           color: Colors.white,
@@ -227,58 +269,22 @@ class _LeaveScreenState extends State<LeaveScreen>
                 controller: _tabController,
                 indicatorColor: Colors.white,
                 tabs: [
-                  Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14)),
-                    elevation: 5,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(14)),
-                      height: height / 20,
-                      width: width,
-                      child: Center(
-                        child: Text(
-                          "All",
-                          style: TextStyle(color: Colors.red, fontSize: 18),
-                        ),
-                      ),
+                  Center(
+                    child: Text(
+                      "All",
+                      style: TextStyle(color: Colors.red, fontSize: fontSize),
                     ),
                   ),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14)),
-                    elevation: 5,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(14)),
-                      height: height / 20,
-                      width: width,
-                      child: Center(
-                        child: Text(
-                          "Compasionate",
-                          style: TextStyle(color: Colors.red, fontSize: 11),
-                        ),
-                      ),
+                  Center(
+                    child: Text(
+                      "Compas..",
+                      style: TextStyle(color: Colors.red, fontSize: fontSize),
                     ),
                   ),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14)),
-                    elevation: 5,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(14)),
-                      height: height / 20,
-                      width: width,
-                      child: Center(
-                        child: Text(
-                          "Liue",
-                          style: TextStyle(color: Colors.red, fontSize: 18),
-                        ),
-                      ),
+                  Center(
+                    child: Text(
+                      "Liue",
+                      style: TextStyle(color: Colors.red, fontSize: fontSize),
                     ),
                   ),
                   // Tab(

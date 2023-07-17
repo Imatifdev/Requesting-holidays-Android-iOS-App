@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:holidays/screens/empauth/pending_leaves.dart';
 import 'package:holidays/screens/empauth/rejected_leaves_screen.dart';
@@ -21,6 +23,45 @@ class _HomeScreenState extends State<HomeScreen> {
     Size size = MediaQuery.of(context).size;
     final empViewModel = Provider.of<EmpViewModel>(context);
     final user = empViewModel.user;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+    double para;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 20;
+      heading = 30;
+      para = 12; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 20;
+      para = 13; // Small screen (e.g., iPhone 4S)
+
+      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 21;
+      para = 15; // Small screen (e.g., iPhone 4S)
+
+      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 23;
+      para = 16; // Small screen (e.g., iPhone 4S)
+
+      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 40;
+      para = 17; // Small screen (e.g., iPhone 4S)
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     return SafeArea(
       child: SizedBox(
         width: size.width,
@@ -29,15 +70,16 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Card(
+              Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "Home",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: fontSize),
                       ),
                     ],
                   ),
@@ -51,22 +93,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Text(
                           "Hi ${user!.firstName}",
-                          style: const TextStyle(
-                            fontSize: 20,
+                          style: TextStyle(
+                            fontSize: title,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
-                    const Row(
-                      children: [
-                        Text(
-                          "Good Morning",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
+                    SizedBox(
                       height: 10,
                     ),
                     SizedBox(
@@ -78,11 +112,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Padding(
+                              Padding(
                                 padding: EdgeInsets.only(left: 8.0),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -92,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       "Welcome",
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: title,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
                                       ),
@@ -100,7 +134,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Text(
                                       "View all your leaves\nand request more",
                                       textAlign: TextAlign.left,
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: para),
                                     ),
                                   ],
                                 ),
@@ -108,14 +143,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               Image.asset(
                                 "assets/images/holiday.png",
                                 color: Colors.white,
+                                width: screenWidth / 3,
+                                height: screenheight / 8,
                               ),
                             ],
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    const Row(
+                    SizedBox(height: 20),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Column(
@@ -124,16 +161,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text(
                               "Holiday Entitlements Requests",
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: title,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Text("View all your requested leaves status"),
+                            Text("View all your requested leaves status",
+                                style: TextStyle(
+                                  fontSize: para,
+                                )),
                           ],
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -150,18 +190,21 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: red,
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            child: const Column(
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
                                   Icons.list_alt_outlined,
-                                  size: 50,
+                                  size: 60,
                                   color: Colors.white,
+                                ),
+                                SizedBox(
+                                  height: screenheight / 90,
                                 ),
                                 Text(
                                   "All Leaves",
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: fontSize,
                                     color: Colors.white,
                                   ),
                                 ),
@@ -172,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         InkWell(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const PendingLeavesScreen(),
+                              builder: (context) => PendingLeavesScreen(),
                             ));
                           },
                           child: Container(
@@ -182,18 +225,21 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: red,
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            child: const Column(
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
                                   Icons.pending_actions_rounded,
-                                  size: 50,
+                                  size: 60,
                                   color: Colors.white,
+                                ),
+                                SizedBox(
+                                  height: screenheight / 90,
                                 ),
                                 Text(
                                   "Pending Leaves",
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: fontSize,
                                     color: Colors.white,
                                   ),
                                 ),
@@ -222,18 +268,21 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: red,
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            child: const Column(
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
                                   Icons.check_circle_outline,
-                                  size: 50,
+                                  size: 60,
                                   color: Colors.white,
+                                ),
+                                SizedBox(
+                                  height: screenheight / 90,
                                 ),
                                 Text(
                                   "Approved Leaves",
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: fontSize,
                                     color: Colors.white,
                                   ),
                                 ),
@@ -254,7 +303,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: red,
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            child: const Column(
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
@@ -262,10 +311,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   size: 50,
                                   color: Colors.white,
                                 ),
+                                SizedBox(
+                                  height: screenheight / 90,
+                                ),
                                 Text(
                                   "Rejected Leaves",
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: fontSize,
                                     color: Colors.white,
                                   ),
                                 ),
