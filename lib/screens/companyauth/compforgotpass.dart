@@ -179,6 +179,39 @@ class _CompanyResetPasswordScreenState
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 20;
+      heading = 30; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 26;
+
+      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 28;
+
+      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 36;
+
+      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 40;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: red,
@@ -187,8 +220,6 @@ class _CompanyResetPasswordScreenState
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(height: 16.0),
             // if (!_isOTPSent)
@@ -201,19 +232,39 @@ class _CompanyResetPasswordScreenState
             //   ),
             Column(
               children: [
-                TextField(
-                  keyboardType: TextInputType.number,
-                  maxLength: 4,
+                TextFormField(
                   controller: _otpController,
+                  maxLength: 4,
                   decoration: InputDecoration(
-                    labelText: 'OTP',
+                    hintText: "OTP",
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xffeceff6),
+                    contentPadding: const EdgeInsets.all(8),
+                    hintStyle: TextStyle(color: Colors.grey.shade400),
                   ),
+                  keyboardType: TextInputType.number,
                 ),
                 SizedBox(height: 16.0),
                 TextField(
                   controller: _passwordController,
                   decoration: InputDecoration(
-                    labelText: 'New Password',
                     suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
@@ -226,12 +277,34 @@ class _CompanyResetPasswordScreenState
                             : Icons.visibility_off,
                       ),
                     ),
+                    hintText: "Confirm Password",
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xffeceff6),
+                    contentPadding: const EdgeInsets.all(8),
+                    hintStyle: TextStyle(color: Colors.grey.shade400),
                   ),
+                  keyboardType: TextInputType.visiblePassword,
                   obscureText: !_isPasswordVisible,
                 ),
                 SizedBox(height: 16.0),
-                TextField(
-                  obscureText: !_isPasswordVisible,
+                TextFormField(
                   controller: _confirmPasswordController,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
@@ -246,36 +319,92 @@ class _CompanyResetPasswordScreenState
                             : Icons.visibility_off,
                       ),
                     ),
-                    labelText: 'Confirm Password',
+                    hintText: "Confirm Password",
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xffeceff6),
+                    contentPadding: const EdgeInsets.all(8),
+                    hintStyle: TextStyle(color: Colors.grey.shade400),
                   ),
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: !_isPasswordVisible,
                 ),
                 SizedBox(height: 16.0),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: red,
-                  ),
-                  onPressed: () {
+                // ElevatedButton(
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: red,
+                //   ),
+                //   onPressed: () {
+                //     if (_passwordController.text ==
+                //         _confirmPasswordController.text) {
+                //       _resetPass();
+                //     } else {
+                //       showDialog(
+                //         context: context,
+                //         builder: (context) => AlertDialog(
+                //           title: Text('Error'),
+                //           content: Text('Passwords do not match.'),
+                //           actions: [
+                //             TextButton(
+                //               onPressed: () => Navigator.pop(context),
+                //               child: Text('OK'),
+                //             ),
+                //           ],
+                //         ),
+                //       );
+                //     }
+                //   },
+                //   child: Text('Reset Password'),
+                // ),
+                Center(
+                    child: InkWell(
+                  onTap: () {
                     if (_passwordController.text ==
                         _confirmPasswordController.text) {
                       _resetPass();
                     } else {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: Text('Error'),
-                          content: Text('Passwords do not match.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text('OK'),
-                            ),
-                          ],
-                        ),
+                      Fluttertoast.showToast(
+                        msg: 'Password do not match ',
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0,
                       );
                     }
                   },
-                  child: Text('Reset Password'),
-                ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: red, borderRadius: BorderRadius.circular(10)),
+                    height: screenheight / 15,
+                    width: screenWidth - 100,
+                    child: Center(
+                      child: Text(
+                        "Reset Password",
+                        style:
+                            TextStyle(color: Colors.white, fontSize: fontSize),
+                      ),
+                    ),
+                  ),
+                )),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

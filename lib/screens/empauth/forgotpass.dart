@@ -222,6 +222,7 @@ class _EmpForgitPasswordState extends State<EmpForgitPassword> {
           child: Form(
             key: formGlobalKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
                   height: 20,

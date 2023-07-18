@@ -237,7 +237,7 @@ class LeaveRequestCard extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(5)),
                               child: Center(
                                   child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(0),
                                 child: Text(leave.leaveCurrentStatus,
                                     style: TextStyle(
                                         color: Colors.red, fontSize: 12)),
@@ -257,7 +257,7 @@ class LeaveRequestCard extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(5)),
                               child: Center(
                                   child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(0),
                                 child: Text(leave.leaveCurrentStatus,
                                     style: TextStyle(
                                         color: Colors.green, fontSize: 12)),

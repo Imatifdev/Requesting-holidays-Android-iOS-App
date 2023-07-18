@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:holidays/screens/companyauth/compforgotpass.dart';
@@ -178,22 +179,68 @@ class _CompanyForgitPasswordState extends State<CompanyForgitPassword> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 20;
+      heading = 30; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 20;
+
+      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 22;
+
+      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 28;
+
+      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 34;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: red),
+        elevation: 0,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              CupertinoIcons.left_chevron,
+              size: 34,
+            )),
+        backgroundColor: Colors.white,
+      ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: SingleChildScrollView(
           child: Form(
             key: formGlobalKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 300,
+                  height: 20,
                 ),
-                const Text(
+                Text(
                   "Forgot Your Password",
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: title),
                 ),
                 const SizedBox(
                   height: 20,
@@ -209,30 +256,50 @@ class _CompanyForgitPasswordState extends State<CompanyForgitPassword> {
                     },
                     textEditingController: _email,
                     hintText: "Enter Your Email",
-                    textInputType: TextInputType.visiblePassword),
+                    textInputType: TextInputType.emailAddress),
                 const SizedBox(
                   height: 30,
                 ),
-                MyCustomButton(
-                    buttontextcolr: Colors.white,
-                    title: "Send Forgot Pass Request",
-                    borderrad: 25,
-                    onaction: () {
+                Center(
+                  child: InkWell(
+                    onTap: () {
                       _forgotpass1(_email.text);
-                      // if (formGlobalKey.currentState!.validate()) {
-                      //   _showetoast("Details Send to your email");
-                      //   Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //           builder: (ctx) => ForgotPasswordScreen(
-                      //                 email: _email.text,
-                      //               )));
-                      // } else
-                      //   _showetoast("Please a valid email address");
                     },
-                    color1: red,
-                    color2: red,
-                    width: MediaQuery.of(context).size.width - 50),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: red, borderRadius: BorderRadius.circular(10)),
+                      height: screenheight / 15,
+                      width: screenWidth - 100,
+                      child: Center(
+                        child: Text(
+                          "Submit",
+                          style: TextStyle(
+                              color: Colors.white, fontSize: fontSize),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                // MyCustomButton(
+                //     buttontextcolr: Colors.white,
+                //     title: "Send Forgot Pass Request",
+                //     borderrad: 25,
+                //     onaction: () {
+                //       _forgotpass1(_email.text);
+                //       // if (formGlobalKey.currentState!.validate()) {
+                //       //   _showetoast("Details Send to your email");
+                //       //   Navigator.push(
+                //       //       context,
+                //       //       MaterialPageRoute(
+                //       //           builder: (ctx) => ForgotPasswordScreen(
+                //       //                 email: _email.text,
+                //       //               )));
+                //       // } else
+                //       //   _showetoast("Please a valid email address");
+                //     },
+                //     color1: red,
+                //     color2: red,
+                //     width: MediaQuery.of(context).size.width - 50),
               ],
             ),
           ),

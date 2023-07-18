@@ -62,8 +62,9 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
       List<dynamic> requestedLeaves =
           jsonData["data"]["employee_requested_leaves"];
       setState(() {
-        leaves =
-            requestedLeaves.map((json) => CompanyLeaveRequest.fromJson(json)).toList();
+        leaves = requestedLeaves
+            .map((json) => CompanyLeaveRequest.fromJson(json))
+            .toList();
         for (CompanyLeaveRequest leave in leaves) {
           if (leave.leaveCurrentStatus == "Pending") {
             pendingLeaves.add(leave);
@@ -104,8 +105,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
       final jsonData = json.decode(response.body);
       //print(jsonData);
       // Handle success scenario
-      bool status =
-          jsonData["data"]["status"];
+      bool status = jsonData["data"]["status"];
       print("status: $status");
       setState(() {
         currentStatus = status;
@@ -126,14 +126,13 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
     final logoUrl = empViewModel.logoUrl;
     //print('${logoUrl}${user!.logo}'); // Get the logo URL
 
-     
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-       if (check == 0){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (check == 0) {
         _getallLeaveRequest(token!, user!.id.toString());
         check = 1;
-       }
-       _getSubscriptionStatus(token!, user!.id.toString());
-      });
+      }
+      _getSubscriptionStatus(token!, user!.id.toString());
+    });
     final List<Widget> _pages = [
       AllApplications(
         pendingLeaves: pendingLeaves,
@@ -147,40 +146,44 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
       key: scaffoldKey,
       appBar: AppBar(
         title: Text("Leave Requests"),
-      leading: IconButton(onPressed: (){
-        if(currentStatus){
-          scaffoldKey.currentState?.openDrawer();
-        }else{
-          showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Access Denied'),
-        content: Text('You do not have access. Please buy our package to get access.'),
-        actions: [
-          TextButton(
+        leading: IconButton(
             onPressed: () {
-              // Action when Buy button is pressed
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => StripeScreen() ,));
-              // Add code here to navigate to the Buy screen or perform the desired action
+              if (!currentStatus) {
+                scaffoldKey.currentState?.openDrawer();
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Access Denied'),
+                      content: Text(
+                          'You do not have access. Please buy our package to get access.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            // Action when Buy button is pressed
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => StripeScreen(),
+                            ));
+                            // Add code here to navigate to the Buy screen or perform the desired action
+                          },
+                          child: Text('Buy'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            // Action when Cancel button is pressed
+                            Navigator.of(context).pop();
+                            // Add code here to perform the desired action when Cancel is pressed
+                          },
+                          child: Text('Cancel'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
             },
-            child: Text('Buy'),
-          ),
-          TextButton(
-            onPressed: () {
-              // Action when Cancel button is pressed
-              Navigator.of(context).pop();
-              // Add code here to perform the desired action when Cancel is pressed
-            },
-            child: Text('Cancel'),
-          ),
-        ],
-      );
-    },
-  );
-        }
-         
-      }, icon: Icon(Icons.menu_rounded)),
+            icon: Icon(Icons.menu_rounded)),
       ),
       drawer: Drawer(
           child: ListView(padding: EdgeInsets.zero, children: [
@@ -395,8 +398,8 @@ class AllApplications extends StatefulWidget {
 }
 
 class _AllApplicationsState extends State<AllApplications> {
-  void _changeLeaveStatus(
-      String token, int companyId, int status, CompanyLeaveRequest leave) async {
+  void _changeLeaveStatus(String token, int companyId, int status,
+      CompanyLeaveRequest leave) async {
     final String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/company-change-leave-request-status';
 
@@ -429,6 +432,39 @@ class _AllApplicationsState extends State<AllApplications> {
     final companyViewModel = Provider.of<CompanyViewModel>(context);
     final user = companyViewModel.user;
     final companyId = user!.id;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 13;
+      heading = 10; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 14;
+
+      heading = 12; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 16;
+
+      heading = 14; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 17;
+
+      heading = 18; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 19;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -473,129 +509,162 @@ class _AllApplicationsState extends State<AllApplications> {
                     CompanyLeaveRequest leave = widget.pendingLeaves[index];
                     return Padding(
                       padding: const EdgeInsets.all(13.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              width: 1,
-                              color: Colors.grey,
-                            )),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '${leave.totalRequestLeave} day Application ',
-                                        style: const TextStyle(
-                                            fontSize: 14, color: Colors.grey),
-                                      ),
-                                    ],
-                                  ),
-                                  Text(leave.employee.firstName),
-                                  Text(
-                                    'From: ${leave.startDate}',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color:
-                                            leave.leaveType == 'Compassionate'
-                                                ? Colors.red
-                                                : Colors.blue),
-                                  ),
-                                  const SizedBox(
-                                    height: 05,
-                                  ),
-                                  Text(
-                                    'To: ${leave.endDate},',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color:
-                                            leave.leaveType == 'Compassionate'
-                                                ? Colors.red
-                                                : Colors.blue,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        leave.leaveType,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Column(
+                      child: InkWell(
+                        onTap: () {},
+                        child: Card(
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0)),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  width: 1,
+                                  color: Colors.grey,
+                                )),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  InkWell(
-                                    onTap: () {
-                                      _changeLeaveStatus(
-                                          token!, companyId, 1, leave);
-                                      setState(() {
-                                        widget.pendingLeaves.removeWhere(
-                                            (leavez) => leavez.id == leave.id);
-                                      });
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.green,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      child: Center(
-                                          child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text("Approve",
-                                            style:
-                                                TextStyle(color: Colors.white)),
-                                      )),
-                                    ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            leave.totalRequestLeave > 1
+                                                ? '${leave.totalRequestLeave} days Application '
+                                                : '${leave.totalRequestLeave} day Application ',
+                                            style: TextStyle(
+                                                fontSize: title,
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        leave.employee.firstName,
+                                        style: TextStyle(
+                                            fontSize: title,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'From:-${leave.startDate}',
+                                            style: TextStyle(
+                                                fontSize: fontSize,
+                                                color: Colors.black),
+                                          ),
+                                          Text(
+                                            'To:-${leave.endDate}',
+                                            style: TextStyle(
+                                                fontSize: fontSize,
+                                                color: Colors.black),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Type: ${leave.leaveType}',
+                                            style: TextStyle(
+                                              fontSize: fontSize,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(
-                                    height: 30,
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      _changeLeaveStatus(
-                                          token!, companyId, 2, leave);
-                                      setState(() {
-                                        widget.pendingLeaves.removeWhere(
-                                            (leavez) => leavez.id == leave.id);
-                                      });
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.red,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      child: Center(
-                                          child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text("Reject",
-                                            style:
-                                                TextStyle(color: Colors.white)),
-                                      )),
-                                    ),
+                                  Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          _changeLeaveStatus(
+                                              token!, companyId, 1, leave);
+                                          setState(() {
+                                            widget.pendingLeaves.removeWhere(
+                                                (leavez) =>
+                                                    leavez.id == leave.id);
+                                          });
+                                        },
+                                        child: Container(
+                                          height: screenheight / 26.5,
+                                          width: screenWidth / 4.5,
+                                          decoration: BoxDecoration(
+                                              color: Colors.green.shade100,
+                                              // border: Border.all(
+                                              //   color: leave.leaveCurrentStatus == 'Rejected'
+                                              //       ? Colors.red
+                                              //       : Colors.green,
+                                              // ),
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: Center(
+                                              child: Padding(
+                                            padding: const EdgeInsets.all(0),
+                                            child: Text("Approve",
+                                                style: TextStyle(
+                                                    color: Colors.green,
+                                                    fontSize: heading)),
+                                          )),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 30,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          _changeLeaveStatus(
+                                              token!, companyId, 2, leave);
+                                          setState(() {
+                                            widget.pendingLeaves.removeWhere(
+                                                (leavez) =>
+                                                    leavez.id == leave.id);
+                                          });
+                                        },
+                                        child: Container(
+                                          height: screenheight / 26.5,
+                                          width: screenWidth / 4.5,
+                                          decoration: BoxDecoration(
+                                              color: Colors.red.shade100,
+                                              // border: Border.all(
+                                              //   color: leave.leaveCurrentStatus == 'Rejected'
+                                              //       ? Colors.red
+                                              //       : Colors.green,
+                                              // ),
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: Center(
+                                              child: Padding(
+                                            padding: const EdgeInsets.all(0),
+                                            child: Text("Reject",
+                                                style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontSize: heading)),
+                                          )),
+                                        ),
+                                      )
+                                    ],
                                   )
                                 ],
-                              )
-                            ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -665,8 +734,9 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
       List<dynamic> requestedLeaves =
           jsonData["data"]["employee_requested_leaves"];
       setState(() {
-        leaves =
-            requestedLeaves.map((json) => CompanyLeaveRequest.fromJson(json)).toList();
+        leaves = requestedLeaves
+            .map((json) => CompanyLeaveRequest.fromJson(json))
+            .toList();
         for (CompanyLeaveRequest leave in leaves) {
           if (leave.leaveCurrentStatus == "Accepted") {
             approvedLeaves.add(leave);
@@ -684,6 +754,39 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 13;
+      heading = 10; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 14;
+
+      heading = 12; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 16;
+
+      heading = 14; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 17;
+
+      heading = 18; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 19;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     final empViewModel = Provider.of<CompanyViewModel>(context);
     final token = empViewModel.token;
     if (check == 0) {
@@ -805,6 +908,39 @@ class _RejectedApplicationsState extends State<RejectedApplications> {
     final empViewModel = Provider.of<CompanyViewModel>(context);
     final token = empViewModel.token;
     final user = empViewModel.user;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 13;
+      heading = 10; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 14;
+
+      heading = 12; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 16;
+
+      heading = 14; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 17;
+
+      heading = 18; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 19;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     if (check == 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _getApprovedLeaves(token!, user!.id.toString());

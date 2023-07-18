@@ -118,27 +118,27 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
 
     // Adjust the font size based on the screen width
     if (screenWidth < 320) {
-      fontSize = 13.0;
-      title = 20;
+      fontSize = 14.0;
+      title = 22;
       heading = 30; // Small screen (e.g., iPhone 4S)
     } else if (screenWidth < 375) {
-      fontSize = 15.0;
-      title = 28;
+      fontSize = 16.0;
+      title = 25;
 
       heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
     } else if (screenWidth < 414) {
-      fontSize = 17.0;
-      title = 32;
+      fontSize = 18.0;
+      title = 27;
 
       heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else if (screenWidth < 600) {
-      fontSize = 19.0;
-      title = 36;
+      fontSize = 20.0;
+      title = 30;
 
       heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else {
       fontSize = 22.0;
-      title = 40;
+      title = 34;
 
       heading = 30; // Extra large screen or unknown device
     }
@@ -159,16 +159,17 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  const Text(
+                  Text(
                     "Sign In Employee",
-                    style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                    style:
+                        TextStyle(fontSize: title, fontWeight: FontWeight.bold),
                   ).centered(),
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text(
+                  Text(
                     "Welcome Back",
-                    style: TextStyle(color: Colors.black, fontSize: 18),
+                    style: TextStyle(color: Colors.black, fontSize: fontSize),
                   ).pSymmetric(h: 20).centered(),
                   const SizedBox(
                     height: 20,
@@ -249,7 +250,8 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
                       child: TextButton(
                         child: Text(
                           "Forgot Password?",
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: Colors.black, fontSize: fontSize),
                         ),
                         onPressed: () {
                           Navigator.of(context)

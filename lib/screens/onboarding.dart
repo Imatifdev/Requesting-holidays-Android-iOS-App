@@ -41,16 +41,16 @@ class _OnboardScreenState extends State<OnboardScreen> {
     // Adjust the font size based on the screen width
     if (screenWidth < 320) {
       fontSize = 13.0;
-      title = 20;
-      heading = 30; // Small screen (e.g., iPhone 4S)
+      title = 16;
+      heading = 24; // Small screen (e.g., iPhone 4S)
     } else if (screenWidth < 375) {
       fontSize = 15.0;
-      title = 28;
+      title = 24;
 
       heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
     } else if (screenWidth < 414) {
       fontSize = 17.0;
-      title = 32;
+      title = 28;
 
       heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else if (screenWidth < 600) {

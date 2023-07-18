@@ -44,6 +44,39 @@ class _CompanyLoginPageState extends State<CompanyLoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 14.0;
+      title = 22;
+      heading = 30; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 16.0;
+      title = 25;
+
+      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 18.0;
+      title = 27;
+
+      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 20.0;
+      title = 30;
+
+      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 34;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -64,16 +97,19 @@ class _CompanyLoginPageState extends State<CompanyLoginPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  const Text(
-                    "Sign In As Admin", textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                  Text(
+                    "Sign In As Admin",
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontSize: title, fontWeight: FontWeight.bold),
                   ).pSymmetric(h: 20),
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text(
-                    "Welcome Back", textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.black, fontSize: 18),
+                  Text(
+                    "Welcome Back",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.black, fontSize: fontSize),
                   ).pSymmetric(h: 20),
                   SizedBox(
                     height: 20,
@@ -166,7 +202,8 @@ class _CompanyLoginPageState extends State<CompanyLoginPage> {
                       child: TextButton(
                         child: Text(
                           "Forgot Password?",
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: Colors.black, fontSize: fontSize),
                         ),
                         onPressed: () {
                           Navigator.push(
@@ -176,30 +213,54 @@ class _CompanyLoginPageState extends State<CompanyLoginPage> {
                         },
                       )),
                   const SizedBox(height: 16.0),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          final email = _emailController.text;
-                          final password = _passwordController.text;
+                  InkWell(
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        final email = _emailController.text;
+                        final password = _passwordController.text;
 
-                          Provider.of<CompanyViewModel>(context, listen: false)
-                              .performLogin(email, password, context);
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: red,
-                        padding: EdgeInsets.fromLTRB(100, 20, 100, 20),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                      child: Text(
-                        'Sign In',
-                        style: TextStyle(color: Colors.white),
+                        Provider.of<CompanyViewModel>(context, listen: false)
+                            .performLogin(email, password, context);
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: red, borderRadius: BorderRadius.circular(10)),
+                      height: screenheight / 15,
+                      width: screenWidth - 100,
+                      child: Center(
+                        child: Text(
+                          "Sign In",
+                          style: TextStyle(
+                              color: Colors.white, fontSize: fontSize),
+                        ),
                       ),
                     ),
                   ),
+                  // Padding(
+                  //   padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  //   child: ElevatedButton(
+                  //     onPressed: () {
+                  //       if (_formKey.currentState!.validate()) {
+                  //         final email = _emailController.text;
+                  //         final password = _passwordController.text;
+
+                  //         Provider.of<CompanyViewModel>(context, listen: false)
+                  //             .performLogin(email, password, context);
+                  //       }
+                  //     },
+                  //     style: ElevatedButton.styleFrom(
+                  //       backgroundColor: red,
+                  //       padding: EdgeInsets.fromLTRB(100, 20, 100, 20),
+                  //       shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(10)),
+                  //     ),
+                  //     child: Text(
+                  //       'Sign In',
+                  //       style: TextStyle(color: Colors.white),
+                  //     ),
+                  //   ),
+                  // ),
                   const SizedBox(height: 16.0),
                 ],
               ),
