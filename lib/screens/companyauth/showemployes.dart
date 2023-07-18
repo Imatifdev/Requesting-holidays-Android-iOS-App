@@ -119,6 +119,39 @@ class _ShowEmployeeState extends State<ShowEmployee> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 11.0;
+      title = 16;
+      heading = 10; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 12.0;
+      title = 20;
+
+      heading = 12; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 15.0;
+      title = 22;
+
+      heading = 14; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 26;
+
+      heading = 18; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 19;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     final comViewModel = Provider.of<CompanyViewModel>(context);
     final token = comViewModel.token;
     final user = comViewModel.user;
@@ -150,7 +183,8 @@ class _ShowEmployeeState extends State<ShowEmployee> {
               children: [
                 Text(
                   "All Employees",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style:
+                      TextStyle(fontSize: title, fontWeight: FontWeight.bold),
                 ).pOnly(left: 24),
                 SizedBox(
                   height: 25,

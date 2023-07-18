@@ -440,16 +440,16 @@ class _AllApplicationsState extends State<AllApplications> {
 
     // Adjust the font size based on the screen width
     if (screenWidth < 320) {
-      fontSize = 13.0;
+      fontSize = 11.0;
       title = 13;
       heading = 10; // Small screen (e.g., iPhone 4S)
     } else if (screenWidth < 375) {
-      fontSize = 15.0;
+      fontSize = 12.0;
       title = 14;
 
       heading = 12; // Medium screen (e.g., iPhone 6, 7, 8)
     } else if (screenWidth < 414) {
-      fontSize = 17.0;
+      fontSize = 15.0;
       title = 16;
 
       heading = 14; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
@@ -484,17 +484,18 @@ class _AllApplicationsState extends State<AllApplications> {
             decoration: BoxDecoration(
                 border: Border.all(width: 1),
                 borderRadius: BorderRadius.circular(20),
-                color: Colors.grey.shade400),
+                color: Colors.grey.shade200),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Search",
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                      fontSize: 20,
+                    )),
                 Icon(Icons.search)
               ],
-            ).centered().pSymmetric(h: 20),
-          ).centered().p(10),
+            ).centered().pSymmetric(h: 30),
+          ).centered().pOnly(left: 20, right: 20, top: 20, bottom: 10),
         ),
         widget.pendingLeaves.isNotEmpty
             ? Expanded(
@@ -608,11 +609,13 @@ class _AllApplicationsState extends State<AllApplications> {
                                           width: screenWidth / 4.5,
                                           decoration: BoxDecoration(
                                               color: Colors.green.shade100,
-                                              // border: Border.all(
-                                              //   color: leave.leaveCurrentStatus == 'Rejected'
-                                              //       ? Colors.red
-                                              //       : Colors.green,
-                                              // ),
+                                              border: Border.all(
+                                                color:
+                                                    leave.leaveCurrentStatus ==
+                                                            'Rejected'
+                                                        ? Colors.red
+                                                        : Colors.green,
+                                              ),
                                               borderRadius:
                                                   BorderRadius.circular(5)),
                                           child: Center(
