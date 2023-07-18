@@ -249,11 +249,9 @@ class LeaveRequestCard extends StatelessWidget {
                               width: screenWidth / 4.5,
                               decoration: BoxDecoration(
                                   color: Colors.green.shade100,
-                                  // border: Border.all(
-                                  //   color: leave.leaveCurrentStatus == 'Rejected'
-                                  //       ? Colors.red
-                                  //       : Colors.green,
-                                  // ),
+                                  border: Border.all(
+                                    color: Colors.green,
+                                  ),
                                   borderRadius: BorderRadius.circular(5)),
                               child: Center(
                                   child: Padding(
@@ -269,11 +267,9 @@ class LeaveRequestCard extends StatelessWidget {
                               width: screenWidth / 4.5,
                               decoration: BoxDecoration(
                                   color: Colors.yellow.shade200,
-                                  // border: Border.all(
-                                  //   color: leave.leaveCurrentStatus == 'Rejected'
-                                  //       ? Colors.red
-                                  //       : Colors.green,
-                                  // ),
+                                  border: Border.all(
+                                    color: Colors.orange,
+                                  ),
                                   borderRadius: BorderRadius.circular(5)),
                               child: Center(
                                   child: Padding(

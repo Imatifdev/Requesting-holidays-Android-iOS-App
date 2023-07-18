@@ -121,8 +121,8 @@ class _CreateCompanyLeaveState extends State<CreateCompanyLeave> {
                       EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                   filled: true,
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  fillColor: Colors.grey.shade400,
+                      borderRadius: BorderRadius.circular(20)),
+                  fillColor: Colors.grey.shade200,
                   hintText: 'Enter title',
                 ),
               ),
@@ -141,7 +141,10 @@ class _CreateCompanyLeaveState extends State<CreateCompanyLeave> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: Text('Select Dates'),
+                        title: Text(
+                          'Select Dates',
+                          style: TextStyle(fontSize: 14),
+                        ),
                         content: Container(
                           width: MediaQuery.of(context).size.width * 0.8,
                           height: MediaQuery.of(context).size.height * 0.6,
@@ -199,7 +202,7 @@ class _CreateCompanyLeaveState extends State<CreateCompanyLeave> {
               Text(
                 "Selected Dates:",
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                 ),
               ),
               Container(

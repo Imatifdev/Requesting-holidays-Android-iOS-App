@@ -122,17 +122,17 @@ class CompanyLeaveRequestCard extends StatelessWidget {
       fontSize = 15.0;
       title = 14;
 
-      heading = 12; // Medium screen (e.g., iPhone 6, 7, 8)
+      heading = 11; // Medium screen (e.g., iPhone 6, 7, 8)
     } else if (screenWidth < 414) {
       fontSize = 17.0;
       title = 16;
 
-      heading = 14; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+      heading = 12; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else if (screenWidth < 600) {
       fontSize = 19.0;
       title = 17;
 
-      heading = 18; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+      heading = 14; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else {
       fontSize = 22.0;
       title = 19;
@@ -183,8 +183,8 @@ class CompanyLeaveRequestCard extends StatelessWidget {
                                 : Colors.green.shade100,
                             border: Border.all(
                               color: leave.leaveCurrentStatus == 'Rejected'
-                                  ? Colors.red.shade100
-                                  : Colors.green.shade100,
+                                  ? Colors.red
+                                  : Colors.green,
                             ),
                             borderRadius: BorderRadius.circular(10)),
                         child: Center(
@@ -195,7 +195,7 @@ class CompanyLeaveRequestCard extends StatelessWidget {
                                   color: leave.leaveCurrentStatus == 'Rejected'
                                       ? Colors.red
                                       : Colors.green,
-                                  fontSize: heading)),
+                                  fontSize: 11)),
                         )),
                       )
                     ],
@@ -232,14 +232,15 @@ class CompanyLeaveRequestCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.grey.shade300),
                         child: Center(
-                          child: IconButton(
-                              onPressed: () {
-                                popUp(context);
-                              },
-                              icon: const Icon(
-                                CupertinoIcons.right_chevron,
-                                size: 20,
-                              )),
+                          child: InkWell(
+                            onTap: () {
+                              popUp(context);
+                            },
+                            child: Icon(
+                              CupertinoIcons.right_chevron,
+                              size: 20,
+                            ),
+                          ),
                         ),
                       )
                     ],

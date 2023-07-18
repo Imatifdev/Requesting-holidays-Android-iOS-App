@@ -44,8 +44,9 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
   int _currentIndex = 0;
   bool currentStatus = false;
   final String imgurl = "https://jporter.ezeelogix.com/public/upload/logo/";
-  final StreamController<List<CompanyLeaveRequest>> _leaveRequestsStreamController = StreamController<List<CompanyLeaveRequest>>.broadcast();
-
+  final StreamController<List<CompanyLeaveRequest>>
+      _leaveRequestsStreamController =
+      StreamController<List<CompanyLeaveRequest>>.broadcast();
 
   Future<void> _getallLeaveRequest(String token, String id) async {
     final String requestLeaveUrl =
@@ -136,7 +137,6 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
         _getSubscriptionStatus(token, user.id.toString());
         check = 1;
       }
-      
     });
     final List<Widget> _pages = [
       AllApplications(
@@ -150,7 +150,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text("Leave Requests"),
+        title: Text("DashBoard"),
         leading: IconButton(
             onPressed: () {
               if (!currentStatus) {
@@ -209,7 +209,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
               ),
               CircleAvatar(
                 radius: 50,
-             //   backgroundImage: NetworkImage('${logoUrl}${user!.logo}'),
+                //   backgroundImage: NetworkImage('${logoUrl}${user!.logo}'),
               ).pOnly(left: 20, bottom: 20),
               Text(
                 '${user!.firstName} ' + ' ${user.lastName}',
@@ -396,7 +396,10 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
 
 class AllApplications extends StatefulWidget {
   final List<CompanyLeaveRequest> pendingLeaves;
-  const AllApplications({super.key, required this.pendingLeaves,});
+  const AllApplications({
+    super.key,
+    required this.pendingLeaves,
+  });
 
   @override
   State<AllApplications> createState() => _AllApplicationsState();
@@ -615,8 +618,7 @@ class _AllApplicationsState extends State<AllApplications> {
                                           decoration: BoxDecoration(
                                               color: Colors.green.shade100,
                                               border: Border.all(
-                                                color: Colors.green
-                                              ),
+                                                  color: Colors.green),
                                               borderRadius:
                                                   BorderRadius.circular(5)),
                                           child: Center(
@@ -647,11 +649,10 @@ class _AllApplicationsState extends State<AllApplications> {
                                           width: screenWidth / 4.5,
                                           decoration: BoxDecoration(
                                               color: Colors.red.shade100,
-                                              border: Border.all(
-                                                color: Colors.red
-                                              ),
+                                              border:
+                                                  Border.all(color: Colors.red),
                                               borderRadius:
-                                              BorderRadius.circular(5)),
+                                                  BorderRadius.circular(5)),
                                           child: Center(
                                               child: Padding(
                                             padding: const EdgeInsets.all(0),
@@ -681,8 +682,7 @@ class _AllApplicationsState extends State<AllApplications> {
                   SizedBox(
                     height: 300,
                   ),
-                  Center(
-                      child: CircularProgressIndicator() ),
+                  Center(child: CircularProgressIndicator()),
                 ],
               ),
       ],
