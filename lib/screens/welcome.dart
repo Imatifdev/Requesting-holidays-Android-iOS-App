@@ -20,26 +20,26 @@ class WelcomeScreen extends StatelessWidget {
     // Adjust the font size based on the screen width
     if (screenWidth < 320) {
       fontSize = 13.0;
-      title = 20;
+      title = 12;
       heading = 30; // Small screen (e.g., iPhone 4S)
     } else if (screenWidth < 375) {
       fontSize = 15.0;
-      title = 20;
+      title = 14;
 
       heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
     } else if (screenWidth < 414) {
       fontSize = 17.0;
-      title = 23;
+      title = 16;
 
       heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else if (screenWidth < 600) {
       fontSize = 19.0;
-      title = 24;
+      title = 17;
 
       heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else {
       fontSize = 22.0;
-      title = 20;
+      title = 18;
 
       heading = 30; // Extra large screen or unknown device
     }
@@ -62,10 +62,10 @@ class WelcomeScreen extends StatelessWidget {
               child: Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
-                elevation: 10,
+                elevation: 5,
                 child: Container(
-                  height: screenheight / 13,
-                  width: screenWidth - 80,
+                  height: screenheight / 16,
+                  width: screenWidth - 120,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(width: 1, color: red)),
@@ -91,10 +91,10 @@ class WelcomeScreen extends StatelessWidget {
               child: Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
-                elevation: 10,
+                elevation: 5,
                 child: Container(
-                  height: screenheight / 13,
-                  width: screenWidth - 80,
+                  height: screenheight / 16,
+                  width: screenWidth - 120,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(width: 1, color: red)),

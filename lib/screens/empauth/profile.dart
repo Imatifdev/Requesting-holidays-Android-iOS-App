@@ -63,6 +63,43 @@ class _EmpProfileViewState extends State<EmpProfileView> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+    double iconsize = 10;
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 18;
+      iconsize = 20;
+      heading = 30; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 24;
+
+      iconsize = 23;
+      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 26;
+
+      iconsize = 27;
+      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 30;
+
+      iconsize = 30;
+      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 40;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     final empViewModel = Provider.of<EmpViewModel>(context);
     final user = empViewModel.user;
 
@@ -89,22 +126,19 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 15,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 13),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '${user?.firstName} ${user?.lastName}',
-                          style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
-                        ),
-                        CircleAvatar(
-                          radius: 20,
-                          child: Icon(CupertinoIcons.person),
-                        )
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${user?.firstName} ${user?.lastName}',
+                        style: TextStyle(
+                            fontSize: title, fontWeight: FontWeight.bold),
+                      ),
+                      CircleAvatar(
+                        radius: iconsize,
+                        child: Icon(CupertinoIcons.person),
+                      )
+                    ],
                   ),
                   SizedBox(
                     height: 26,
@@ -118,7 +152,7 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                           padding: const EdgeInsets.only(left: 30),
                           child: Text(
                             '${user?.email}',
-                            style: TextStyle(fontSize: 14),
+                            style: TextStyle(fontSize: fontSize),
                           ),
                         ),
                       )),
@@ -134,7 +168,7 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                         padding: const EdgeInsets.only(left: 30),
                         child: Text(
                           '${user?.phone}',
-                          style: TextStyle(fontSize: 14),
+                          style: TextStyle(fontSize: fontSize),
                         ),
                       ),
                     ),
@@ -147,22 +181,40 @@ class _EmpProfileViewState extends State<EmpProfileView> {
               SizedBox(
                 height: 50,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50),
-                child: MyCustomButton(
-                    title: "Reset Password",
-                    borderrad: 10,
-                    buttontextcolr: Colors.white,
-                    onaction: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (ctx) => EmpForgitPassword()));
-                    },
-                    color1: red,
-                    color2: red,
-                    width: MediaQuery.of(context).size.width - 40),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (ctx) => EmpForgitPassword()));
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: red, borderRadius: BorderRadius.circular(10)),
+                  height: screenheight / 15,
+                  width: screenWidth - 100,
+                  child: Center(
+                    child: Text(
+                      "Reset Password",
+                      style: TextStyle(color: Colors.white, fontSize: fontSize),
+                    ),
+                  ),
+                ),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 50),
+              //   child: MyCustomButton(
+              //       title: "Reset Password",
+              //       borderrad: 10,
+              //       buttontextcolr: Colors.white,
+              //       onaction: () {
+              //         Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //                 builder: (ctx) => EmpForgitPassword()));
+              //       },
+              //       color1: red,
+              //       color2: red,
+              //       width: MediaQuery.of(context).size.width - 40),
+              // ),
               // Padding(
               //   padding: const EdgeInsets.symmetric(horizontal: 50),
               //   child: MyCustomButton(
@@ -199,28 +251,30 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                       (route) => false);
                 },
                 child: Container(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * .70,
+                  height: screenheight / 15,
+                  width: screenWidth - 170,
                   decoration: BoxDecoration(
                     border: Border.all(width: 1, color: Colors.red),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.logout_outlined,
-                        color: red,
-                        size: 30,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "Sign Out",
-                        style: TextStyle(color: red),
-                      )
-                    ],
+                  child: Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.logout_outlined,
+                          color: red,
+                          size: iconsize,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Sign Out",
+                          style: TextStyle(color: red, fontSize: fontSize),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

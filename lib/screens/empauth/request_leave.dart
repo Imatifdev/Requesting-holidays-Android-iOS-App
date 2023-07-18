@@ -62,7 +62,7 @@ class _RequestLeaveState extends State<RequestLeave> {
         print(endDateFormatted);
         _lastDate = dateRange.end;
         var diff = dateRange.end.difference(dateRange.start);
-        totalLeaveCount = diff.inDays+1;
+        totalLeaveCount = diff.inDays + 1;
       });
     }
   }
@@ -75,11 +75,11 @@ class _RequestLeaveState extends State<RequestLeave> {
       String id,
       String totalLeaveCount,
       String comment) async {
-        setState(() {
-          isLoading = true;
-          errMsg = "";
-          errMsg2 = "";
-        });
+    setState(() {
+      isLoading = true;
+      errMsg = "";
+      errMsg2 = "";
+    });
     const String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/employee-request-leave';
 
@@ -115,6 +115,38 @@ class _RequestLeaveState extends State<RequestLeave> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 12;
+      heading = 30; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 14;
+
+      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 16;
+
+      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 18;
+
+      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 20;
+
+      heading = 30; // Extra large screen or unknown device
+    }
     final empViewModel = Provider.of<EmpViewModel>(context);
     final token = empViewModel.token;
     final user = empViewModel.user;
@@ -145,11 +177,13 @@ class _RequestLeaveState extends State<RequestLeave> {
                     child: Text("New Leave",
                         style: TextStyle(
                             fontSize: 24, fontWeight: FontWeight.bold))),
-                const SizedBox(height: 50,),
+                const SizedBox(
+                  height: 50,
+                ),
                 Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all()),
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all()),
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Form(
@@ -158,152 +192,195 @@ class _RequestLeaveState extends State<RequestLeave> {
                         children: [
                           const SizedBox(height: 30),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(20)
-                                ),
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(20)),
                                 child: const Padding(
                                   padding: EdgeInsets.all(8.0),
-                                  child: Icon(Icons.window, color: Colors.white,),
+                                  child: Icon(
+                                    Icons.window,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                               SizedBox(
-                                width: size.width/1.5,
-                                child: DropdownButtonFormField<String>(
-                                  focusColor: Colors.grey.shade100,
-                                  dropdownColor:Colors.grey.shade100,
-                                  value: selectedLeaveType,
-                                  hint: const Text(
-                                    'Type',
-                                    style: TextStyle(color: Colors.red),
+                                width: 20,
+                              ),
+                              SizedBox(
+                                width: screenWidth - 123,
+                                child: Expanded(
+                                  child: DropdownButtonFormField<String>(
+                                    focusColor: Colors.grey.shade100,
+                                    dropdownColor: Colors.grey.shade100,
+                                    value: selectedLeaveType,
+                                    hint: Text(
+                                      'Type',
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: title),
+                                    ),
+                                    items: [
+                                      DropdownMenuItem<String>(
+                                        value: 'Compassionate',
+                                        child: Text(
+                                          'Compassionate',
+                                          style: TextStyle(fontSize: title),
+                                        ),
+                                      ),
+                                      DropdownMenuItem<String>(
+                                        value: 'Lieu',
+                                        child: Text(
+                                          'Lieu',
+                                          style: TextStyle(fontSize: title),
+                                        ),
+                                      ),
+                                      DropdownMenuItem<String>(
+                                        value: 'Full Day',
+                                        child: Text(
+                                          'Full Day',
+                                          style: TextStyle(fontSize: title),
+                                        ),
+                                      ),
+                                      DropdownMenuItem<String>(
+                                        value: 'Half Day',
+                                        child: Text(
+                                          'Half Day',
+                                          style: TextStyle(fontSize: title),
+                                        ),
+                                      ),
+                                    ],
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedLeaveType = value;
+                                      });
+                                    },
                                   ),
-                                  items: const [
-                                    DropdownMenuItem<String>(
-                                      value: 'Compassionate',
-                                      child: Text('Compassionate'),
-                                    ),
-                                    DropdownMenuItem<String>(
-                                      value: 'Lieu',
-                                      child: Text('Lieu'),
-                                    ),
-                                    DropdownMenuItem<String>(
-                                      value: 'Full Day',
-                                      child: Text('Full Day'),
-                                    ),
-                                    DropdownMenuItem<String>(
-                                      value: 'Half Day',
-                                      child: Text('Half Day'),
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectedLeaveType = value;
-                                    });
-                                  },
                                 ),
                               ),
                             ],
                           ),
-                          Text(errMsg2, style: const TextStyle(color: Colors.red)),
+                          Text(errMsg2,
+                              style: const TextStyle(
+                                color: Colors.red,
+                              )),
                           const SizedBox(height: 26),
-                          Divider(color: Colors.grey.shade500,),
+                          Divider(
+                            color: Colors.grey.shade500,
+                          ),
                           const SizedBox(height: 30),
                           Row(
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(20)
-                                ),
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(20)),
                                 child: const Padding(
                                   padding: EdgeInsets.all(8.0),
-                                  child: Icon(Icons.calendar_month_outlined, color: Colors.white,),
+                                  child: Icon(
+                                    Icons.calendar_month_outlined,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                               const SizedBox(
-                                width: 33,
+                                width: 20,
                               ),
                               Expanded(
                                 child: InkWell(
-                                  onTap: (){ 
-                                    if(endDateFormatted==""){
+                                  onTap: () {
+                                    if (endDateFormatted == "") {
                                       _selectDateRange(context);
                                     }
-                                    },
+                                  },
                                   child: Container(
-                                    height: 70,
+                                    height: screenheight / 14,
+                                    width: screenWidth,
                                     color: Colors.grey.shade100,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 4),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                              endDateFormatted == ""? "Calender":"Selected Dates:", style: const TextStyle(color: Colors.red),),
-                                          Text(
-                                            endDateFormatted == ""? "Select Leaves" :"$startDateFormatted to $endDateFormatted",
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ).pOnly(top: 05),
-                                        ],
-                                      ),
-                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // Text(
+                                        //   endDateFormatted == ""
+                                        //       ? "Calender"
+                                        //       : "Selected Dates:",
+                                        //   style: TextStyle(
+                                        //       color: Colors.red,
+                                        //       fontSize: title),
+                                        // ),
+                                        Text(
+                                          endDateFormatted == ""
+                                              ? "Select Leaves"
+                                              : "$startDateFormatted to $endDateFormatted",
+                                          style: TextStyle(
+                                            fontSize: title,
+                                          ),
+                                        ),
+                                      ],
+                                    ).pSymmetric(v: 16, h: 10),
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                        Text(errMsg, style: const TextStyle(color: Colors.red)),
+                          Text(errMsg,
+                              style: const TextStyle(color: Colors.red)),
                           const SizedBox(height: 30),
-                          Divider(color: Colors.grey.shade500,),
+                          Divider(
+                            color: Colors.grey.shade500,
+                          ),
                           const SizedBox(height: 30),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(20)
-                                ),
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(20)),
                                 child: const Padding(
                                   padding: EdgeInsets.all(8.0),
-                                  child: Icon(Icons.edit_note_rounded, color: Colors.white,size: 25,),
+                                  child: Icon(
+                                    Icons.edit_note_rounded,
+                                    color: Colors.white,
+                                    size: 25,
+                                  ),
                                 ),
                               ),
                               const SizedBox(
                                 width: 20,
                               ),
                               SizedBox(
-                                width: size.width/1.5,
-                                child: TextFormField(
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please enter your cause for leave';
-                                    }
-                                    return null;
-                                  },
-                                  controller: causeController,
-                                  decoration: InputDecoration(
-                                    label: const Text("Cause"),
-                                    enabledBorder: const UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.transparent),
+                                height: screenheight / 14,
+                                width: screenWidth - 123,
+                                child: Expanded(
+                                  child: TextFormField(
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Please enter your cause for leave';
+                                      }
+                                      return null;
+                                    },
+                                    controller: causeController,
+                                    decoration: InputDecoration(
+                                      enabledBorder: const UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.transparent),
+                                      ),
+                                      focusedBorder: const UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.transparent),
+                                      ),
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      label: Text(
+                                        "Cause",
+                                        style: TextStyle(fontSize: title),
+                                      ),
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              vertical: 10, horizontal: 10),
+                                      hintText: 'Provide Cause of Leave',
                                     ),
-                                    focusedBorder: const UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.transparent),
-                                    ),
-                                    fillColor: Colors.grey.shade100,
-                                    filled: true,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 0, horizontal: 10),
-                                    hintText: 'Provide Cause of Leave',
                                   ),
                                 ),
                               ),
@@ -318,47 +395,101 @@ class _RequestLeaveState extends State<RequestLeave> {
                           //     child: const Text('Select Date'),
                           //   ),
                           // ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width - 50,
-                            height: 50,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                ),
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate() &&
-                                      _firstDate != DateTime(2022, 11, 22) &&
-                                      _lastDate != DateTime(2022, 11, 23) && selectedLeaveType!=null) {
-                                    // print(startDateFormatted);
-                                     //print(totalLeaveCount);
-                                    setState(() {
-                                      errMsg = "";
-          errMsg2 = "";
-                                    });
-                                    await _submitLeaveRequest(
-                                      token!,
-                                      selectedLeaveType!,
-                                      startDateFormatted,
-                                      endDateFormatted,
-                                      user!.id.toString(),
-                                      totalLeaveCount.toString(),
-                                      causeController.text.trim(),
-                                    );
-                                  } 
-                                  else if(selectedLeaveType==null){
-                                    setState(() {
-                                    errMsg2 = "Please select a type";
-                                    });
-                                  }
-                                  else {
-                                    setState(() {
-                                      errMsg = "please select leave dates";
-                                    });
-                                  }
-                                },
-                                child: isLoading? const CircularProgressIndicator(color: Colors.white,) :const Text("Apply")),
+                          InkWell(
+                            onTap: () async {
+                              if (_formKey.currentState!.validate() &&
+                                  _firstDate != DateTime(2022, 11, 22) &&
+                                  _lastDate != DateTime(2022, 11, 23) &&
+                                  selectedLeaveType != null) {
+                                // print(startDateFormatted);
+                                //print(totalLeaveCount);
+                                setState(() {
+                                  errMsg = "";
+                                  errMsg2 = "";
+                                });
+                                await _submitLeaveRequest(
+                                  token!,
+                                  selectedLeaveType!,
+                                  startDateFormatted,
+                                  endDateFormatted,
+                                  user!.id.toString(),
+                                  totalLeaveCount.toString(),
+                                  causeController.text.trim(),
+                                );
+                              } else if (selectedLeaveType == null) {
+                                setState(() {
+                                  errMsg2 = "Please select a type";
+                                });
+                              } else {
+                                setState(() {
+                                  errMsg = "please select leave dates";
+                                });
+                              }
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: red,
+                                  borderRadius: BorderRadius.circular(10)),
+                              height: screenheight / 15,
+                              width: screenWidth - 100,
+                              child: Center(
+                                  child: isLoading
+                                      ? const CircularProgressIndicator(
+                                          color: Colors.white,
+                                        )
+                                      : Text(
+                                          "Apply",
+                                          style: TextStyle(
+                                              fontSize: fontSize,
+                                              color: Colors.white),
+                                        )),
+                            ),
                           ),
+
+                          // SizedBox(
+                          //   width: MediaQuery.of(context).size.width - 50,
+                          //   height: 50,
+                          //   child: ElevatedButton(
+                          //       style: ElevatedButton.styleFrom(
+                          //         shape: RoundedRectangleBorder(
+                          //             borderRadius: BorderRadius.circular(10)),
+                          //       ),
+                          //       onPressed: () async {
+                          //         if (_formKey.currentState!.validate() &&
+                          //             _firstDate != DateTime(2022, 11, 22) &&
+                          //             _lastDate != DateTime(2022, 11, 23) &&
+                          //             selectedLeaveType != null) {
+                          //           // print(startDateFormatted);
+                          //           //print(totalLeaveCount);
+                          //           setState(() {
+                          //             errMsg = "";
+                          //             errMsg2 = "";
+                          //           });
+                          //           await _submitLeaveRequest(
+                          //             token!,
+                          //             selectedLeaveType!,
+                          //             startDateFormatted,
+                          //             endDateFormatted,
+                          //             user!.id.toString(),
+                          //             totalLeaveCount.toString(),
+                          //             causeController.text.trim(),
+                          //           );
+                          //         } else if (selectedLeaveType == null) {
+                          //           setState(() {
+                          //             errMsg2 = "Please select a type";
+                          //           });
+                          //         } else {
+                          //           setState(() {
+                          //             errMsg = "please select leave dates";
+                          //           });
+                          //         }
+                          //       },
+                          //       child: isLoading
+                          //           ? const CircularProgressIndicator(
+                          //               color: Colors.white,
+                          //             )
+                          //           : const Text("Apply")),
+                          // ),
                         ],
                       ),
                     ),
