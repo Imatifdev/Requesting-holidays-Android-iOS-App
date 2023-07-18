@@ -64,6 +64,51 @@ class _StripeScreenState extends State<StripeScreen> {
 
     return EmpNum;
   }
+
+  Future<void> sendStripeApiRequest(String token, String stripeToken, String id, String name) async {
+    // Define the base URL and endpoint
+    const baseUrl = 'https://jporter.ezeelogix.com/public/api/';
+    const endpoint = 'subscription';
+
+    // Prepare the request body
+    final requestBody = {
+      'company_id': id,
+      'token':stripeToken,
+      'name':name
+    };
+
+    // Prepare the request headers
+    final headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      // Send the POST request
+      final response = await http.post(
+        Uri.parse(baseUrl + endpoint),
+        headers: headers,
+        body: requestBody,
+      );
+
+      if (response.statusCode == 200) {
+        // Request successful
+        final responseData = json.decode(response.body);
+        print("responseeee"+responseData);
+        // Create and return the ShowEmployees object
+        // List<dynamic> requestedLeaves = responseData["data"]['employee'];
+        // setState(() {
+        //   EmpNum = requestedLeaves.length;
+        //          });
+      } else {
+        // Request failed
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (error) {
+      // An error occurred
+      print('Error: $error');
+    }
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -79,10 +124,6 @@ class _StripeScreenState extends State<StripeScreen> {
       });
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text("Payment"),
-      //   elevation: 0,
-      // ),
       body: SafeArea(
         child: SizedBox(
           width: size.width,
@@ -192,9 +233,10 @@ class _StripeScreenState extends State<StripeScreen> {
                           items, 500, 
                           context, 
                           mounted, 
-                          onSuccess: (String token)
-                          {
-                            print("SUCCESS token:$token");
+                          onSuccess: (String stripeToken)
+                          async{
+                            print("SUCCESSSSSSSS token:$stripeToken");
+                            await sendStripeApiRequest(token!,stripeToken,companyId.toString(), "Abdullah Ayaz");
                             Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CompanyDashBoard()));
                           },
                           onCancel: ()

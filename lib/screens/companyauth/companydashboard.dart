@@ -148,7 +148,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
       appBar: AppBar(
         title: Text("Leave Requests"),
       leading: IconButton(onPressed: (){
-        if(!currentStatus){
+        if(currentStatus){
           scaffoldKey.currentState?.openDrawer();
         }else{
           showDialog(
