@@ -1,5 +1,6 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_const_declarations, unused_element, must_be_immutable
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_const_declarations, unused_element, must_be_immutable, unused_local_variable
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 
@@ -43,6 +44,8 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
   int _currentIndex = 0;
   bool currentStatus = false;
   final String imgurl = "https://jporter.ezeelogix.com/public/upload/logo/";
+  final StreamController<List<CompanyLeaveRequest>> _leaveRequestsStreamController = StreamController<List<CompanyLeaveRequest>>.broadcast();
+
 
   Future<void> _getallLeaveRequest(String token, String id) async {
     final String requestLeaveUrl =
@@ -80,6 +83,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
             rejectedLeaves.add(leave);
           }
         }
+        _leaveRequestsStreamController.add(pendingLeaves);
       });
       print(leaves);
     } else {
@@ -129,9 +133,10 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (check == 0) {
         _getallLeaveRequest(token!, user!.id.toString());
+        _getSubscriptionStatus(token, user.id.toString());
         check = 1;
       }
-      _getSubscriptionStatus(token!, user!.id.toString());
+      
     });
     final List<Widget> _pages = [
       AllApplications(
@@ -204,7 +209,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
               ),
               CircleAvatar(
                 radius: 50,
-                backgroundImage: NetworkImage('${logoUrl}${user!.logo}'),
+             //   backgroundImage: NetworkImage('${logoUrl}${user!.logo}'),
               ).pOnly(left: 20, bottom: 20),
               Text(
                 '${user!.firstName} ' + ' ${user.lastName}',
@@ -391,7 +396,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
 
 class AllApplications extends StatefulWidget {
   final List<CompanyLeaveRequest> pendingLeaves;
-  const AllApplications({super.key, required this.pendingLeaves});
+  const AllApplications({super.key, required this.pendingLeaves,});
 
   @override
   State<AllApplications> createState() => _AllApplicationsState();
@@ -610,11 +615,7 @@ class _AllApplicationsState extends State<AllApplications> {
                                           decoration: BoxDecoration(
                                               color: Colors.green.shade100,
                                               border: Border.all(
-                                                color:
-                                                    leave.leaveCurrentStatus ==
-                                                            'Rejected'
-                                                        ? Colors.red
-                                                        : Colors.green,
+                                                color: Colors.green
                                               ),
                                               borderRadius:
                                                   BorderRadius.circular(5)),
@@ -646,13 +647,11 @@ class _AllApplicationsState extends State<AllApplications> {
                                           width: screenWidth / 4.5,
                                           decoration: BoxDecoration(
                                               color: Colors.red.shade100,
-                                              // border: Border.all(
-                                              //   color: leave.leaveCurrentStatus == 'Rejected'
-                                              //       ? Colors.red
-                                              //       : Colors.green,
-                                              // ),
+                                              border: Border.all(
+                                                color: Colors.red
+                                              ),
                                               borderRadius:
-                                                  BorderRadius.circular(5)),
+                                              BorderRadius.circular(5)),
                                           child: Center(
                                               child: Padding(
                                             padding: const EdgeInsets.all(0),
@@ -683,10 +682,7 @@ class _AllApplicationsState extends State<AllApplications> {
                     height: 300,
                   ),
                   Center(
-                      child: Text(
-                    "No leaves to show",
-                    style: TextStyle(color: Colors.black),
-                  )),
+                      child: CircularProgressIndicator() ),
                 ],
               ),
       ],
@@ -811,21 +807,22 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
           },
           child: Container(
             width: MediaQuery.of(context).size.width - 20,
-            height: 41,
+            height: 40,
             decoration: BoxDecoration(
                 border: Border.all(width: 1),
                 borderRadius: BorderRadius.circular(20),
-                color: Colors.grey.shade400),
+                color: Colors.grey.shade200),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Search",
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                      fontSize: 20,
+                    )),
                 Icon(Icons.search)
               ],
-            ).centered().pSymmetric(h: 20),
-          ).centered().p(10),
+            ).centered().pSymmetric(h: 30),
+          ).centered().pOnly(left: 20, right: 20, top: 20, bottom: 10),
         ),
         approvedLeaves.isNotEmpty
             ? Expanded(
@@ -967,17 +964,18 @@ class _RejectedApplicationsState extends State<RejectedApplications> {
             decoration: BoxDecoration(
                 border: Border.all(width: 1),
                 borderRadius: BorderRadius.circular(20),
-                color: Colors.grey.shade400),
+                color: Colors.grey.shade200),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Search",
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                      fontSize: 20,
+                    )),
                 Icon(Icons.search)
               ],
-            ).centered().pSymmetric(h: 20),
-          ).centered().p(10),
+            ).centered().pSymmetric(h: 30),
+          ).centered().pOnly(left: 20, right: 20, top: 20, bottom: 10),
         ),
         rejectedLeaves.isNotEmpty
             ? Expanded(

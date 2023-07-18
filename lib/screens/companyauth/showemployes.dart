@@ -202,7 +202,7 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                 ),
               ],
             )
-          : const Text("No Company Leaves"),
+          : Center(child: const CircularProgressIndicator()),
     );
   }
 
@@ -216,32 +216,18 @@ class _ShowEmployeeState extends State<ShowEmployee> {
         children: [
           Text(
             emp.firstName,
-            style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 emp.email,
-                style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
               ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                "Days",
-                style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                emp.phone,
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.normal),
-              ),
-            ],
-          ),
-          Row(
-            children: [
+              // SizedBox(
+              //   width: 10,
+              // ),
               Row(
                 children: [
                   CircleAvatar(
@@ -259,6 +245,21 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                   ),
                 ],
               ),
+              // Text(
+              //   "Days",
+              //   style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
+              // ),
+              // SizedBox(
+              //   width: 10,
+              // ),
+              // Text(
+              //   emp.phone,
+              //   style: TextStyle(fontSize: 13, fontWeight: FontWeight.normal),
+              // ),
+            ],
+          ),
+          Row(
+            children: [
               SizedBox(
                 width: 20,
               ),

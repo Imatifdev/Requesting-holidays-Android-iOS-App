@@ -98,7 +98,7 @@ class _CompanyLoginPageState extends State<CompanyLoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Text(
-                    "Sign In As Admin",
+                    "Sign In As Company",
                     textAlign: TextAlign.center,
                     style:
                         TextStyle(fontSize: title, fontWeight: FontWeight.bold),

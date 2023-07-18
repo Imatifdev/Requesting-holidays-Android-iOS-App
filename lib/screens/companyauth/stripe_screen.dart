@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import '../../viewmodel/company/compuserviewmodel.dart';
-import '../../widget/constants.dart';
 import 'companydashboard.dart';
 
 class StripeScreen extends StatefulWidget {
@@ -20,10 +19,56 @@ class _StripeScreenState extends State<StripeScreen> {
   int EmpNum = 0;
   int check = 0;
 
+  Future<int> cancelSubscription(String token, String id) async {
+    // Define the base URL and endpoint
+    const baseUrl = 'https://jporter.ezeelogix.com/public/api/';
+    const endpoint = 'cancel-subscription';
+
+    // Prepare the request body
+    final requestBody = {
+      'company_id': id,
+    };
+
+    // Prepare the request headers
+    final headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      // Send the POST request
+      final response = await http.post(
+        Uri.parse(baseUrl + endpoint),
+        headers: headers,
+        body: requestBody,
+      );
+
+      if (response.statusCode == 200) {
+        // Request successful
+        final responseData = json.decode(response.body);
+        print(responseData);
+        // Create and return the ShowEmployees object
+        // List<dynamic> requestedLeaves = responseData["data"]['employee'];
+        // setState(() {
+        //   EmpNum = requestedLeaves.length;
+        //          });
+      } else {
+        // Request failed
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (error) {
+      // An error occurred
+      print('Error: $error');
+    }
+
+    return EmpNum;
+  }
+
+
   Future<int> getEmployees(String token, String id) async {
     // Define the base URL and endpoint
-    final baseUrl = 'https://jporter.ezeelogix.com/public/api/';
-    final endpoint = 'company-all-employees';
+    const baseUrl = 'https://jporter.ezeelogix.com/public/api/';
+    const endpoint = 'company-all-employees';
 
     // Prepare the request body
     final requestBody = {
@@ -151,14 +196,14 @@ class _StripeScreenState extends State<StripeScreen> {
                                 Image.asset(
                                   "assets/images/crd.png",
                                 ),
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 8.0),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       
-                                      Text(
+                                      const Text(
                                         "Premium Plan",
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
@@ -167,17 +212,22 @@ class _StripeScreenState extends State<StripeScreen> {
                                           color: Colors.black,
                                         ),
                                       ),
-                                      Row(
+                                      const Row(
                                         children: [
                                           Text("\$2 ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
                                           Text("/ Employee"),
                                         ],
                                       ),
-                                      SizedBox(height: 10,),
-                                      Text(
-                                        "Cancel Plan",
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(color: Colors.red),
+                                      const SizedBox(height: 10),
+                                      InkWell(
+                                        onTap: ()async{
+                                          await cancelSubscription(token!, companyId.toString());
+                                        },
+                                        child: const Text(
+                                          "Cancel Plan",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(color: Colors.red),
+                                        ),
                                       ),
                                     ],
                                   ),

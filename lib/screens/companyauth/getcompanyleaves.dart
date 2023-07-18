@@ -18,6 +18,35 @@ class _GetCompanyLeavesState extends State<GetCompanyLeaves> {
 
   List<CompanyLeave1> companyLeaves = [];
 
+  void showConfirmationDialog(BuildContext context, CompanyLeave1 leave, String token) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Confirm Delete'),
+        content: const Text('Are you sure you want to delete this leave?'),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+            },
+          ),
+          TextButton(
+            child: const Text('Delete'),
+            onPressed: () {
+              deleteCompanyLeave(token, leave);
+
+              Navigator.of(context).pop(); // Close the dialog
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
   Future<void> fetchCompanyLeaves(String token, String id) async {
     const String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/get-company-leaves';
@@ -116,13 +145,14 @@ class _GetCompanyLeavesState extends State<GetCompanyLeaves> {
                   subtitle: Text('Dates:   ${leave.date}'),
                   trailing: IconButton(
                       onPressed: () {
-                        deleteCompanyLeave(token!, leave);
+                        //deleteCompanyLeave(token!, leave);
+                        showConfirmationDialog(context, leave, token!);
                       },
                       icon: const Icon(Icons.delete)),
                 );
               },
             )
-          : const Text("No Company Leaves"),
+          : const Center(child: CircularProgressIndicator() ),
     );
   }
 }
