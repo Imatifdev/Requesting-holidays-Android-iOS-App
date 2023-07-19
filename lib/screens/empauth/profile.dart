@@ -252,29 +252,27 @@ class _EmpProfileViewState extends State<EmpProfileView> {
                 },
                 child: Container(
                   height: screenheight / 15,
-                  width: screenWidth - 170,
+                  width: screenWidth - 100,
                   decoration: BoxDecoration(
                     border: Border.all(width: 1, color: Colors.red),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.logout_outlined,
-                          color: red,
-                          size: iconsize,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "Sign Out",
-                          style: TextStyle(color: red, fontSize: fontSize),
-                        )
-                      ],
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.logout_outlined,
+                        color: red,
+                        size: iconsize,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Sign Out",
+                        style: TextStyle(color: red, fontSize: fontSize),
+                      )
+                    ],
                   ),
                 ),
               ),

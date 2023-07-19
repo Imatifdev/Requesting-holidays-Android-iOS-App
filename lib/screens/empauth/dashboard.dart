@@ -268,7 +268,7 @@ class _LeaveScreenState extends State<LeaveScreen>
               ),
               TabBar(
                 controller: _tabController,
-                indicatorColor: Colors.white,
+                indicatorColor: Colors.red,
                 tabs: [
                   Center(
                     child: Text(

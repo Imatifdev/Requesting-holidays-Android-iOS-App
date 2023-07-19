@@ -7,6 +7,7 @@ import 'dart:ui';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:holidays/screens/companyauth/companyLogin.dart';
 import 'package:holidays/screens/companyauth/createnewemployee.dart';
 import 'package:holidays/screens/companyauth/profile.dart';
 import 'package:holidays/screens/companyauth/search_screen.dart';
@@ -373,8 +374,8 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
                 color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
           ),
           onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (ctx) => CompanyLogin()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (ctx) => CompanyLoginPage()));
           },
         ),
       ])),

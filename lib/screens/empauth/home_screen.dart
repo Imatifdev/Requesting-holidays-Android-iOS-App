@@ -96,80 +96,77 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   SizedBox(
-                    child: Expanded(
-                      flex: 1,
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Hi ${user!.firstName}",
-                                style: TextStyle(
-                                  fontSize: title,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          SizedBox(
-                            width: size.width / 1,
-                            height: size.height / 6,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: red,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 8.0),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Welcome",
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              fontSize: title,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          Text(
-                                            "View all your leaves\nand request more",
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: para),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Image.asset(
-                                        "assets/images/holiday.png",
-                                        color: Colors.white,
-                                        width: screenWidth / 3,
-                                        height: screenheight / 8,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Hi ${user!.firstName}",
+                              style: TextStyle(
+                                fontSize: title,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                          )
-                        ],
-                      ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        SizedBox(
+                          width: size.width / 1,
+                          height: size.height / 6,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: red,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 8.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Welcome",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            fontSize: title,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text(
+                                          "View all your leaves\nand request more",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: para),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Image.asset(
+                                      "assets/images/holiday.png",
+                                      color: Colors.white,
+                                      width: screenWidth / 3,
+                                      height: screenheight / 8,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   SizedBox(
@@ -226,34 +223,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                   builder: (context) => LeaveScreen(),
                                 ));
                               },
-                              child: Expanded(
-                                child: Container(
-                                  height: screenheight / 5.5,
-                                  width: screenWidth / 2.2,
-                                  decoration: BoxDecoration(
-                                    color: red,
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.list_alt_outlined,
-                                        size: iconsize,
+                              child: Container(
+                                height: screenheight / 5.5,
+                                width: screenWidth / 2.2,
+                                decoration: BoxDecoration(
+                                  color: red,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.list_alt_outlined,
+                                      size: iconsize,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      height: screenheight / 90,
+                                    ),
+                                    Text(
+                                      "All Leaves",
+                                      style: TextStyle(
+                                        fontSize: fontSize,
                                         color: Colors.white,
                                       ),
-                                      SizedBox(
-                                        height: screenheight / 90,
-                                      ),
-                                      Text(
-                                        "All Leaves",
-                                        style: TextStyle(
-                                          fontSize: fontSize,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -266,34 +261,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                   builder: (context) => PendingLeavesScreen(),
                                 ));
                               },
-                              child: Expanded(
-                                child: Container(
-                                  height: screenheight / 5.5,
-                                  width: screenWidth / 2.2,
-                                  decoration: BoxDecoration(
-                                    color: red,
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.pending_actions_rounded,
-                                        size: iconsize,
+                              child: Container(
+                                height: screenheight / 5.5,
+                                width: screenWidth / 2.2,
+                                decoration: BoxDecoration(
+                                  color: red,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.pending_actions_rounded,
+                                      size: iconsize,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      height: screenheight / 90,
+                                    ),
+                                    Text(
+                                      "Pending Leaves",
+                                      style: TextStyle(
+                                        fontSize: fontSize,
                                         color: Colors.white,
                                       ),
-                                      SizedBox(
-                                        height: screenheight / 90,
-                                      ),
-                                      Text(
-                                        "Pending Leaves",
-                                        style: TextStyle(
-                                          fontSize: fontSize,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -311,34 +304,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                   builder: (context) => ApprovedLeavesScreen(),
                                 ));
                               },
-                              child: Expanded(
-                                child: Container(
-                                  height: screenheight / 5.5,
-                                  width: screenWidth / 2.2,
-                                  decoration: BoxDecoration(
-                                    color: red,
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.check_circle_outline,
-                                        size: iconsize,
+                              child: Container(
+                                height: screenheight / 5.5,
+                                width: screenWidth / 2.2,
+                                decoration: BoxDecoration(
+                                  color: red,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.check_circle_outline,
+                                      size: iconsize,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      height: screenheight / 90,
+                                    ),
+                                    Text(
+                                      "Approved Leaves",
+                                      style: TextStyle(
+                                        fontSize: fontSize,
                                         color: Colors.white,
                                       ),
-                                      SizedBox(
-                                        height: screenheight / 90,
-                                      ),
-                                      Text(
-                                        "Approved Leaves",
-                                        style: TextStyle(
-                                          fontSize: fontSize,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -351,34 +342,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                   builder: (context) => RejectedLeavesScreen(),
                                 ));
                               },
-                              child: Expanded(
-                                child: Container(
-                                  height: screenheight / 5.5,
-                                  width: screenWidth / 2.2,
-                                  decoration: BoxDecoration(
-                                    color: red,
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.cancel_outlined,
-                                        size: iconsize,
+                              child: Container(
+                                height: screenheight / 5.5,
+                                width: screenWidth / 2.2,
+                                decoration: BoxDecoration(
+                                  color: red,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.cancel_outlined,
+                                      size: iconsize,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      height: screenheight / 90,
+                                    ),
+                                    Text(
+                                      "Rejected Leaves",
+                                      style: TextStyle(
+                                        fontSize: fontSize,
                                         color: Colors.white,
                                       ),
-                                      SizedBox(
-                                        height: screenheight / 90,
-                                      ),
-                                      Text(
-                                        "Rejected Leaves",
-                                        style: TextStyle(
-                                          fontSize: fontSize,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
