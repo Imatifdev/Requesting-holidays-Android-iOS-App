@@ -163,28 +163,29 @@ class LeaveRequestCard extends StatelessWidget {
     // Adjust the font size based on the screen width
     if (screenWidth < 320) {
       fontSize = 13.0;
+
       title = 13;
-      heading = 30; // Small screen (e.g., iPhone 4S)
+      heading = 10; // Small screen (e.g., iPhone 4S)
     } else if (screenWidth < 375) {
       fontSize = 15.0;
       title = 14;
 
-      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+      heading = 11; // Medium screen (e.g., iPhone 6, 7, 8)
     } else if (screenWidth < 414) {
       fontSize = 17.0;
       title = 16;
 
-      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+      heading = 12; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else if (screenWidth < 600) {
       fontSize = 19.0;
       title = 17;
 
-      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+      heading = 13; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else {
       fontSize = 22.0;
       title = 19;
 
-      heading = 30; // Extra large screen or unknown device
+      heading = 15; // Extra large screen or unknown device
     }
     return Padding(
       padding: EdgeInsets.all(5.0),
@@ -229,6 +230,10 @@ class LeaveRequestCard extends StatelessWidget {
                               width: screenWidth / 4.5,
                               decoration: BoxDecoration(
                                   color: Colors.red.shade100,
+                                  border: Border.all(
+                                    color: Colors.red,
+                                  ),
+
                                   // border: Border.all(
                                   //   color: leave.leaveCurrentStatus == 'Rejected'
                                   //       ? Colors.red
@@ -258,7 +263,8 @@ class LeaveRequestCard extends StatelessWidget {
                                 padding: const EdgeInsets.all(0),
                                 child: Text(leave.leaveCurrentStatus,
                                     style: TextStyle(
-                                        color: Colors.green, fontSize: 12)),
+                                        color: Colors.green,
+                                        fontSize: heading)),
                               )),
                             ),
                           if (leave.leaveCurrentStatus == 'Pending')
@@ -273,10 +279,11 @@ class LeaveRequestCard extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(5)),
                               child: Center(
                                   child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(5.0),
                                 child: Text(leave.leaveCurrentStatus,
                                     style: TextStyle(
-                                        color: Colors.orange, fontSize: 12)),
+                                        color: Colors.orange,
+                                        fontSize: heading)),
                               )),
                             )
                         ],

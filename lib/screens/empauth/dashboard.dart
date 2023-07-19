@@ -222,7 +222,7 @@ class _LeaveScreenState extends State<LeaveScreen>
         //   },
         // ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight + 40),
+          preferredSize: Size.fromHeight(kToolbarHeight + 30),
           child: Column(
             children: [
               Padding(

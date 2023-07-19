@@ -178,7 +178,7 @@ class _RequestLeaveState extends State<RequestLeave> {
                         style: TextStyle(
                             fontSize: 24, fontWeight: FontWeight.bold))),
                 const SizedBox(
-                  height: 50,
+                  height: 20,
                 ),
                 Container(
                   decoration: BoxDecoration(
