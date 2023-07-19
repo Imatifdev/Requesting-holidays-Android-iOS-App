@@ -165,6 +165,7 @@ class _GetCompanyLeavesState extends State<GetCompanyLeaves> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Company Leaves'),
       ),
@@ -173,76 +174,81 @@ class _GetCompanyLeavesState extends State<GetCompanyLeaves> {
               itemCount: companyLeaves.length,
               itemBuilder: (context, index) {
                 CompanyLeave1 leave = companyLeaves[index];
-                return ListTile(
-                  leading: IconButton(
-                      onPressed: () {
-                        {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              title: Text(
-                                'Confirmation Message',
-                                style: TextStyle(
-                                    color: red, fontWeight: FontWeight.bold),
-                              ),
-                              content: SizedBox(
-                                height: 120,
-                                child: Column(
-                                  children: [
-                                    Text(
-                                        'Are you sure you would like to delete this employee?'),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text('Go Back'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                              builder: (context) =>
-                                                  UpdateCompanyLeave(
-                                                      leave: leave,
-                                                      token: token!),
-                                            ))
-                                                .then((value) {
-                                              setState(() {
-                                                fetchCompanyLeaves(token!,
-                                                    companyId.toString());
+                return Card(
+                  child: ListTile(
+                    shape: RoundedRectangleBorder(),
+                    leading: IconButton(
+                        onPressed: () {
+                          {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                title: Text(
+                                  'Confirmation Message',
+                                  style: TextStyle(
+                                      color: red, fontWeight: FontWeight.bold),
+                                ),
+                                content: SizedBox(
+                                  height: 120,
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                          'Are you sure you would like to delete this employee?'),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text('Go Back'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .push(MaterialPageRoute(
+                                                builder: (context) =>
+                                                    UpdateCompanyLeave(
+                                                        leave: leave,
+                                                        token: token!),
+                                              ))
+                                                  .then((value) {
+                                                setState(() {
+                                                  fetchCompanyLeaves(token!,
+                                                      companyId.toString());
+                                                });
                                               });
-                                            });
-                                          },
-                                          child: Text('Update'),
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                            },
+                                            child: Text('Update'),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }
-                      },
-                      icon: const Icon(Icons.update)),
-                  title: Text(leave.title),
-                  subtitle: Text('Dates:   ${leave.date}'),
-                  trailing: IconButton(
-                      onPressed: () {
-                        //deleteCompanyLeave(token!, leave);
-                        showConfirmationDialogfordelete(context, leave, token!);
-                      },
-                      icon: const Icon(Icons.delete)),
+                            );
+                          }
+                        },
+                        icon: Icon(Icons.edit)),
+                    title: Text(leave.title),
+                    subtitle: Text(
+                        'Dates:   ${leave.date.day}-${leave.date.month}-${leave.date.year}'),
+                    trailing: IconButton(
+                        onPressed: () {
+                          //deleteCompanyLeave(token!, leave);
+                          showConfirmationDialogfordelete(
+                              context, leave, token!);
+                        },
+                        icon: const Icon(Icons.delete)),
+                  ),
                 );
               },
             )
