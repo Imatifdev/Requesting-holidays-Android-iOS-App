@@ -12,6 +12,39 @@ class CompanyLeaveRequestCard extends StatelessWidget {
   });
 
   void popUp(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 16;
+      heading = 24; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 24;
+
+      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 28;
+
+      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 36;
+
+      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 40;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -19,9 +52,10 @@ class CompanyLeaveRequestCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               content: SizedBox(
-                height: 200,
+                height: screenheight / 3.5,
                 width: 300,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
                       'Leave Request Details',
@@ -88,8 +122,8 @@ class CompanyLeaveRequestCard extends StatelessWidget {
                         Text(leave.totalRequestLeave.toString()),
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
                           "Comment",
@@ -189,7 +223,7 @@ class CompanyLeaveRequestCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10)),
                         child: Center(
                             child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(5.0),
                           child: Text(leave.leaveCurrentStatus,
                               style: TextStyle(
                                   color: leave.leaveCurrentStatus == 'Rejected'
@@ -238,7 +272,7 @@ class CompanyLeaveRequestCard extends StatelessWidget {
                             },
                             child: Icon(
                               CupertinoIcons.right_chevron,
-                              size: 20,
+                              size: 15,
                             ),
                           ),
                         ),

@@ -481,8 +481,7 @@ class _CompanyLogoState extends State<CompanyLogo> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
+                        color: red, borderRadius: BorderRadius.circular(10)),
                     height: screenheight / 15,
                     width: screenWidth - 100,
                     child: Center(
