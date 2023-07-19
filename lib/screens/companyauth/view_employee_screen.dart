@@ -10,6 +10,12 @@ import '../../models/company/viewemployeedata.dart';
 import '../../viewmodel/company/compuserviewmodel.dart';
 import '../../widget/constants.dart';
 
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'dart:convert';
 
 class ViewEmployee extends StatefulWidget {
   final Employee employee;
@@ -20,6 +26,27 @@ class ViewEmployee extends StatefulWidget {
 }
 
 class _ViewEmployeeState extends State<ViewEmployee> {
+  late StreamSubscription subscription;
+
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+  @override
+  void initState() {
+    getConnectivity();
+    super.initState();
+  }
+
+  getConnectivity() =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            showDialogBox();
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
   bool isLoading = false;
 
   Future<void> deleteCompanyEm(String token, Employee em) async {
@@ -54,7 +81,6 @@ class _ViewEmployeeState extends State<ViewEmployee> {
       // Handle error scenario
     }
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -76,58 +102,71 @@ class _ViewEmployeeState extends State<ViewEmployee> {
             )),
       ),
       body: SafeArea(
-        child: SizedBox(
-          width: size.width,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              children: [
-                const Text(
-                    "Employee Details",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ).pOnly(left: 24),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  detailCard(context,"First Name", widget.employee.firstName),
-                  detailCard(context,"Last Name", widget.employee.lastName),
-                  detailCard(context,"Email", widget.employee.email),
-                  detailCard(context,"Working Days", widget.employee.getWorkingDaysAsString()),
-                  detailCard(context,"Phone Number", widget.employee.phone),
-                  detailCard(context,"Verified Status", getStatus(widget.employee.isVerified)),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                    ElevatedButton(
-                      onPressed: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditEmployee(emp: widget.employee,email: widget.employee.email, first_name: widget.employee.firstName, last_name: widget.employee.lastName,mobile: widget.employee.phone),));
-                      }, 
+          child: SizedBox(
+        width: size.width,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              const Text(
+                "Employee Details",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ).pOnly(left: 24),
+              const SizedBox(
+                height: 25,
+              ),
+              detailCard(context, "First Name", widget.employee.firstName),
+              detailCard(context, "Last Name", widget.employee.lastName),
+              detailCard(context, "Email", widget.employee.email),
+              detailCard(context, "Working Days",
+                  widget.employee.getWorkingDaysAsString()),
+              detailCard(context, "Phone Number", widget.employee.phone),
+              detailCard(context, "Verified Status",
+                  getStatus(widget.employee.isVerified)),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => EditEmployee(
+                              emp: widget.employee,
+                              email: widget.employee.email,
+                              first_name: widget.employee.firstName,
+                              last_name: widget.employee.lastName,
+                              mobile: widget.employee.phone),
+                        ));
+                      },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.yellow,
-                        padding:const EdgeInsets.all(10)
-                      ),
-                      child: const Text("Edit", style: TextStyle(color: Colors.black),)),
-                    ElevatedButton(
-                      onPressed: (){
-                        deleteCompanyEm(token!,widget.employee);
-                      }, 
+                          backgroundColor: Colors.yellow,
+                          padding: const EdgeInsets.all(10)),
+                      child: const Text(
+                        "Edit",
+                        style: TextStyle(color: Colors.black),
+                      )),
+                  ElevatedButton(
+                      onPressed: () {
+                        deleteCompanyEm(token!, widget.employee);
+                      },
                       style: ElevatedButton.styleFrom(
-                        padding:const EdgeInsets.all(10)
-                      ),
-                      child: isLoading? const CircularProgressIndicator():const Text("Delete")),
-                  ],)
-              ],
-            ),
+                          padding: const EdgeInsets.all(10)),
+                      child: isLoading
+                          ? const CircularProgressIndicator()
+                          : const Text("Delete")),
+                ],
+              )
+            ],
           ),
-        ) ),
+        ),
+      )),
     );
   }
 
-  String getStatus(String status){
-    if(status == "1"){
+  String getStatus(String status) {
+    if (status == "1") {
       return "Active";
-    }else{
+    } else {
       return "Inactive";
     }
   }
@@ -135,20 +174,47 @@ class _ViewEmployeeState extends State<ViewEmployee> {
   Container detailCard(BuildContext context, String name, String detail) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      width: size.width-50,
-                  color: appbar,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(name, style: TextStyle(fontSize: 16, color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold)),
-                          Text(detail)
-                        ],
-                      ),
-                      const Divider()
-                    ],
-                  ),
-                );
+      width: size.width - 50,
+      color: appbar,
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(name,
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold)),
+              Text(detail)
+            ],
+          ),
+          const Divider()
+        ],
+      ),
+    );
   }
+
+  showDialogBox() => showCupertinoDialog<String>(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: const Text('No Connection'),
+          content: const Text('Please check your internet connectivity'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context, 'Cancel');
+                setState(() => isAlertSet = false);
+                isDeviceConnected =
+                    await InternetConnectionChecker().hasConnection;
+                if (!isDeviceConnected && isAlertSet == false) {
+                  showDialogBox();
+                  setState(() => isAlertSet = true);
+                }
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
 }

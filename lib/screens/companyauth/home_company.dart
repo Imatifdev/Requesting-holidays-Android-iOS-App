@@ -8,6 +8,12 @@ import '../../models/leave.dart';
 import '../../viewmodel/employee/empuserviewmodel.dart';
 import 'approved_leaves.dart';
 import 'declined_leaves.dart';
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'dart:convert';
 
 class HomeCompany extends StatefulWidget {
   @override
@@ -15,10 +21,29 @@ class HomeCompany extends StatefulWidget {
 }
 
 class _HomeCompanyState extends State<HomeCompany> {
-  int _currentIndex = 0;
-  int check =0; 
+  late StreamSubscription subscription;
 
-  
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+  @override
+  void initState() {
+    getConnectivity();
+    super.initState();
+  }
+
+  getConnectivity() =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            showDialogBox();
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
+  int _currentIndex = 0;
+  int check = 0;
 
   List<LeaveRequest> leaveRequests = [];
   List<LeaveRequest> approvedLeaves = [];
@@ -41,9 +66,8 @@ class _HomeCompanyState extends State<HomeCompany> {
       print(jsonDataMap);
       List<dynamic> requestedLeaves = jsonDataMap['data']['requested_leaves'];
       setState(() {
-      leaveRequests = requestedLeaves
-      .map((json) => LeaveRequest.fromJson(json))
-      .toList();  
+        leaveRequests =
+            requestedLeaves.map((json) => LeaveRequest.fromJson(json)).toList();
       });
       // Handle success scenario
     } else {
@@ -70,9 +94,8 @@ class _HomeCompanyState extends State<HomeCompany> {
       print(jsonDataMap);
       List<dynamic> requestedLeaves = jsonDataMap['data']['requested_leaves'];
       setState(() {
-      approvedLeaves = requestedLeaves
-      .map((json) => LeaveRequest.fromJson(json))
-      .toList();  
+        approvedLeaves =
+            requestedLeaves.map((json) => LeaveRequest.fromJson(json)).toList();
       });
       // Handle success scenario
     } else {
@@ -99,9 +122,8 @@ class _HomeCompanyState extends State<HomeCompany> {
       print(jsonDataMap);
       List<dynamic> requestedLeaves = jsonDataMap['data']['requested_leaves'];
       setState(() {
-      rejectedLeaves = requestedLeaves
-      .map((json) => LeaveRequest.fromJson(json))
-      .toList();  
+        rejectedLeaves =
+            requestedLeaves.map((json) => LeaveRequest.fromJson(json)).toList();
       });
       //Handle success scenario
     } else {
@@ -110,23 +132,27 @@ class _HomeCompanyState extends State<HomeCompany> {
       // Handle error scenario
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final empViewModel = Provider.of<EmpViewModel>(context);
     final token = empViewModel.token;
-    if(check == 0){
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) { 
-            _getallpendingLeaveRequest(token!);
-            _getallapprovedLeaveRequest(token);
-            _getallrejectedLeaveRequest(token);
-            });
+    if (check == 0) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _getallpendingLeaveRequest(token!);
+        _getallapprovedLeaveRequest(token);
+        _getallrejectedLeaveRequest(token);
+      });
       check = 1;
     }
     final List<Widget> _screens = [
-    ReceivedRequests(leaveRequests: leaveRequests),const Text("2"),ApprovedLeaves(approvedLeaves: approvedLeaves),DeclinedLeaves(rejectedLeaves: rejectedLeaves,)
-  ];
+      ReceivedRequests(leaveRequests: leaveRequests),
+      const Text("2"),
+      ApprovedLeaves(approvedLeaves: approvedLeaves),
+      DeclinedLeaves(
+        rejectedLeaves: rejectedLeaves,
+      )
+    ];
     return Scaffold(
       // appBar: AppBar(
       //   actions: [
@@ -146,23 +172,58 @@ class _HomeCompanyState extends State<HomeCompany> {
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: Colors.black,),
+            icon: Icon(
+              Icons.home,
+              color: Colors.black,
+            ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle, color: Colors.black,),
+            icon: Icon(
+              Icons.add_circle,
+              color: Colors.black,
+            ),
             label: 'Add',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.check_box, color: Colors.green,),
+            icon: Icon(
+              Icons.check_box,
+              color: Colors.green,
+            ),
             label: 'Approved',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.cancel, color: Colors.red,),
+            icon: Icon(
+              Icons.cancel,
+              color: Colors.red,
+            ),
             label: 'Declined',
           ),
         ],
       ),
     );
   }
+
+  showDialogBox() => showCupertinoDialog<String>(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: const Text('No Connection'),
+          content: const Text('Please check your internet connectivity'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context, 'Cancel');
+                setState(() => isAlertSet = false);
+                isDeviceConnected =
+                    await InternetConnectionChecker().hasConnection;
+                if (!isDeviceConnected && isAlertSet == false) {
+                  showDialogBox();
+                  setState(() => isAlertSet = true);
+                }
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
 }

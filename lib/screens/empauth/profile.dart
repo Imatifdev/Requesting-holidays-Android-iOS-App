@@ -104,7 +104,7 @@ class _EmpProfileViewState extends State<EmpProfileView> {
     final user = empViewModel.user;
 
     return Scaffold(
-      backgroundColor: appbar,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: appbar,

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
@@ -8,6 +10,12 @@ import 'package:provider/provider.dart';
 
 import '../../widget/constants.dart';
 import 'companydashboard.dart';
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'dart:convert';
 
 class MyForm extends StatefulWidget {
   @override
@@ -15,6 +23,27 @@ class MyForm extends StatefulWidget {
 }
 
 class _MyFormState extends State<MyForm> {
+  late StreamSubscription subscription;
+
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+  @override
+  void initState() {
+    getConnectivity();
+    super.initState();
+  }
+
+  getConnectivity() =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            showDialogBox();
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
   TextEditingController companyIDController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -337,7 +366,6 @@ class _MyFormState extends State<MyForm> {
                   "Working Days",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
-
                 SizedBox(
                   height: 10,
                 ),
@@ -354,80 +382,28 @@ class _MyFormState extends State<MyForm> {
                     },
                   ),
                 ),
-                // Column(
-                //   children: [
-                //     CheckboxListTile(
-                //       title: Text('Monday'),
-                //       value: mondayChecked,
-                //       onChanged: (bool? value) {
-                //         setState(() {
-                //           mondayChecked = value!;
-                //         });
-                //       },
-                //     ),
-                //     CheckboxListTile(
-                //       title: Text('Tuesday'),
-                //       value: tuesdayChecked,
-                //       onChanged: (bool? value) {
-                //         setState(() {
-                //           tuesdayChecked = value!;
-                //         });
-                //       },
-                //     ),
-                //     CheckboxListTile(
-                //       title: Text('Wednesday'),
-                //       value: wednesdayChecked,
-                //       onChanged: (bool? value) {
-                //         setState(() {
-                //           wednesdayChecked = value!;
-                //         });
-                //       },
-                //     ),
-                //     CheckboxListTile(
-                //       title: Text('Thursday'),
-                //       value: thursdayChecked,
-                //       onChanged: (bool? value) {
-                //         setState(() {
-                //           thursdayChecked = value!;
-                //         });
-                //       },
-                //     ),
-                //     CheckboxListTile(
-                //       title: Text('Friday'),
-                //       value: fridayChecked,
-                //       onChanged: (bool? value) {
-                //         setState(() {
-                //           fridayChecked = value!;
-                //         });
-                //       },
-                //     ),
-                //     CheckboxListTile(
-                //       title: Text('Saturday'),
-                //       value: saturdayChecked,
-                //       onChanged: (bool? value) {
-                //         setState(() {
-                //           saturdayChecked = value!;
-                //         });
-                //       },
-                //     ),
-                //     CheckboxListTile(
-                //       title: Text('Sunday'),
-                //       value: sundayChecked,
-                //       onChanged: (bool? value) {
-                //         setState(() {
-                //           sundayChecked = value!;
-                //         });
-                //       },
-                //     ),
-                //   ],
-                // ),
+                SizedBox(
+                  height: 10,
+                ),
                 Center(
-                  child: ElevatedButton(
-                    onPressed: () {
+                  child: InkWell(
+                    onTap: () {
                       print(dayValues);
                       makeApiRequest(token!, companyId.toString());
                     },
-                    child: Text("Create"),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: red, borderRadius: BorderRadius.circular(10)),
+                      height: screenheight / 15,
+                      width: screenWidth - 100,
+                      child: Center(
+                        child: Text(
+                          "Create",
+                          style: TextStyle(
+                              color: Colors.white, fontSize: fontSize),
+                        ),
+                      ),
+                    ),
                   ),
                 )
               ]),
@@ -485,4 +461,27 @@ class _MyFormState extends State<MyForm> {
         return '';
     }
   }
+
+  showDialogBox() => showCupertinoDialog<String>(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: const Text('No Connection'),
+          content: const Text('Please check your internet connectivity'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context, 'Cancel');
+                setState(() => isAlertSet = false);
+                isDeviceConnected =
+                    await InternetConnectionChecker().hasConnection;
+                if (!isDeviceConnected && isAlertSet == false) {
+                  showDialogBox();
+                  setState(() => isAlertSet = true);
+                }
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
 }

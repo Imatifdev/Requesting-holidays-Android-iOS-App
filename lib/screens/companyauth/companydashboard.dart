@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:holidays/screens/companyauth/createnewemployee.dart';
@@ -13,6 +14,7 @@ import 'package:holidays/screens/companyauth/showemployes.dart';
 import 'package:holidays/screens/companyauth/stripe_screen.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
 import 'package:holidays/widget/leave_req_card.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 import '../../models/company/viewemployeedata.dart';
 import '../../models/company_leave.dart';
@@ -35,6 +37,33 @@ class CompanyDashBoard extends StatefulWidget {
 }
 
 class _CompanyDashBoardState extends State<CompanyDashBoard> {
+  late StreamSubscription subscription;
+
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+  @override
+  void initState() {
+    getConnectivity();
+    super.initState();
+  }
+
+  getConnectivity() =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            showDialogBox();
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
+  }
+
   List<CompanyLeaveRequest> leaves = [];
   List<CompanyLeaveRequest> pendingLeaves = [];
   List<CompanyLeaveRequest> approvedLeaves = [];
@@ -153,7 +182,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
         title: Text("DashBoard"),
         leading: IconButton(
             onPressed: () {
-              if (!currentStatus) {
+              if (currentStatus) {
                 scaffoldKey.currentState?.openDrawer();
               } else {
                 showDialog(
@@ -392,6 +421,29 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
       ),
     );
   }
+
+  showDialogBox() => showCupertinoDialog<String>(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: const Text('No Connection'),
+          content: const Text('Please check your internet connectivity'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context, 'Cancel');
+                setState(() => isAlertSet = false);
+                isDeviceConnected =
+                    await InternetConnectionChecker().hasConnection;
+                if (!isDeviceConnected && isAlertSet == false) {
+                  showDialogBox();
+                  setState(() => isAlertSet = true);
+                }
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
 }
 
 class AllApplications extends StatefulWidget {
@@ -571,13 +623,13 @@ class _AllApplicationsState extends State<AllApplications> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'From:-${leave.startDate}',
+                                            'From: ${leave.startDate}',
                                             style: TextStyle(
                                                 fontSize: fontSize,
                                                 color: Colors.black),
                                           ),
                                           Text(
-                                            'To:-${leave.endDate}',
+                                            'To: ${leave.endDate}',
                                             style: TextStyle(
                                                 fontSize: fontSize,
                                                 color: Colors.black),

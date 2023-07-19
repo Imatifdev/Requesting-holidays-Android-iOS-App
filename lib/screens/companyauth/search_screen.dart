@@ -1,4 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +14,12 @@ import '../../viewmodel/company/compuserviewmodel.dart';
 import '../../widget/constants.dart';
 import '../../widget/date_range_picker.dart';
 import '../../widget/leave_req_card.dart';
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'dart:convert';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -182,9 +191,28 @@ class _SearchScreenState extends State<SearchScreen>
     });
   }
 
+  late StreamSubscription subscription;
+
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+
+  getConnectivity() =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            showDialogBox();
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
   @override
   void initState() {
+    getConnectivity();
+
     super.initState();
+
     _tabController = TabController(length: 2, vsync: this);
   }
 
@@ -279,61 +307,6 @@ class _SearchScreenState extends State<SearchScreen>
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                // Padding(
-                                //   padding: const EdgeInsets.all(8.0),
-                                //   child: Container(
-                                //     decoration: BoxDecoration(
-                                //       border: Border.all()
-                                //     ),
-                                //     child: Row(
-                                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //       children: [
-                                //         InkWell(
-                                //           onTap: (){
-                                //             setState(() {
-                                //               currentIndex = 0;
-                                //             });
-                                //           },
-                                //           child: Container(
-                                //             color: currentIndex == 0? Colors.red :Colors.white,
-                                //             child: Padding(
-                                //               padding: const EdgeInsets.all(8.0),
-                                //               child: Text("Tomorrow",style: TextStyle(color:currentIndex == 0? Colors.white :Colors.black,), ),
-                                //             ),
-                                //           ),
-                                //         ),
-                                //         InkWell(
-                                //           onTap: (){
-                                //             setState(() {
-                                //               currentIndex = 1;
-                                //             });
-                                //           },
-                                //           child: Container(
-                                //             color: currentIndex == 1? Colors.red :Colors.white,
-                                //             child: Padding(
-                                //               padding: const EdgeInsets.all(8.0),
-                                //               child: Text("This Week",style: TextStyle(color:currentIndex == 1? Colors.white :Colors.black,), ),
-                                //             ),
-                                //           ),
-                                //         ),
-                                //         InkWell(
-                                //           onTap: (){
-                                //             setState(() {
-                                //               currentIndex = 2;
-                                //             });
-                                //           },
-                                //           child: Container(
-                                //             color: currentIndex == 2? Colors.red :Colors.white,
-                                //             child: Padding(
-                                //               padding: const EdgeInsets.all(8.0),
-                                //               child: Text("This Week",style: TextStyle(color:currentIndex == 2? Colors.white :Colors.black,), ),
-                                //             ),
-                                //           ),
-                                //         ),
-                                //       ],
-                                //     ),
-                                //   ),
-                                // ),
                                 DefaultTabController(
                                   length: 3,
                                   child: Column(
@@ -420,9 +393,6 @@ class _SearchScreenState extends State<SearchScreen>
                                                             LeaveRequest leave =
                                                                 monthLeaveRequests[
                                                                     index];
-                                                            // Employee emp =
-                                                            //     empstatus[
-                                                            //         index];
 
                                                             return LeaveRequestCard(
                                                               leave: leave,
@@ -484,15 +454,31 @@ class _SearchScreenState extends State<SearchScreen>
                   ))
             ])),
       ),
-      // TabBarView(
-      //   controller: _tabController,
-      //   children: [
-      //     ByDate(),
-      //     ByFilter(),
-      //   ],
-      // ),
     );
   }
+
+  showDialogBox() => showCupertinoDialog<String>(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: const Text('No Connection'),
+          content: const Text('Please check your internet connectivity'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context, 'Cancel');
+                setState(() => isAlertSet = false);
+                isDeviceConnected =
+                    await InternetConnectionChecker().hasConnection;
+                if (!isDeviceConnected && isAlertSet == false) {
+                  showDialogBox();
+                  setState(() => isAlertSet = true);
+                }
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
 }
 
 class ByDate extends StatefulWidget {

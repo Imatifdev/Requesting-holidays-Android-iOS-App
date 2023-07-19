@@ -3,6 +3,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:holidays/models/leave.dart';
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'dart:convert';
 
 class ReceivedRequests extends StatefulWidget {
   final List<LeaveRequest> leaveRequests;
@@ -13,8 +19,26 @@ class ReceivedRequests extends StatefulWidget {
 }
 
 class _ReceivedRequestsState extends State<ReceivedRequests> {
+  late StreamSubscription subscription;
+
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+  @override
+  getConnectivity() =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            showDialogBox();
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
   @override
   void initState() {
+    getConnectivity();
+
     super.initState();
   }
 
@@ -137,4 +161,27 @@ class _ReceivedRequestsState extends State<ReceivedRequests> {
       ),
     );
   }
+
+  showDialogBox() => showCupertinoDialog<String>(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: const Text('No Connection'),
+          content: const Text('Please check your internet connectivity'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context, 'Cancel');
+                setState(() => isAlertSet = false);
+                isDeviceConnected =
+                    await InternetConnectionChecker().hasConnection;
+                if (!isDeviceConnected && isAlertSet == false) {
+                  showDialogBox();
+                  setState(() => isAlertSet = true);
+                }
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
 }

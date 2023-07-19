@@ -78,6 +78,7 @@ class _EmpOtpScreenState extends State<EmpOtpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: red,
         title: Text('Authenticate OTP'),

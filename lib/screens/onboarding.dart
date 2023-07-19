@@ -66,7 +66,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
     }
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(236, 240, 243, 1),
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

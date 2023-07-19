@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -7,6 +9,13 @@ import 'package:provider/provider.dart';
 
 import '../../models/company/companyleavemodel.dart';
 import '../../viewmodel/company/compuserviewmodel.dart';
+import '../../widget/constants.dart';
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'dart:convert';
 
 class GetCompanyLeaves extends StatefulWidget {
   @override
@@ -14,38 +23,76 @@ class GetCompanyLeaves extends StatefulWidget {
 }
 
 class _GetCompanyLeavesState extends State<GetCompanyLeaves> {
+  late StreamSubscription subscription;
+
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+  @override
+  void initState() {
+    getConnectivity();
+    super.initState();
+  }
+
+  getConnectivity() =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            showDialogBox();
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
   int check = 0;
 
   List<CompanyLeave1> companyLeaves = [];
 
-  void showConfirmationDialog(BuildContext context, CompanyLeave1 leave, String token) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Confirm Delete'),
-        content: const Text('Are you sure you want to delete this leave?'),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('Cancel'),
-            onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
-            },
-          ),
-          TextButton(
-            child: const Text('Delete'),
-            onPressed: () {
-              deleteCompanyLeave(token, leave);
+  void showConfirmationDialogfordelete(
+      BuildContext context, CompanyLeave1 leave, String token) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Text(
+          'Confirmation Message',
+          style: TextStyle(color: red, fontWeight: FontWeight.bold),
+        ),
+        content: SizedBox(
+          height: 120,
+          child: Column(
+            children: [
+              Text('Are you sure you would like to delete this employee?'),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Go Back'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      deleteCompanyLeave(token, leave);
 
-              Navigator.of(context).pop(); // Close the dialog
-            },
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: Text('Delete'),
+                  ),
+                ],
+              )
+            ],
           ),
-        ],
-      );
-    },
-  );
-}
-
+        ),
+      ),
+    );
+  }
 
   Future<void> fetchCompanyLeaves(String token, String id) async {
     const String requestLeaveUrl =
@@ -129,16 +176,63 @@ class _GetCompanyLeavesState extends State<GetCompanyLeaves> {
                 return ListTile(
                   leading: IconButton(
                       onPressed: () {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(
-                          builder: (context) =>
-                              UpdateCompanyLeave(leave: leave, token: token!),
-                        ))
-                            .then((value) {
-                          setState(() {
-                            fetchCompanyLeaves(token!, companyId.toString());
-                          });
-                        });
+                        {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              title: Text(
+                                'Confirmation Message',
+                                style: TextStyle(
+                                    color: red, fontWeight: FontWeight.bold),
+                              ),
+                              content: SizedBox(
+                                height: 120,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                        'Are you sure you would like to delete this employee?'),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('Go Back'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                              builder: (context) =>
+                                                  UpdateCompanyLeave(
+                                                      leave: leave,
+                                                      token: token!),
+                                            ))
+                                                .then((value) {
+                                              setState(() {
+                                                fetchCompanyLeaves(token!,
+                                                    companyId.toString());
+                                              });
+                                            });
+                                          },
+                                          child: Text('Update'),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        }
                       },
                       icon: const Icon(Icons.update)),
                   title: Text(leave.title),
@@ -146,13 +240,36 @@ class _GetCompanyLeavesState extends State<GetCompanyLeaves> {
                   trailing: IconButton(
                       onPressed: () {
                         //deleteCompanyLeave(token!, leave);
-                        showConfirmationDialog(context, leave, token!);
+                        showConfirmationDialogfordelete(context, leave, token!);
                       },
                       icon: const Icon(Icons.delete)),
                 );
               },
             )
-          : const Center(child: CircularProgressIndicator() ),
+          : const Center(child: CircularProgressIndicator()),
     );
   }
+
+  showDialogBox() => showCupertinoDialog<String>(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: const Text('No Connection'),
+          content: const Text('Please check your internet connectivity'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context, 'Cancel');
+                setState(() => isAlertSet = false);
+                isDeviceConnected =
+                    await InternetConnectionChecker().hasConnection;
+                if (!isDeviceConnected && isAlertSet == false) {
+                  showDialogBox();
+                  setState(() => isAlertSet = true);
+                }
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
 }

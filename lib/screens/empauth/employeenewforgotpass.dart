@@ -365,54 +365,6 @@ class _EmployeeForgotPasswordScreenState
                   keyboardType: TextInputType.visiblePassword,
                   obscureText: !_isPasswordVisible,
                 ),
-                // TextField(
-                //   keyboardType: TextInputType.number,
-                //   maxLength: 4,
-                //   controller: _otpController,
-                //   decoration: InputDecoration(
-                //     labelText: 'OTP',
-                //   ),
-                // ),
-                // SizedBox(height: 16.0),
-                // // TextField(
-                // //   controller: _passwordController,
-                // //   decoration: InputDecoration(
-                // //     labelText: 'New Password',
-                // //     suffixIcon: IconButton(
-                // //       onPressed: () {
-                // //         setState(() {
-                // //           _isPasswordVisible = !_isPasswordVisible;
-                // //         });
-                // //       },
-                // //       icon: Icon(
-                // //         _isPasswordVisible
-                // //             ? Icons.visibility
-                // //             : Icons.visibility_off,
-                // //       ),
-                // //     ),
-                // //   ),
-                // //   obscureText: !_isPasswordVisible,
-                // // ),
-                // SizedBox(height: 16.0),
-                // TextField(
-                //   obscureText: !_isPasswordVisible,
-                //   controller: _confirmPasswordController,
-                //   decoration: InputDecoration(
-                //     suffixIcon: IconButton(
-                //       onPressed: () {
-                //         setState(() {
-                //           _isPasswordVisible = !_isPasswordVisible;
-                //         });
-                //       },
-                //       icon: Icon(
-                //         _isPasswordVisible
-                //             ? Icons.visibility
-                //             : Icons.visibility_off,
-                //       ),
-                //     ),
-                //     labelText: 'Confirm Password',
-                //   ),
-                // ),
                 SizedBox(height: 16.0),
                 Center(
                     child: InkWell(

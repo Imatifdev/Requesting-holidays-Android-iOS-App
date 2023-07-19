@@ -72,6 +72,7 @@ class _AllLeavesScreenState extends State<AllLeavesScreen> {
       check = 1;
     }
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(title: const Text("All Leaves")),
       body: leaveRequests.isNotEmpty
           ? ListView.builder(

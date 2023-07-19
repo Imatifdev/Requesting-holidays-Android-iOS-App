@@ -45,7 +45,7 @@ class _PendingLeavesScreenState extends State<PendingLeavesScreen> {
         for (LeaveRequest request in leaveRequests) {
           if (request.leaveCurrentStatus == "Pending") {
             leavesRejected.add(request);
-          } 
+          }
         }
       });
       // Handle success scenario
@@ -71,6 +71,7 @@ class _PendingLeavesScreenState extends State<PendingLeavesScreen> {
       check = 1;
     }
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(title: const Text("All Pending Leaves")),
       body: leavesRejected.isNotEmpty
           ? ListView.builder(

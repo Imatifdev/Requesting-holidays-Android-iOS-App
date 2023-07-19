@@ -13,6 +13,12 @@ import '../../models/leave.dart';
 import '../../viewmodel/company/compuserviewmodel.dart';
 import '../../widget/constants.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'dart:convert';
 
 class CreateCompanyLeave extends StatefulWidget {
   const CreateCompanyLeave({super.key});
@@ -22,6 +28,27 @@ class CreateCompanyLeave extends StatefulWidget {
 }
 
 class _CreateCompanyLeaveState extends State<CreateCompanyLeave> {
+  late StreamSubscription subscription;
+
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+  @override
+  void initState() {
+    getConnectivity();
+    super.initState();
+  }
+
+  getConnectivity() =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            showDialogBox();
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
   List<DateTime> _selectedDates = [];
   String _selectedDate = '';
   String _dateCount = '';
@@ -225,4 +252,27 @@ class _CreateCompanyLeaveState extends State<CreateCompanyLeave> {
       ),
     );
   }
+
+  showDialogBox() => showCupertinoDialog<String>(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: const Text('No Connection'),
+          content: const Text('Please check your internet connectivity'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context, 'Cancel');
+                setState(() => isAlertSet = false);
+                isDeviceConnected =
+                    await InternetConnectionChecker().hasConnection;
+                if (!isDeviceConnected && isAlertSet == false) {
+                  showDialogBox();
+                  setState(() => isAlertSet = true);
+                }
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
 }

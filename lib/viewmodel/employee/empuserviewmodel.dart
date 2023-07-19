@@ -143,6 +143,7 @@ class EmpViewModel extends ChangeNotifier {
   //     print('Error: ${response.reasonPhrase}');
   //   }
   // }
+
   Future<void> performLogin(
       String email, String password, BuildContext context) async {
     final String apiUrl = 'https://jporter.ezeelogix.com/public/api/login';
@@ -173,17 +174,15 @@ class EmpViewModel extends ChangeNotifier {
           MaterialPageRoute(builder: (context) => EmpHome()),
         );
         notifyListeners();
-      } 
-      else if(response.statusCode == 401){
+      } else if (response.statusCode == 401) {
         print("responseee: $jsonData");
 
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => EmpHome()),
         );
-      }
-      else {
-       print(jsonData);
+      } else {
+        print(jsonData);
         String errorMessage = jsonData['message'];
         Fluttertoast.showToast(
           msg: errorMessage,
