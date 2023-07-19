@@ -24,6 +24,7 @@ class _EmpHomeState extends State<EmpHome> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         bottomNavigationBar: CurvedNavigationBar(
           color: red,
           backgroundColor: Colors.transparent,

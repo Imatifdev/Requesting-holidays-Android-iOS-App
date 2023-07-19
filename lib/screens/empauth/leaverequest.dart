@@ -36,6 +36,7 @@ class _EmpProfileViewreqState extends State<EmpProfileViewreq> {
     final viewModel = Provider.of<EmpViewModel>(context);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Profile'),
       ),

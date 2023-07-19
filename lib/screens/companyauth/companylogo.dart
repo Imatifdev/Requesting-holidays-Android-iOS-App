@@ -352,6 +352,39 @@ class _CompanyLogoState extends State<CompanyLogo> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 14.0;
+      title = 22;
+      heading = 30; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 16.0;
+      title = 25;
+
+      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 18.0;
+      title = 27;
+
+      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 20.0;
+      title = 30;
+
+      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 34;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     Size size = MediaQuery.of(context).size;
     final comViewModel = Provider.of<CompanyViewModel>(context);
     final token = comViewModel.token;
@@ -359,9 +392,9 @@ class _CompanyLogoState extends State<CompanyLogo> {
     final user = companyViewModel.user;
     final companyId = user!.id;
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: backgroundColor,
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           onPressed: () {
@@ -438,28 +471,51 @@ class _CompanyLogoState extends State<CompanyLogo> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.all(15),
+                InkWell(
+                  onTap: () {
+                    _changeLogo(
+                      token!,
+                      companyId.toString(),
+                      pickedImage,
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    height: screenheight / 15,
+                    width: screenWidth - 100,
+                    child: Center(
+                      child: Text(
+                        "Apply",
+                        style:
+                            TextStyle(color: Colors.white, fontSize: fontSize),
+                      ),
                     ),
-                    onPressed: () {
-                      _changeLogo(
-                        token!,
-                        companyId.toString(),
-                        pickedImage,
-                      );
-                    },
-                    child: isLoading
-                        ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          )
-                        : const Text(
-                            "Change Logo",
-                            style: TextStyle(fontSize: 14),
-                          ),
-                  ).pOnly(left: 20),
-                ),
+                  ),
+                ).centered(),
+                // Center(
+                //   child: ElevatedButton(
+                //     style: ElevatedButton.styleFrom(
+                //       padding: const EdgeInsets.all(15),
+                //     ),
+                //     onPressed: () {
+                //       _changeLogo(
+                //         token!,
+                //         companyId.toString(),
+                //         pickedImage,
+                //       );
+                //     },
+                //     child: isLoading
+                //         ? const CircularProgressIndicator(
+                //             color: Colors.white,
+                //           )
+                //         : const Text(
+                //             "Change Logo",
+                //             style: TextStyle(fontSize: 14),
+                //           ),
+                //   ).pOnly(left: 20),
+                // ),
                 Text(
                   errMsg,
                   style: const TextStyle(color: Colors.red),

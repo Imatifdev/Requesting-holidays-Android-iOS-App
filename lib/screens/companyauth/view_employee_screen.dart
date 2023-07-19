@@ -84,6 +84,39 @@ class _ViewEmployeeState extends State<ViewEmployee> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 16;
+      heading = 24; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 24;
+
+      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 28;
+
+      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 36;
+
+      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 40;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     final comViewModel = Provider.of<CompanyViewModel>(context);
     final token = comViewModel.token;
     Size size = MediaQuery.of(context).size;
@@ -106,57 +139,33 @@ class _ViewEmployeeState extends State<ViewEmployee> {
         width: size.width,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: [
-              const Text(
-                "Employee Details",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ).pOnly(left: 24),
-              const SizedBox(
-                height: 25,
-              ),
-              detailCard(context, "First Name", widget.employee.firstName),
-              detailCard(context, "Last Name", widget.employee.lastName),
-              detailCard(context, "Email", widget.employee.email),
-              detailCard(context, "Working Days",
-                  widget.employee.getWorkingDaysAsString()),
-              detailCard(context, "Phone Number", widget.employee.phone),
-              detailCard(context, "Verified Status",
-                  getStatus(widget.employee.isVerified)),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => EditEmployee(
-                              emp: widget.employee,
-                              email: widget.employee.email,
-                              first_name: widget.employee.firstName,
-                              last_name: widget.employee.lastName,
-                              mobile: widget.employee.phone),
-                        ));
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.yellow,
-                          padding: const EdgeInsets.all(10)),
-                      child: const Text(
-                        "Edit",
-                        style: TextStyle(color: Colors.black),
-                      )),
-                  ElevatedButton(
-                      onPressed: () {
-                        deleteCompanyEm(token!, widget.employee);
-                      },
-                      style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.all(10)),
-                      child: isLoading
-                          ? const CircularProgressIndicator()
-                          : const Text("Delete")),
-                ],
-              )
-            ],
+          child: Card(
+            child: Column(
+              children: [
+                Column(
+                  children: [
+                    const Text(
+                      "Employee Details",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ).pOnly(left: 24),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    detailCard(
+                        context, "First Name", widget.employee.firstName),
+                    detailCard(context, "Last Name", widget.employee.lastName),
+                    detailCard(context, "Email", widget.employee.email),
+                    detailCard(context, "Working Days",
+                        widget.employee.getWorkingDaysAsString()),
+                    detailCard(context, "Phone Number", widget.employee.phone),
+                    detailCard(context, "Verified Status",
+                        getStatus(widget.employee.isVerified)),
+                    const SizedBox(height: 10),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       )),
@@ -173,6 +182,39 @@ class _ViewEmployeeState extends State<ViewEmployee> {
 
   Container detailCard(BuildContext context, String name, String detail) {
     Size size = MediaQuery.of(context).size;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 16;
+      heading = 24; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 24;
+
+      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 28;
+
+      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 36;
+
+      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 40;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     return Container(
       width: size.width - 50,
       color: appbar,
@@ -183,13 +225,16 @@ class _ViewEmployeeState extends State<ViewEmployee> {
             children: [
               Text(name,
                   style: TextStyle(
-                      fontSize: 16,
+                      fontSize: fontSize,
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold)),
               Text(detail)
             ],
           ),
-          const Divider()
+          Divider(
+            color: Colors.grey,
+            thickness: 0.5,
+          )
         ],
       ),
     );

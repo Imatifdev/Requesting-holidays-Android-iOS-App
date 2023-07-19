@@ -234,23 +234,57 @@ class _ShowEmployeeState extends State<ShowEmployee> {
   }
 
   Container empCard(String token, String companyId, Employee emp) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 11.0;
+      title = 16;
+      heading = 10; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 12.0;
+      title = 20;
+
+      heading = 12; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 15.0;
+      title = 22;
+
+      heading = 14; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 26;
+
+      heading = 18; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 19;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(width: 1, color: Colors.grey)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             emp.firstName,
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 emp.email,
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+                style: TextStyle(
+                    fontSize: fontSize, fontWeight: FontWeight.normal),
               ),
               // SizedBox(
               //   width: 10,
@@ -267,22 +301,11 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                   ),
                   Text(
                     emp.isVerified == '0' ? "Inactive" : "Active",
-                    style:
-                        TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
+                    style: TextStyle(
+                        fontSize: fontSize, fontWeight: FontWeight.normal),
                   ),
                 ],
               ),
-              // Text(
-              //   "Days",
-              //   style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
-              // ),
-              // SizedBox(
-              //   width: 10,
-              // ),
-              // Text(
-              //   emp.phone,
-              //   style: TextStyle(fontSize: 13, fontWeight: FontWeight.normal),
-              // ),
             ],
           ),
           Row(
@@ -295,6 +318,7 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
+                      width: screenWidth / 6,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Color(0xffED930B)),
@@ -358,7 +382,11 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                                                       });
                                                     });
                                                   },
-                                                  child: Text('Edit '),
+                                                  child: Text(
+                                                    'Edit ',
+                                                    style: TextStyle(
+                                                        fontSize: fontSize),
+                                                  ),
                                                 ),
                                               ],
                                             )
@@ -427,6 +455,7 @@ class _ShowEmployeeState extends State<ShowEmployee> {
 //                        deleteCompanyEm(token, emp);
                       },
                       child: Container(
+                        width: screenWidth / 6,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5), color: red),
                         child: Padding(
@@ -449,6 +478,7 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                         ));
                       },
                       child: Container(
+                        width: screenWidth / 3,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
                             color: Colors.blueAccent),

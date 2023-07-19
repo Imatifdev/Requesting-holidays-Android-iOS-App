@@ -198,6 +198,7 @@ class _LeaveScreenState extends State<LeaveScreen>
       check = 1;
     }
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         iconTheme: IconThemeData(color: red),
         backgroundColor: Colors.white,
