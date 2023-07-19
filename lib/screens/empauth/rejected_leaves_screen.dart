@@ -76,7 +76,7 @@ class _RejectedLeavesScreenState extends State<RejectedLeavesScreen> {
               },
             )
           : const Center(
-              child: Text("No Leaves"),
+              child: CircularProgressIndicator()
             ),
     );
   }

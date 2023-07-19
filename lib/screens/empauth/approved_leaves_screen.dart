@@ -75,8 +75,8 @@ class _ApprovedLeavesScreenState extends State<ApprovedLeavesScreen> {
                 );
               },
             )
-          : Center(
-              child: Text("No Holday Entitlements"),
+          : const Center(
+              child: CircularProgressIndicator() ,
             ),
     );
   }

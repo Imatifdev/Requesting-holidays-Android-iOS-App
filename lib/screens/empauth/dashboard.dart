@@ -340,7 +340,7 @@ class _LeaveScreenState extends State<LeaveScreen>
             },
           )
         : Center(
-            child: Text("No Leaves"),
+            child: const CircularProgressIndicator(),
           );
   }
 }

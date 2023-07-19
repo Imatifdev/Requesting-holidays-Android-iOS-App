@@ -84,7 +84,7 @@ class _PendingLeavesScreenState extends State<PendingLeavesScreen> {
               },
             )
           : const Center(
-              child: Text("No Leaves"),
+              child: CircularProgressIndicator(),
             ),
     );
   }
