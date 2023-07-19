@@ -452,10 +452,13 @@ class _AllApplicationsState extends State<AllApplications> {
       _leaveRequestsStreamController =
       StreamController<List<CompanyLeaveRequest>>.broadcast();
   List<CompanyLeaveRequest> leaves = []; 
+  List<CompanyLeaveRequest> newLeaves = []; 
   int check = 0;
-  List<CompanyLeaveRequest> pendingLeaves = [];    
+  List<CompanyLeaveRequest> pendingLeaves = [];
+  Timer? _apiTimer;    
 
-      Future<void> _getallLeaveRequest(String token, String id) async {
+  Future<void> _getallLeaveRequest(String token, String id) async {
+  try {
     setState(() {
       leaves = [];
       pendingLeaves = [];
@@ -485,6 +488,7 @@ class _AllApplicationsState extends State<AllApplications> {
             pendingLeaves.add(leave);
           }
         }
+        newLeaves = pendingLeaves;
         // for (CompanyLeaveRequest leave in leaves) {
         //   if (leave.leaveCurrentStatus == "Accepted") {
         //     approvedLeaves.add(leave);
@@ -496,16 +500,17 @@ class _AllApplicationsState extends State<AllApplications> {
         //   }
         // }
         _leaveRequestsStreamController.add(pendingLeaves);
-        
       });
-      print(leaves);
     } else {
       print(response.statusCode);
       // Error occurred
       print('Error: ${response.reasonPhrase}');
       // Handle error scenario
     }
+  } catch (e) {
+    print('Error: $e');
   }
+}
 
   void _changeLeaveStatus(String token, int companyId, int status,
       CompanyLeaveRequest leave) async {
@@ -534,6 +539,21 @@ class _AllApplicationsState extends State<AllApplications> {
     }
   }
 
+  void startApiTimer(String token, String id) {
+  // Cancel the previous timer if it exists
+  _apiTimer?.cancel();
+
+  // Start a new timer that calls _fetchLeaveRequests every 3 seconds
+  _apiTimer = Timer.periodic(Duration(seconds: 5), (timer) {
+    _getallLeaveRequest(token, id);
+  });
+}
+
+  // Function to stop the periodic API calls
+void stopApiTimer() {
+  _apiTimer?.cancel();
+}
+
   @override
   Widget build(BuildContext context) {
     final empViewModel = Provider.of<CompanyViewModel>(context);
@@ -548,7 +568,7 @@ class _AllApplicationsState extends State<AllApplications> {
     double heading;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (check == 0) {
-        _getallLeaveRequest(token!, user.id.toString());
+        startApiTimer(token!, user.id.toString());
        // _getSubscriptionStatus(token, user.id.toString());
         check = 1;
       }
@@ -616,17 +636,17 @@ class _AllApplicationsState extends State<AllApplications> {
         StreamBuilder(
           builder: (context, snapshot) {
             return Container(
-            child: pendingLeaves.isNotEmpty
+            child: newLeaves.isNotEmpty
               ? Expanded(
                   child: ListView.builder(
-                    itemCount: pendingLeaves.length,
+                    itemCount: newLeaves.length,
                     //reverse: true,
                     itemBuilder: (context, index) {
                       // String fromDate =
                       // DateFormat('EEE, MMM d, yyyy').format(leave.startDate);
                       // String toDate =
                       // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
-                      CompanyLeaveRequest leave = pendingLeaves[index];
+                      CompanyLeaveRequest leave = newLeaves[index];
                       return Padding(
                         padding: const EdgeInsets.all(13.0),
                         child: InkWell(
