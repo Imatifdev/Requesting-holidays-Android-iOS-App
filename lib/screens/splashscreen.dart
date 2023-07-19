@@ -24,9 +24,9 @@ class SplashScreen extends StatelessWidget {
         ),
       ),
       showLoader: true,
-      loaderColor: Colors.deepPurple,
+      loaderColor: Theme.of(context).primaryColor,
       loadingText: const Text("Loading"),
-      navigator: OnboardScreen(),
+      navigator: const OnboardScreen(),
       durationInSeconds: 5,
     );
   }

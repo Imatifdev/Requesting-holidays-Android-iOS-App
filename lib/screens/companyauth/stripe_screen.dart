@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -300,91 +302,12 @@ class _StripeScreenState extends State<StripeScreen> {
                         
                         );
                       }, 
-                      child: Text("Pay \$${EmpNum*2}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),) ),
-                  
+                      child: Text("Pay \$${EmpNum*2}", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),) ),
               ]
             ),
           ),
         )
       ),
-      // Padding(
-      //   padding: const EdgeInsets.all(8.0),
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-      //     crossAxisAlignment: CrossAxisAlignment.center,
-      //     children: [
-      //      Padding(
-      //        padding: const EdgeInsets.all(8.0),
-      //        child: Row(
-      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //          children: [
-      //            const Text("Your Total Employees:", style:  TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-      //            Text(EmpNum.toString(), style:  TextStyle(fontSize: 22, color: Theme.of(context).primaryColor),)
-      //          ],
-      //        ),
-      //      ),
-      //      Center(
-      //       child: CircleAvatar(
-      //         backgroundColor: Theme.of(context).primaryColor,
-      //         radius: 60,
-      //         child: Text("\$${EmpNum*2}", style: const TextStyle(fontSize: 44, color: Colors.white),)),
-      //      ),
-      //      const SizedBox(height:10),
-      //      Column(
-      //        children: [
-      //          Center(
-      //             child: Container(
-      //               decoration: BoxDecoration(
-      //                 border: Border.all(
-      //                   width: 2,
-      //                   color: Theme.of(context).primaryColor),
-      //                 borderRadius: BorderRadius.circular(10)
-      //               ),
-      //               child: ElevatedButton(
-      //                 style: ElevatedButton.styleFrom(
-      //                   backgroundColor: Colors.white,
-      //                   shape: RoundedRectangleBorder(
-      //                      borderRadius: BorderRadius.circular(10),
-      //                   ),
-      //                   padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-      //                 ),
-      //                 onPressed: ()async{
-      //                   var items = [
-      //                     {
-      //                       "productPrice":EmpNum*2,
-      //                       "productName":"Employees",
-      //                       "qty":1,
-      //                     },
-      //                   ];
-      //                  await StripeService.stripePaymentCheckout(
-      //                     items, 500, 
-      //                     context, 
-      //                     mounted, 
-      //                     onSuccess: (String token)
-      //                     {
-      //                       print("SUCCESS token:$token");
-      //                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CompanyDashBoard()));
-      //                     },
-      //                     onCancel: ()
-      //                     {
-      //                       print("CANCEL");
-      //                     },
-      //                     onError: (e)
-      //                     {
-      //                       print("ERROR ${e.toString()}");
-      //                     }
-                        
-      //                   );
-      //                 }, 
-      //                 child: Text("Pay \$${EmpNum*2}", style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),) ),
-      //             ),
-      //           ),
-      //          Text("Your total amount employees are $EmpNum and your total due payment is \$${EmpNum*2}", textAlign: TextAlign.center , style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-      //        ],
-      //      ),
-      //     ],
-      //   ),
-      // ),
     );
   }
 }
