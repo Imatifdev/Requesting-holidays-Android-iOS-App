@@ -291,7 +291,7 @@ class _RequestLeaveState extends State<RequestLeave> {
                                   }
                                 },
                                 child: Container(
-                                  height: screenheight / 14,
+                                  height: screenheight / 13,
                                   width: screenWidth,
                                   color: Colors.grey.shade100,
                                   child: Column(

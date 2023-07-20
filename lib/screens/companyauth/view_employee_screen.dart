@@ -162,6 +162,40 @@ class _ViewEmployeeState extends State<ViewEmployee> {
                     detailCard(context, "Verified Status",
                         getStatus(widget.employee.isVerified)),
                     const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton.icon(
+                            icon: Icon(Icons.edit_note_rounded),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => EditEmployee(
+                                    emp: widget.employee,
+                                    email: widget.employee.email,
+                                    first_name: widget.employee.firstName,
+                                    last_name: widget.employee.lastName,
+                                    mobile: widget.employee.phone),
+                              ));
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xffED930B),
+                                padding: const EdgeInsets.all(10)),
+                            label: Text(
+                              "Edit",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: fontSize),
+                            )),
+                        ElevatedButton(
+                            onPressed: () {
+                              deleteCompanyEm(token!, widget.employee);
+                            },
+                            style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.all(10)),
+                            child: isLoading
+                                ? const CircularProgressIndicator()
+                                : const Text("Delete")),
+                      ],
+                    )
                   ],
                 ),
               ],
