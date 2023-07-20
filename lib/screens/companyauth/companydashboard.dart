@@ -175,7 +175,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
         title: Text("DashBoard"),
         leading: IconButton(
             onPressed: () {
-              if (currentStatus) {
+              if (!currentStatus) {
                 scaffoldKey.currentState?.openDrawer();
               } else {
                 showDialog(
@@ -188,7 +188,6 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
                       actions: [
                         TextButton(
                           onPressed: () {
-                            // Action when Buy button is pressed
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => StripeScreen(),
                             ));
@@ -234,7 +233,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
                 backgroundImage: NetworkImage('${logoUrl}${user!.logo}'),
               ).pOnly(left: 20, bottom: 20),
               Text(
-                '${user!.firstName} ' + ' ${user.lastName}',
+                '${user.firstName} ' + ' ${user.lastName}',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,

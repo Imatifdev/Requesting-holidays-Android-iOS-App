@@ -1,12 +1,13 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names
 
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:holidays/models/stripe_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-
+import 'package:flutter_credit_card/flutter_credit_card.dart';
 import '../../viewmodel/company/compuserviewmodel.dart';
 import 'companydashboard.dart';
 
@@ -18,8 +19,20 @@ class StripeScreen extends StatefulWidget {
 }
 
 class _StripeScreenState extends State<StripeScreen> {
+ final _formKey = GlobalKey<FormState>(); 
+ String cardNumber = '';
+  String expiryDate = '';
+  String cardHolderName = '';
+  String cvvCode = '';
+  bool isCvvFocused = false;
   int EmpNum = 0;
   int check = 0;
+  OutlineInputBorder border = OutlineInputBorder(
+      borderSide: BorderSide(
+        color: Colors.grey.withOpacity(0.7),
+        width: 2.0,
+      ),
+    );
 
   Future<int> cancelSubscription(String token, String id) async {
     // Define the base URL and endpoint
@@ -66,7 +79,6 @@ class _StripeScreenState extends State<StripeScreen> {
     return EmpNum;
   }
 
-
   Future<int> getEmployees(String token, String id) async {
     // Define the base URL and endpoint
     const baseUrl = 'https://jporter.ezeelogix.com/public/api/';
@@ -112,16 +124,18 @@ class _StripeScreenState extends State<StripeScreen> {
     return EmpNum;
   }
 
-  Future<void> sendStripeApiRequest(String token, String stripeToken, String id, String name) async {
+  Future<void> sendStripeApiRequest(String token, String id) async {
     // Define the base URL and endpoint
     const baseUrl = 'https://jporter.ezeelogix.com/public/api/';
-    const endpoint = 'subscription';
+    const endpoint = 'payment';
 
     // Prepare the request body
     final requestBody = {
       'company_id': id,
-      'token':stripeToken,
-      'name':name
+      'card_number':"4242 4242 4242 4242",
+      'card_expiry':"02/25",
+      'card_cvc': "424",
+      'name':"Abdullah Ayaz",
     };
 
     // Prepare the request headers
@@ -171,143 +185,310 @@ class _StripeScreenState extends State<StripeScreen> {
       });
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SafeArea(
-        child: SizedBox(
-          width: size.width,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-              const Align(
-                alignment: Alignment.topLeft,
-                child:  Text("Order Summary", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
-              const SizedBox(height:10),
-              SizedBox(
-                        width: size.width-20,
-                        height: size.height / 6,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  "assets/images/crd.png",
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      
-                                      const Text(
-                                        "Premium Plan",
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                      const Row(
-                                        children: [
-                                          Text("\$2 ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                                          Text("/ Employee"),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 10),
-                                      InkWell(
-                                        onTap: ()async{
-                                          await cancelSubscription(token!, companyId.toString());
-                                        },
-                                        child: const Text(
-                                          "Cancel Plan",
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(color: Colors.red),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: SizedBox(
+            width: size.width,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                const Align(
+                  alignment: Alignment.topLeft,
+                  child:  Text("Order Summary", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
+                const SizedBox(height:10),
+                CreditCardWidget(
+      glassmorphismConfig: Glassmorphism(blurX: 2.0, blurY: 2.0, gradient: const LinearGradient(colors: [Colors.red, Colors.red ]) ),
+      cardNumber: cardNumber,
+      expiryDate: expiryDate,
+      cardHolderName: cardHolderName,
+      cvvCode: cvvCode,
+      showBackView: true, 
+      onCreditCardWidgetChange: (CreditCardBrand) {}, //true when you want to show cvv(back) view
+      cardType: CardType.mastercard,
+    ),
+    const Divider(
+                          color: Colors.black,
                         ),
-                      ),
-                      const Divider(
-                        color: Colors.black,
-                      ),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Plan Duration", style: TextStyle(fontSize: 18),),
-                          Text("1 month", style: TextStyle(fontSize: 18, color: Colors.red),)
-                        ],
-                      ),
-                      const SizedBox(height: 20,),
-                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text("Total Employees", style: TextStyle(fontSize: 18),),
-                          Text(EmpNum.toString(), style: const TextStyle(fontSize: 18, color: Colors.red),)
-                        ],
-                      ),
-                      const Divider(color: Colors.black,),
-                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text("Total Amount", style: TextStyle(fontSize: 18),),
-                          Text("\$${EmpNum*2}", style: const TextStyle(fontSize: 18, color: Colors.red),)
-                        ],
-                      ),
-                      const SizedBox(height: 20,),
-                      ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                           borderRadius: BorderRadius.circular(10),
+                        // const Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     Text("Plan Duration", style: TextStyle(fontSize: 18),),
+                        //     Text("1 month", style: TextStyle(fontSize: 18, color: Colors.red),)
+                        //   ],
+                        // ),
+                        // const SizedBox(height: 20,),
+                        //  Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     const Text("Total Employees", style: TextStyle(fontSize: 18),),
+                        //     Text(EmpNum.toString(), style: const TextStyle(fontSize: 18, color: Colors.red),)
+                        //   ],
+                        // ),
+                        // const Divider(color: Colors.black,),
+                        //  Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     const Text("Total Amount", style: TextStyle(fontSize: 18),),
+                        //     Text("\$${EmpNum*2}", style: const TextStyle(fontSize: 18, color: Colors.red),)
+                        //   ],
+                        // ),
+                        // const SizedBox(height: 20,),
+    CreditCardForm(
+                          formKey: _formKey,
+                          obscureCvv: true,
+                          obscureNumber: true,
+                          cardNumber: cardNumber,
+                          cvvCode: cvvCode,
+                          isHolderNameVisible: true,
+                          isCardNumberVisible: true,
+                          isExpiryDateVisible: true,
+                          cardHolderName: cardHolderName,
+                          expiryDate: expiryDate,
+                          themeColor: Colors.red,
+                          textColor: Colors.black,
+                          cardNumberDecoration: InputDecoration(
+                            labelText: 'Number',
+                            hintText: 'XXXX XXXX XXXX XXXX',
+                            hintStyle: const TextStyle(color: Colors.black),
+                            labelStyle: const TextStyle(color: Colors.black),
+                            prefixIcon: const Icon(Icons.credit_card),
+                             focusedBorder: border,
+                             enabledBorder: border,
+                          ),
+                          expiryDateDecoration: InputDecoration(
+                            hintStyle: const TextStyle(color: Colors.black),
+                            labelStyle: const TextStyle(color: Colors.black),
+                             focusedBorder: border,
+                             enabledBorder: border,
+                            prefixIcon: const Icon(Icons.calendar_today),
+                            labelText: 'Expired Date',
+                            hintText: 'XX/XX',
+                          ),
+                          cvvCodeDecoration:  InputDecoration(
+                            hintStyle: const TextStyle(color: Colors.black),
+                            labelStyle: const TextStyle(color: Colors.black),
+                            prefixIcon: const Icon(Icons.lock),
+                             focusedBorder: border,
+                             enabledBorder: border,
+                            labelText: 'CVV',
+                            hintText: 'XXX',
+                          ),
+                          cardHolderDecoration:  InputDecoration(
+                            hintStyle: const TextStyle(color: Colors.black),
+                            labelStyle: const TextStyle(color: Colors.black),
+                            prefixIcon: const Icon(Icons.person),
+                             focusedBorder: border,
+                             enabledBorder: border,
+                            labelText: 'Card Holder',
+                          ),
+                          onCreditCardModelChange: onCreditCardModelChange,
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
-                      ),
-                      onPressed: ()async{
-                        var items = [
-                          {
-                            "productPrice":EmpNum*2,
-                            "productName":"Employees",
-                            "qty":1,
-                          },
-                        ];
-                       await StripeService.stripePaymentCheckout(
-                          items, 500, 
-                          context, 
-                          mounted, 
-                          onSuccess: (String stripeToken)
-                          async{
-                            print("SUCCESSSSSSSS token:$stripeToken");
-                            await sendStripeApiRequest(token!,stripeToken,companyId.toString(), "Abdullah Ayaz");
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CompanyDashBoard()));
-                          },
-                          onCancel: ()
-                          {
-                            print("CANCEL");
-                          },
-                          onError: (e)
-                          {
-                            print("ERROR ${e.toString()}");
-                          }
+                        const SizedBox(
+                          height: 20,
+                        ),
+                // SizedBox(
+                //           width: size.width-20,
+                //           height: size.height / 6,
+                //           child: Container(
+                //             decoration: BoxDecoration(
+                //               color: Colors.grey[200],
+                //               border: Border.all(),
+                //               borderRadius: BorderRadius.circular(20),
+                //             ),
+                //             child: Padding(
+                //               padding: const EdgeInsets.all(8.0),
+                //               child: Row(
+                //                 children: [
+                //                   Image.asset(
+                //                     "assets/images/crd.png",
+                //                   ),
+                //                   Padding(
+                //                     padding: const EdgeInsets.only(left: 8.0),
+                //                     child: Column(
+                //                       mainAxisAlignment: MainAxisAlignment.center,
+                //                       crossAxisAlignment: CrossAxisAlignment.start,
+                //                       children: [
+                                        
+                //                         const Text(
+                //                           "Premium Plan",
+                //                           textAlign: TextAlign.left,
+                //                           style: TextStyle(
+                //                             fontSize: 18,
+                //                             fontWeight: FontWeight.bold,
+                //                             color: Colors.black,
+                //                           ),
+                //                         ),
+                //                         const Row(
+                //                           children: [
+                //                             Text("\$2 ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                //                             Text("/ Employee"),
+                //                           ],
+                //                         ),
+                //                         const SizedBox(height: 10),
+                //                         InkWell(
+                //                           onTap: ()async{
+                //                             await cancelSubscription(token!, companyId.toString());
+                //                           },
+                //                           child: const Text(
+                //                             "Cancel Plan",
+                //                             textAlign: TextAlign.left,
+                //                             style: TextStyle(color: Colors.red),
+                //                           ),
+                //                         ),
+                //                       ],
+                //                     ),
+                //                   ),
+                //                 ],
+                //               ),
+                //             ),
+                //           ),
+                //         ),
                         
-                        );
-                      }, 
-                      child: Text("Pay \$${EmpNum*2}", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),) ),
-              ]
+                        // ElevatedButton(
+                        // style: ElevatedButton.styleFrom(
+                        //   shape: RoundedRectangleBorder(
+                        //      borderRadius: BorderRadius.circular(10),
+                        //   ),
+                        //   padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
+                        // ),
+                        // onPressed: ()async{
+                        //   var items = [
+                        //     {
+                        //       "productPrice":EmpNum*2,
+                        //       "productName":"Employees",
+                        //       "qty":1,
+                        //     },
+                        //   ];
+                        //  await StripeService.stripePaymentCheckout(
+                        //     items, 500, 
+                        //     context, 
+                        //     mounted, 
+                        //     onSuccess: (String stripeToken)
+                        //     async{
+                        //       print("SUCCESSSSSSSS token:$stripeToken");
+                        //       await sendStripeApiRequest(token!,stripeToken,companyId.toString(), "Abdullah Ayaz");
+                        //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CompanyDashBoard()));
+                        //     },
+                        //     onCancel: ()
+                        //     {
+                        //       print("CANCEL");
+                        //     },
+                        //     onError: (e)
+                        //     {
+                        //       print("ERROR ${e.toString()}");
+                        //     }
+                          
+                        //   );
+                        // }, 
+                        // child: Text("Pay \$${EmpNum*2}", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),) ),
+        //         Padding(
+        //   padding: const EdgeInsets.all(16.0),
+        //   child: Form(
+        //   //  key: _formKey,
+        //     child: Column(
+        //       children: [
+        //         TextFormField(
+        //           controller: _name,
+        //           decoration: const InputDecoration(
+        //             prefixIcon: Icon(Icons.person),
+        //             labelText: 'Name',
+        //           ),
+        //           validator: (value) {
+        //             if (value!.isEmpty) {
+        //               return 'Please enter your name';
+        //             }
+        //             return null;
+        //           },
+        //         ),
+        //         const SizedBox(height: 16),
+        //         TextFormField(
+        //           controller: _cardNum,
+        //           decoration: const InputDecoration(
+        //             prefixIcon: Icon(Icons.credit_card),
+        //             labelText: 'Card Number',
+        //           ),
+        //           validator: (value) {
+        //             if (value!.isEmpty) {
+        //               return 'Please enter your card number';
+        //             }
+        //             return null;
+        //           },
+        //         ),
+        //         const SizedBox(height: 16),
+        //         Row(
+        //           children: [
+        //             Expanded(
+        //               child: TextFormField(
+        //                 controller: _exDate,
+        //                 decoration: const InputDecoration(
+        //                   prefixIcon: Icon(Icons.calendar_today),
+        //                   labelText: 'Expiry Date',
+        //                 ),
+        //                 validator: (value) {
+        //                   if (value!.isEmpty) {
+        //                     return 'Please enter the expiry date';
+        //                   }
+        //                   return null;
+        //                 },
+        //               ),
+        //             ),
+        //             const SizedBox(width: 16),
+        //             Expanded(
+        //               child: TextFormField(
+        //                 controller: _cvc,
+        //                 //maxLength: 3,
+        //                 decoration: const InputDecoration(
+        //                   prefixIcon: Icon(Icons.lock),
+        //                   labelText: 'CVC',
+        //                 ),
+        //                 validator: (value) {
+        //                   if (value!.isEmpty) {
+        //                     return 'Please enter the CVC';
+        //                   }
+        //                   if (value.length != 3) {
+        //                     return 'CVC must be 3 digits';
+        //                   }
+        //                   return null;
+        //                 },
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //         const SizedBox(height: 32),
+        //        
+        //       ],
+        //     ),
+        //   ),
+        // ),
+        //       
+           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20)
             ),
-          ),
-        )
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      print(companyId);
+                      sendStripeApiRequest(token!, companyId.toString());
+                    }
+                  },
+                  child: const Text('Pay'),
+                ),
+          ]
+              ),
+            ),
+          )
+        ),
       ),
     );
+  }
+  void onCreditCardModelChange(CreditCardModel? creditCardModel) {
+    setState(() {
+      cardNumber = creditCardModel!.cardNumber;
+      expiryDate = creditCardModel.expiryDate;
+      cardHolderName = creditCardModel.cardHolderName;
+      cvvCode = creditCardModel.cvvCode;
+      isCvvFocused = creditCardModel.isCvvFocused;
+    });
   }
 }
