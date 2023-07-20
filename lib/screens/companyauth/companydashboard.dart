@@ -350,6 +350,23 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           thickness: 0.5,
         ).pSymmetric(h: 20),
         ListTile(
+          leading: Icon(Icons.search_off),
+          title: Text(
+            'Subscription',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+          trailing: Icon(CupertinoIcons.money_dollar_circle_fill ),
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (ctx) => StripeScreen()));
+          },
+        ),
+        Divider(
+          color: Colors.grey,
+          thickness: 0.5,
+        ).pSymmetric(h: 20),
+        ListTile(
           leading: Icon(CupertinoIcons.person_3_fill),
           title: Text(
             'Change Company Logo',
@@ -376,6 +393,8 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           onTap: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (ctx) => CompanyLoginPage()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (ctx) => CompanyLoginPage()));
           },
         ),
       ])),
