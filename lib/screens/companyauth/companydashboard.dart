@@ -230,7 +230,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
               ),
               CircleAvatar(
                 radius: 50,
-              //backgroundImage: NetworkImage('${logoUrl}${user!.logo}'),
+             backgroundImage: NetworkImage('${logoUrl}${user!.logo}'),
               ).pOnly(left: 20, bottom: 20),
               Text(
                 '${user!.firstName} ' + ' ${user!.lastName}',
