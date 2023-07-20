@@ -154,7 +154,7 @@ class _StripeScreenState extends State<StripeScreen> {
 
       if (response.statusCode == 200) {
         // Request successful
-        final responseData = json.decode(response.body);
+        final responseData = json.encode(response.body);
         print("responseeee"+responseData);
         // Create and return the ShowEmployees object
         // List<dynamic> requestedLeaves = responseData["data"]['employee'];
@@ -163,6 +163,8 @@ class _StripeScreenState extends State<StripeScreen> {
         //          });
       } else {
         // Request failed
+        final responseData = json.decode(response.body);
+        print("responseeee"+responseData);
         print('Request failed with status: ${response.statusCode}');
       }
     } catch (error) {
@@ -177,12 +179,12 @@ class _StripeScreenState extends State<StripeScreen> {
     final token = comViewModel.token;
     final user = comViewModel.user;
     final companyId = user!.id;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-       if (check == 0){
-        getEmployees(token!,companyId.toString());
-        check = 1;
-       }
-      });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //    if (check == 0){
+    //     getEmployees(token!,companyId.toString());
+    //     check = 1;
+    //    }
+    //   });
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
