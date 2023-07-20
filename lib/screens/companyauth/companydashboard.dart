@@ -175,7 +175,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
         title: Text("DashBoard"),
         leading: IconButton(
             onPressed: () {
-              if (!currentStatus) {
+              if (currentStatus) {
                 scaffoldKey.currentState?.openDrawer();
               } else {
                 showDialog(
@@ -230,10 +230,10 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
               ),
               CircleAvatar(
                 radius: 50,
-                backgroundImage: NetworkImage('${logoUrl}${user!.logo}'),
+              //backgroundImage: NetworkImage('${logoUrl}${user!.logo}'),
               ).pOnly(left: 20, bottom: 20),
               Text(
-                '${user.firstName} ' + ' ${user.lastName}',
+                '${user!.firstName} ' + ' ${user!.lastName}',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -349,13 +349,13 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           thickness: 0.5,
         ).pSymmetric(h: 20),
         ListTile(
-          leading: Icon(Icons.search_off),
+          leading: Icon(CupertinoIcons.money_dollar_circle_fill ),
           title: Text(
             'Subscription',
             style: TextStyle(
                 color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
           ),
-          trailing: Icon(CupertinoIcons.money_dollar_circle_fill ),
+          trailing: Icon(CupertinoIcons.right_chevron),
           onTap: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (ctx) => StripeScreen()));

@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import '../../viewmodel/company/compuserviewmodel.dart';
+import '../../widget/constants.dart';
 import 'companydashboard.dart';
 
 class StripeScreen extends StatefulWidget {
@@ -205,9 +206,11 @@ class _StripeScreenState extends State<StripeScreen> {
       expiryDate: expiryDate,
       cardHolderName: cardHolderName,
       cvvCode: cvvCode,
-      showBackView: true, 
+      showBackView: false, 
       onCreditCardWidgetChange: (CreditCardBrand) {}, //true when you want to show cvv(back) view
-      cardType: CardType.mastercard,
+      //cardType: CardType.mastercard ,
+      isChipVisible: false,
+      
     ),
     const Divider(
                           color: Colors.black,
@@ -464,18 +467,40 @@ class _StripeScreenState extends State<StripeScreen> {
         //   ),
         // ),
         //       
-           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20)
-            ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
+           InkWell(
+              onTap: () {
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (ctx) => WelcomeScreen()));
+                if (_formKey.currentState!.validate()) {
                       print(companyId);
                       sendStripeApiRequest(token!, companyId.toString());
                     }
-                  },
-                  child: const Text('Pay'),
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: red, borderRadius: BorderRadius.circular(10)),
+                height: size.height / 15,
+                width: size.width - 100,
+                child: const Center(
+                  child: Text(
+                    "Skip",
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
                 ),
+              ),
+            ),
+          //  ElevatedButton(
+          //   style: ElevatedButton.styleFrom(
+          //     padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20)
+          //   ),
+          //         onPressed: () {
+          //           if (_formKey.currentState!.validate()) {
+          //             print(companyId);
+          //             sendStripeApiRequest(token!, companyId.toString());
+          //           }
+          //         },
+          //         child: const Text('Pay'),
+          //       ),
           ]
               ),
             ),
