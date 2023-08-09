@@ -14,6 +14,7 @@ import 'package:holidays/screens/companyauth/search_screen.dart';
 import 'package:holidays/screens/companyauth/showemployes.dart';
 import 'package:holidays/screens/companyauth/stripe_screen.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
+import 'package:holidays/widget/popuploader.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 import '../../models/company/viewemployeedata.dart';
@@ -520,14 +521,17 @@ class _AllApplicationsState extends State<AllApplications> {
           // }
           _leaveRequestsStreamController.add(pendingLeaves);
         });
+        PopupLoader.hide();
       } else {
         print(response.statusCode);
         // Error occurred
         print('Error: ${response.reasonPhrase}');
         // Handle error scenario
+        PopupLoader.hide();
       }
     } catch (e) {
       print('Error: $e');
+      PopupLoader.hide();
     }
   }
 
@@ -587,8 +591,10 @@ class _AllApplicationsState extends State<AllApplications> {
     double heading;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (check == 0) {
+        PopupLoader.show();
         startApiTimer(token!, user.id.toString());
         // _getSubscriptionStatus(token, user.id.toString());
+        
         check = 1;
       }
     });
