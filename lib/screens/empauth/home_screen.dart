@@ -186,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 SizedBox(
                                   width: screenWidth / 1.1,
                                   child: Text(
-                                    "Holiday Entitlements Requests",
+                                    "Holiday Entitlement Requests",
                                     softWrap: true,
                                     style: TextStyle(
                                       fontSize: title,
@@ -197,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 SizedBox(
                                   width: screenWidth - 20,
                                   child: Text(
-                                      "View all your requested leaves status",
+                                      "View all your requested leave status",
                                       softWrap: true,
                                       style: TextStyle(
                                         fontSize: para,
@@ -209,6 +209,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: red,
+                      borderRadius:  BorderRadius.circular(20)
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                      const Text("You remaining Leaves", style: TextStyle(color: Colors.white)),
+                      const Text("20", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold))
+                    ],)
                   ),
                   SizedBox(height: 20),
                   SizedBox(
