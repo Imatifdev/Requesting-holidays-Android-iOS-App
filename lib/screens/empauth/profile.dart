@@ -109,7 +109,9 @@ class _EmpProfileViewState extends State<EmpProfileView> {
         elevation: 0,
         backgroundColor: appbar,
         leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             icon: Icon(
               CupertinoIcons.left_chevron,
               color: Colors.black,

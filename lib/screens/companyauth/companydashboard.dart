@@ -24,6 +24,7 @@ import 'package:velocity_x/velocity_x.dart';
 import 'package:http/http.dart' as http;
 
 import '../../widget/company_leave_card.dart';
+import '../../widget/constants.dart';
 import 'companylogo.dart';
 import 'createcompanyleaves.dart';
 import 'createfinancialyear.dart';
@@ -843,9 +844,23 @@ class _AllApplicationsState extends State<AllApplications> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          height: 300,
+                          height: 200,
                         ),
-                        Center(child: Text("No Requests")),
+                        Center(
+                            child: Column(
+                          children: [
+                            Icon(
+                              CupertinoIcons.check_mark_circled,
+                              size: 100,
+                              color: red,
+                            ),
+                            Text(
+                              "You currently have no pending leave requests ",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ],
+                        )),
                       ],
                     ),
             );
@@ -881,7 +896,7 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
   List<Employee> empstatus = [];
   int check = 0;
 
-  Future<void> _getApprovedLeaves(String token) async {
+  Future<void> _getApprovedLeaves(String token, String id) async {
     final String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/company-get-all-requested-leaves';
 
@@ -889,7 +904,7 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
       'Authorization': 'Bearer $token',
       'Accept': 'application/json',
     }, body: {
-      'company_id': '1',
+      'company_id': id,
     });
 
     if (response.statusCode == 200) {
@@ -955,9 +970,10 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
 
     final empViewModel = Provider.of<CompanyViewModel>(context);
     final token = empViewModel.token;
+    final user = empViewModel.user;
     if (check == 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _getApprovedLeaves(token!);
+        _getApprovedLeaves(token!, user!.id.toString());
       });
       check = 1;
     }

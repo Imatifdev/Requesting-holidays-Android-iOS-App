@@ -107,7 +107,9 @@ class _CompanyProfileViewState extends State<CompanyProfileView> {
         elevation: 0,
         backgroundColor: backgroundColor,
         leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             icon: Icon(
               CupertinoIcons.left_chevron,
               color: Colors.black,
