@@ -230,7 +230,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
               ),
               CircleAvatar(
                 radius: 50,
-             backgroundImage: NetworkImage('${logoUrl}${user!.logo}'),
+                backgroundImage: NetworkImage('${logoUrl}${user!.logo}'),
               ).pOnly(left: 20, bottom: 20),
               Text(
                 '${user!.firstName} ' + ' ${user!.lastName}',
@@ -349,7 +349,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           thickness: 0.5,
         ).pSymmetric(h: 20),
         ListTile(
-          leading: Icon(CupertinoIcons.money_dollar_circle_fill ),
+          leading: Icon(CupertinoIcons.money_dollar_circle_fill),
           title: Text(
             'Subscription',
             style: TextStyle(
@@ -357,8 +357,8 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           ),
           trailing: Icon(CupertinoIcons.right_chevron),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (ctx) => StripeScreen()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (ctx) => StripeScreen()));
           },
         ),
         Divider(
@@ -392,8 +392,8 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
           onTap: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (ctx) => CompanyLoginPage()));
-            Navigator.push(
-                context, MaterialPageRoute(builder: (ctx) => CompanyLoginPage()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (ctx) => CompanyLoginPage()));
           },
         ),
       ])),

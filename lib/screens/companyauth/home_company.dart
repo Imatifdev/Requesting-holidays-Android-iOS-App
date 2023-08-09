@@ -137,6 +137,7 @@ class _HomeCompanyState extends State<HomeCompany> {
   Widget build(BuildContext context) {
     final empViewModel = Provider.of<EmpViewModel>(context);
     final token = empViewModel.token;
+    final userid = empViewModel.user;
     if (check == 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _getallpendingLeaveRequest(token!);
