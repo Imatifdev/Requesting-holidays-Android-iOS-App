@@ -233,7 +233,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
              backgroundImage: NetworkImage('${logoUrl}${user!.logo}'),
               ).pOnly(left: 20, bottom: 20),
               Text(
-                '${user!.firstName} ' + ' ${user!.lastName}',
+                '${user.firstName} ' + ' ${user.lastName}',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -839,7 +839,7 @@ class _AllApplicationsState extends State<AllApplications> {
                         SizedBox(
                           height: 300,
                         ),
-                        Center(child: CircularProgressIndicator()),
+                        Center(child: Text("No Requests")),
                       ],
                     ),
             );

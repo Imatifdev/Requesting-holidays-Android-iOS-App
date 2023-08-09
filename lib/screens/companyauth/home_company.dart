@@ -49,7 +49,7 @@ class _HomeCompanyState extends State<HomeCompany> {
   List<LeaveRequest> approvedLeaves = [];
   List<LeaveRequest> rejectedLeaves = [];
 
-  Future<void> _getallpendingLeaveRequest(String token) async {
+  Future<void> _getallpendingLeaveRequest(String token, String id) async {
     const String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/employee-get-all-pending-leaves';
 
@@ -57,7 +57,7 @@ class _HomeCompanyState extends State<HomeCompany> {
       'Authorization': 'Bearer $token',
       'Accept': 'application/json',
     }, body: {
-      'employee_id': '1',
+      'employee_id': id,
     });
 
     if (response.statusCode == 200) {
@@ -77,7 +77,7 @@ class _HomeCompanyState extends State<HomeCompany> {
     }
   }
 
-  Future<void> _getallapprovedLeaveRequest(String token) async {
+  Future<void> _getallapprovedLeaveRequest(String token, String id) async {
     const String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/employee-get-all-approved-leaves';
 
@@ -85,7 +85,7 @@ class _HomeCompanyState extends State<HomeCompany> {
       'Authorization': 'Bearer $token',
       'Accept': 'application/json',
     }, body: {
-      'employee_id': '1',
+      'employee_id': id,
     });
 
     if (response.statusCode == 200) {
@@ -105,7 +105,7 @@ class _HomeCompanyState extends State<HomeCompany> {
     }
   }
 
-  Future<void> _getallrejectedLeaveRequest(String token) async {
+  Future<void> _getallrejectedLeaveRequest(String token, String id) async {
     const String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/employee-get-all-rejected-leaves';
 
@@ -113,7 +113,7 @@ class _HomeCompanyState extends State<HomeCompany> {
       'Authorization': 'Bearer $token',
       'Accept': 'application/json',
     }, body: {
-      'employee_id': '1',
+      'employee_id': id,
     });
 
     if (response.statusCode == 200) {
@@ -137,11 +137,12 @@ class _HomeCompanyState extends State<HomeCompany> {
   Widget build(BuildContext context) {
     final empViewModel = Provider.of<EmpViewModel>(context);
     final token = empViewModel.token;
+    final userId = empViewModel.user!.id;
     if (check == 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _getallpendingLeaveRequest(token!);
-        _getallapprovedLeaveRequest(token);
-        _getallrejectedLeaveRequest(token);
+        _getallpendingLeaveRequest(token!, userId.toString());
+        _getallapprovedLeaveRequest(token, userId.toString());
+        _getallrejectedLeaveRequest(token, userId.toString());
       });
       check = 1;
     }
