@@ -30,6 +30,8 @@ import 'createcompanyleaves.dart';
 import 'createfinancialyear.dart';
 import 'getcompanyleaves.dart';
 
+enum StateEnum{ fetching, fetched, notFetched }
+
 class CompanyDashBoard extends StatefulWidget {
   const CompanyDashBoard({super.key});
 
@@ -39,7 +41,6 @@ class CompanyDashBoard extends StatefulWidget {
 
 class _CompanyDashBoardState extends State<CompanyDashBoard> {
   late StreamSubscription subscription;
-
   bool isDeviceConnected = false;
   bool isAlertSet = false;
   @override
@@ -76,6 +77,9 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
   final String imgurl = "https://jporter.ezeelogix.com/public/upload/logo/";
 
   Future<void> _getallLeaveRequest(String token, String id) async {
+    // setState(() {
+    //   state = StateEnum.fetching;
+    // });
     final String requestLeaveUrl =
         'https://jporter.ezeelogix.com/public/api/company-get-all-requested-leaves';
 
@@ -85,6 +89,9 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
     }, body: {
       'company_id': id,
     });
+    // setState(() {
+    //   state = StateEnum.fetched;
+    // });
     if (response.statusCode == 200) {
       // Leave request successful
       final jsonData = json.decode(response.body);
@@ -117,6 +124,9 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
       print(response.statusCode);
       // Error occurred
       print('Error: ${response.reasonPhrase}');
+    //   setState(() {
+    //   state = StateEnum.notFetched;
+    // });
       // Handle error scenario
     }
   }
@@ -174,7 +184,7 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text("DashBoard"),
+        title: Text("Dashboard"),
         leading: IconButton(
             onPressed: () {
               if (currentStatus) {
@@ -469,6 +479,7 @@ class AllApplications extends StatefulWidget {
 }
 
 class _AllApplicationsState extends State<AllApplications> {
+  StateEnum state = StateEnum.notFetched;
   final StreamController<List<CompanyLeaveRequest>>
       _leaveRequestsStreamController =
       StreamController<List<CompanyLeaveRequest>>.broadcast();
@@ -479,6 +490,7 @@ class _AllApplicationsState extends State<AllApplications> {
   Timer? _apiTimer;
 
   Future<void> _getallLeaveRequest(String token, String id) async {
+    
     try {
       setState(() {
         leaves = [];
@@ -528,12 +540,14 @@ class _AllApplicationsState extends State<AllApplications> {
         // Error occurred
         print('Error: ${response.reasonPhrase}');
         // Handle error scenario
-        PopupLoader.hide();
       }
     } catch (e) {
       print('Error: $e');
       PopupLoader.hide();
     }
+    setState(() {
+      state = StateEnum.fetched;
+    });
   }
 
   void _changeLeaveStatus(String token, int companyId, int status,
@@ -592,7 +606,6 @@ class _AllApplicationsState extends State<AllApplications> {
     double heading;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (check == 0) {
-        PopupLoader.show();
         startApiTimer(token!, user.id.toString());
         // _getSubscriptionStatus(token, user.id.toString());
         
@@ -662,7 +675,9 @@ class _AllApplicationsState extends State<AllApplications> {
         StreamBuilder(
           builder: (context, snapshot) {
             return Container(
-              child: newLeaves.isNotEmpty
+              child: 
+              state == StateEnum.fetched?
+              newLeaves.isNotEmpty
                   ? Expanded(
                       child: ListView.builder(
                         itemCount: newLeaves.length,
@@ -851,18 +866,23 @@ class _AllApplicationsState extends State<AllApplications> {
                           children: [
                             Icon(
                               CupertinoIcons.check_mark_circled,
-                              size: 100,
+                              size: 50,
                               color: red,
                             ),
-                            Text(
-                              "You currently have no pending leave requests ",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 18),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "You currently have no pending leave requests ",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 16),
+                              ),
                             ),
                           ],
                         )),
                       ],
-                    ),
+                    ) : Center(
+                      child: CircularProgressIndicator(),
+                    )
             );
           },
           stream: _leaveRequestsStreamController.stream,
