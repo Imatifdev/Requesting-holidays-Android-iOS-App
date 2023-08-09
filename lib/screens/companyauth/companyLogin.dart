@@ -10,7 +10,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:holidays/screens/companyauth/forgotpass.dart';
+import 'package:holidays/screens/empauth/login.dart';
 import 'package:holidays/screens/empauth/signup.dart';
+import 'package:holidays/screens/welcome.dart';
 import 'package:provider/provider.dart';
 import '../../../widget/constants.dart';
 import 'dart:async';
@@ -111,7 +113,7 @@ class _CompanyLoginPageState extends State<CompanyLoginPage> {
         elevation: 0,
         leading: InkWell(
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
             },
             child: Icon(CupertinoIcons.left_chevron, color: red)),
       ),

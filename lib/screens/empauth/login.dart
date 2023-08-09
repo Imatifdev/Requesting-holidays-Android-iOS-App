@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:holidays/screens/empauth/profile.dart';
+import 'package:holidays/screens/welcome.dart';
 import 'package:holidays/viewmodel/employee/empuserviewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -148,7 +149,9 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: Icon(CupertinoIcons.left_chevron, color: red),
+        leading: IconButton(onPressed: (){
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => WelcomeScreen()));
+        }  ,icon: Icon(CupertinoIcons.left_chevron), color: red),
       ),
       body: SingleChildScrollView(
         child: SafeArea(
