@@ -211,18 +211,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: red,
-                      borderRadius:  BorderRadius.circular(20)
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                      const Text("You remaining Leaves", style: TextStyle(color: Colors.white)),
-                      const Text("20", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold))
-                    ],)
-                  ),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: red, borderRadius: BorderRadius.circular(20)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text("You remaining Leaves",
+                              style: TextStyle(color: Colors.white)),
+                          const Text("20",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold))
+                        ],
+                      )),
                   SizedBox(height: 20),
                   SizedBox(
                     child: Column(
@@ -237,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ));
                               },
                               child: Container(
-                                height: screenheight / 5.5,
+                                height: screenheight * 0.17,
                                 width: screenWidth / 2.2,
                                 decoration: BoxDecoration(
                                   color: red,
@@ -275,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ));
                               },
                               child: Container(
-                                height: screenheight / 5.5,
+                                height: screenheight * 0.17,
                                 width: screenWidth / 2.2,
                                 decoration: BoxDecoration(
                                   color: red,
@@ -318,7 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ));
                               },
                               child: Container(
-                                height: screenheight / 5.5,
+                                height: screenheight * 0.17,
                                 width: screenWidth / 2.2,
                                 decoration: BoxDecoration(
                                   color: red,
@@ -356,7 +359,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ));
                               },
                               child: Container(
-                                height: screenheight / 5.5,
+                                height: screenheight * 0.17,
                                 width: screenWidth / 2.2,
                                 decoration: BoxDecoration(
                                   color: red,
