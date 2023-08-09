@@ -133,14 +133,15 @@ class _CompanyFinancialYearScreenState
         // Handle the response data as needed
         print(responseData);
         Fluttertoast.showToast(
-          msg: "Financial Year Created Successfully",
+          msg: "Financial Year Created Successfully $responseData",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.green,
           textColor: Colors.white,
         );
-        Navigator.push(
-            context, MaterialPageRoute(builder: (ctx) => CompanyDashBoard()));
+        print(requestBody);
+        // Navigator.push(
+        //     context, MaterialPageRoute(builder: (ctx) => CompanyDashBoard()));
       } else {
         // Request failed
         print('Request failed with status: ${response.statusCode}');
@@ -187,7 +188,12 @@ class _CompanyFinancialYearScreenState
       appBar: AppBar(
         backgroundColor: backgroundColor,
         elevation: 0,
-        leading: Icon(CupertinoIcons.left_chevron, color: red),
+        leading: IconButton(
+            icon: Icon(CupertinoIcons.left_chevron),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            color: red),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -202,6 +208,7 @@ class _CompanyFinancialYearScreenState
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ).pOnly(left: 20),
             const SizedBox(height: 20),
+            Text(user.startfinancialyear + user.endfinancialyear),
             Row(
               children: [
                 Padding(
