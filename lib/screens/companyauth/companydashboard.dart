@@ -542,10 +542,15 @@ class _AllApplicationsState extends State<AllApplications> {
         // Error occurred
         print('Error: ${response.reasonPhrase}');
         // Handle error scenario
+        setState(() {
+      state = StateEnum.fetched;
+    });
       }
     } catch (e) {
       print('Error: $e');
-      PopupLoader.hide();
+      setState(() {
+      state = StateEnum.fetched;
+    });
     }
   }
 

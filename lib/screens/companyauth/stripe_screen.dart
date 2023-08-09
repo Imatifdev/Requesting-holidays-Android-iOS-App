@@ -134,10 +134,10 @@ class _StripeScreenState extends State<StripeScreen> {
     // Prepare the request body
     final requestBody = {
       'company_id': id,
-      'card_number': "4242 4242 4242 4242",
-      'card_expiry': "02/25",
-      'card_cvc': "424",
-      'name': "Abdullah Ayaz",
+      'card_number': cardNumber,
+      'card_expiry': expiryDate,
+      'card_cvc': cvvCode,
+      'name': cardHolderName,
     };
 
     // Prepare the request headers
@@ -168,7 +168,7 @@ class _StripeScreenState extends State<StripeScreen> {
           fontSize: 16.0,
         );
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (ctx) => CompanyDashBoard()));
+            context, MaterialPageRoute(builder: (ctx) => const CompanyDashBoard()));
 
         // Create and return the ShowEmployees object
         // List<dynamic> requestedLeaves = responseData["data"]['employee'];
@@ -190,7 +190,7 @@ class _StripeScreenState extends State<StripeScreen> {
           fontSize: 16.0,
         );
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (ctx) => CompanyDashBoard()));
+            context, MaterialPageRoute(builder: (ctx) => const CompanyDashBoard()));
       }
     } catch (error) {
       // An error occurred
@@ -512,7 +512,7 @@ class _StripeScreenState extends State<StripeScreen> {
                   width: size.width - 100,
                   child: const Center(
                     child: Text(
-                      "Pay",
+                      "Subscribe",
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                   ),
