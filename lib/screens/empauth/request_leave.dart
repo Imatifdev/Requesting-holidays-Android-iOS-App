@@ -37,6 +37,8 @@ class _RequestLeaveState extends State<RequestLeave> {
   int totalLeaveCount = 0;
 
   void _selectDateRange(BuildContext context) async {
+    _firstDate = DateTime(2022, 11, 22);
+    _lastDate = DateTime(2023, 11, 23);
     final dateRange = await showDateRangePicker(
       context: context,
       firstDate: _firstDate,
@@ -92,7 +94,7 @@ class _RequestLeaveState extends State<RequestLeave> {
       'start_date': startDateFormatted,
       'end_date': endDateFormatted,
       'total_leave_count': totalLeaveCount,
-      'comment': comment,
+      'comment': comment == ""? "No comments":comment,
     });
     if (response.statusCode == 200) {
       print("responseee: ${response.body}");
@@ -287,9 +289,9 @@ class _RequestLeaveState extends State<RequestLeave> {
                                 width: screenWidth - 123,
                                 child: InkWell(
                                   onTap: () {
-                                    if (endDateFormatted == "") {
+                                    //if (endDateFormatted == "") {
                                       _selectDateRange(context);
-                                    }
+                                    //}
                                   },
                                   child: Container(
                                     height: screenheight / 13,
@@ -350,12 +352,12 @@ class _RequestLeaveState extends State<RequestLeave> {
                                 height: screenheight / 14,
                                 width: screenWidth - 123,
                                 child: TextFormField(
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please enter your cause for leave';
-                                    }
-                                    return null;
-                                  },
+                                  // validator: (value) {
+                                  //   if (value!.isEmpty) {
+                                  //     return 'Please enter your cause for leave';
+                                  //   }
+                                  //   return null;
+                                  // },
                                   controller: causeController,
                                   decoration: InputDecoration(
                                     enabledBorder: const UnderlineInputBorder(
@@ -401,6 +403,7 @@ class _RequestLeaveState extends State<RequestLeave> {
                                   errMsg = "";
                                   errMsg2 = "";
                                 });
+                                // print(causeController.text+"");
                                 await _submitLeaveRequest(
                                   token!,
                                   selectedLeaveType!,
@@ -408,7 +411,7 @@ class _RequestLeaveState extends State<RequestLeave> {
                                   endDateFormatted,
                                   user!.id.toString(),
                                   totalLeaveCount.toString(),
-                                  causeController.text.trim(),
+                                  causeController.text,
                                 );
                               } else if (selectedLeaveType == null) {
                                 setState(() {

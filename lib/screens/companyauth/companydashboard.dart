@@ -548,9 +548,8 @@ class _AllApplicationsState extends State<AllApplications> {
       }
     } catch (e) {
       print('Error: $e');
-      setState(() {
       state = StateEnum.fetched;
-    });
+    
     }
   }
 
@@ -735,7 +734,7 @@ class _AllApplicationsState extends State<AllApplications> {
                                               ],
                                             ),
                                             Text(
-                                              leave.employee.firstName,
+                                              "${leave.employee.firstName} ${leave.employee.lastName}",
                                               style: TextStyle(
                                                   fontSize: title,
                                                   color: Colors.black,
