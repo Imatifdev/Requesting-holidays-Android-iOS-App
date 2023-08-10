@@ -210,18 +210,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
+                  SizedBox(height: 5),
                   Container(
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                          color: red, borderRadius: BorderRadius.circular(20)),
+                       borderRadius: BorderRadius.circular(20),
+                       border: Border.all(color: red)
+                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text("You remaining Leaves",
-                              style: TextStyle(color: Colors.white)),
+                              style: TextStyle(color: red)),
                           const Text("20",
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: red,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold))
                         ],

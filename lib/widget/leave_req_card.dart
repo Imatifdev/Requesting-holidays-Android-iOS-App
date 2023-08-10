@@ -248,7 +248,7 @@ class LeaveRequestCard extends StatelessWidget {
                                         color: Colors.red, fontSize: 12)),
                               )),
                             ),
-                          if (leave.leaveCurrentStatus == 'Accepted')
+                          if (leave.leaveCurrentStatus == 'Approved' || leave.leaveCurrentStatus == 'Accepted')
                             Container(
                               height: screenheight / 26.5,
                               width: screenWidth / 4.5,
@@ -285,7 +285,8 @@ class LeaveRequestCard extends StatelessWidget {
                                         color: Colors.orange,
                                         fontSize: heading)),
                               )),
-                            )
+                            ),
+                            IconButton(onPressed: (){}, icon: Icon(Icons.delete_rounded, color: red,) )
                         ],
                       ),
                       Row(
@@ -298,7 +299,7 @@ class LeaveRequestCard extends StatelessWidget {
                                 color: Colors.black),
                           ),
                           Text(
-                            '${leave.endDate}',
+                            leave.endDate,
                             style: TextStyle(
                                 fontSize: fontSize,
                                 fontWeight: FontWeight.bold,
