@@ -37,6 +37,38 @@ class _StripeScreenState extends State<StripeScreen> {
     ),
   );
 
+  void showPaymentConfirmationDialog(BuildContext context, String token, String companyId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Payment'),
+          content: const Text('Do you want to continue payment for the plan?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Call the specific function on confirming
+                sendStripeApiRequest(token, companyId.toString());
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text('Confirm'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CompanyDashBoard()),
+                  (Route<dynamic> route) => false,
+                );
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<int> cancelSubscription(String token, String id) async {
     // Define the base URL and endpoint
     const baseUrl = 'https://jporter.ezeelogix.com/public/api/';
@@ -129,6 +161,9 @@ class _StripeScreenState extends State<StripeScreen> {
 
   Future<void> sendStripeApiRequest(String token, String id) async {
     // Define the base URL and endpoint
+    setState(() {
+      isLoading = true;
+    });
     const baseUrl = 'https://jporter.ezeelogix.com/public/api/';
     const endpoint = 'payment';
 
@@ -159,6 +194,9 @@ class _StripeScreenState extends State<StripeScreen> {
         // Request successful
         final responseData = json.encode(response.body);
         print("responseeee $responseData");
+        setState(() {
+      isLoading = false;
+    });
         Fluttertoast.showToast(
           msg: "You have Subscribed this Plan Successfuly",
           toastLength: Toast.LENGTH_SHORT,
@@ -181,6 +219,9 @@ class _StripeScreenState extends State<StripeScreen> {
         final responseData = json.decode(response.body);
         print("responseeee" + responseData);
         print('Request failed with status: ${response.statusCode}');
+        setState(() {
+      isLoading = false;
+    });
         Fluttertoast.showToast(
           msg: "Your Package is already Subscribed",
           toastLength: Toast.LENGTH_SHORT,
@@ -196,6 +237,9 @@ class _StripeScreenState extends State<StripeScreen> {
     } catch (error) {
       // An error occurred
       print('Error: $error');
+      setState(() {
+      isLoading = false;
+    });
     }
   }
 
@@ -240,7 +284,10 @@ class _StripeScreenState extends State<StripeScreen> {
                     blurX: 2.0,
                     blurY: 2.0,
                     gradient:
-                        const LinearGradient(colors: [Colors.red, Colors.red])),
+                        LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [red, red, Colors.red.withOpacity(0.7) , red])),
                 cardNumber: cardNumber,
                 expiryDate: expiryDate,
                 cardHolderName: cardHolderName,
@@ -511,8 +558,7 @@ class _StripeScreenState extends State<StripeScreen> {
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (ctx) => WelcomeScreen()));
                   if (_formKey.currentState!.validate()) {
-                    print(companyId);
-                    sendStripeApiRequest(token!, companyId.toString());
+                    showPaymentConfirmationDialog(context, token!, companyId.toString());
                   }
                 },
                 child: Container(
@@ -520,8 +566,10 @@ class _StripeScreenState extends State<StripeScreen> {
                       color: red, borderRadius: BorderRadius.circular(10)),
                   height: size.height / 15,
                   width: size.width - 100,
-                  child: const Center(
-                    child: Text(
+                  child: Center(
+                    child: 
+                    isLoading? const CircularProgressIndicator(color: Colors.white) :
+                    const Text(
                       "Subscribe",
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
