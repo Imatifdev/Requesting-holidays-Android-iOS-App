@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:holidays/screens/companyauth/companydashboard.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -47,6 +48,7 @@ class _CompanyFinancialYearScreenState
   bool isFinancialYearSelected = false;
 
   void _openDropdown() {
+    
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -65,7 +67,7 @@ class _CompanyFinancialYearScreenState
                 // final formattedStartDate = formatDate(startDate);
                 // final formattedEndDate = formatDate(endDate);
                 financialYear = newValue as String;
-                //isFinancialYearSelected = true;
+                isFinancialYearSelected = true;
               });
               Navigator.of(context).pop();
             },
@@ -83,6 +85,7 @@ class _CompanyFinancialYearScreenState
         );
       },
     );
+    showChangeFinancialYearDialog(context);
   }
 
   void _clearFinancialYear() {
@@ -97,6 +100,39 @@ class _CompanyFinancialYearScreenState
     final month = date.month.toString().padLeft(2, '0');
     final day = date.day.toString().padLeft(2, '0');
     return '$day-$month';
+  }
+
+  void showChangeFinancialYearDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Change Financial Year'),
+          content: const Text('Are you sure you want to change the financial year?'),
+          actions: [
+            TextButton(
+               onPressed: () {
+                // Navigate to CompanyDashboard with push and replaceUntil
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CompanyDashBoard()),
+                  (Route<dynamic> route) => false,
+                );
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Close the dialog and pop the current screen
+                Navigator.pop(context);
+              },
+              child: const Text('Confirm'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> newcallApi(String token, String id, String financialYear) async {

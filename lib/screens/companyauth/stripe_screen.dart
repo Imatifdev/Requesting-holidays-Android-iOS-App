@@ -21,6 +21,7 @@ class StripeScreen extends StatefulWidget {
 }
 
 class _StripeScreenState extends State<StripeScreen> {
+  bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
   String cardNumber = '';
   String expiryDate = '';
@@ -157,7 +158,7 @@ class _StripeScreenState extends State<StripeScreen> {
       if (response.statusCode == 200) {
         // Request successful
         final responseData = json.encode(response.body);
-        print("responseeee" + responseData);
+        print("responseeee $responseData");
         Fluttertoast.showToast(
           msg: "You have Subscribed this Plan Successfuly",
           toastLength: Toast.LENGTH_SHORT,
@@ -219,11 +220,20 @@ class _StripeScreenState extends State<StripeScreen> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(children: [
-              const Align(
-                  child: Text(
-                "Subsrcibe to Plan",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              )),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: (){
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(Icons.arrow_back_ios_new_rounded, color: red) ,
+                  ),
+                  const Text(
+                    "Subsrcibe to Plan",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
               const SizedBox(height: 10),
               CreditCardWidget(
                 glassmorphismConfig: Glassmorphism(

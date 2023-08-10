@@ -12,9 +12,7 @@ import '../../widget/constants.dart';
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'dart:convert';
 
 class EditEmployee extends StatefulWidget {
   final Employee emp;
@@ -65,6 +63,7 @@ class _EditEmployeeState extends State<EditEmployee> {
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmPassword = TextEditingController();
   final TextEditingController _totalLeaves = TextEditingController();
+  final TextEditingController _hours = TextEditingController();
   Map<int, bool> selectedDays = {};
   List<int> dayValues = List<int>.filled(7, 0);
   bool obsCheck = false;
@@ -141,36 +140,36 @@ class _EditEmployeeState extends State<EditEmployee> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenheight = MediaQuery.of(context).size.height;
-    double fontSize;
+    // final screenheight = MediaQuery.of(context).size.height;
+    // double fontSize;
     double title;
-    double heading;
+    //double heading;
 
     // Adjust the font size based on the screen width
     if (screenWidth < 320) {
-      fontSize = 11.0;
+     // fontSize = 11.0;
       title = 16;
-      heading = 10; // Small screen (e.g., iPhone 4S)
+     // heading = 10; // Small screen (e.g., iPhone 4S)
     } else if (screenWidth < 375) {
-      fontSize = 12.0;
+    //  fontSize = 12.0;
       title = 20;
 
-      heading = 12; // Medium screen (e.g., iPhone 6, 7, 8)
+     // heading = 12; // Medium screen (e.g., iPhone 6, 7, 8)
     } else if (screenWidth < 414) {
-      fontSize = 15.0;
+      //fontSize = 15.0;
       title = 22;
 
-      heading = 14; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+     // heading = 14; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else if (screenWidth < 600) {
-      fontSize = 19.0;
+    //  fontSize = 19.0;
       title = 26;
 
-      heading = 18; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    //  heading = 18; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else {
-      fontSize = 22.0;
+     // fontSize = 22.0;
       title = 19;
 
-      heading = 30; // Extra large screen or unknown device
+    //  heading = 30; // Extra large screen or unknown device
     }
 
     Size size = MediaQuery.of(context).size;
@@ -185,7 +184,7 @@ class _EditEmployeeState extends State<EditEmployee> {
           backgroundColor: appbar,
           leading: IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(context, "hoho");
               },
               icon: const Icon(
                 CupertinoIcons.left_chevron,
@@ -354,6 +353,34 @@ class _EditEmployeeState extends State<EditEmployee> {
                               return null;
                             },
                           ),
+                          TextFormField(
+                            controller: _hours,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              prefixIcon: Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: Container(
+                                    decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(
+                                            width: 1.0, color: Colors.black),
+                                      ),
+                                    ),
+                                    child: const Icon(
+                                      Icons.access_time,
+                                      color: red,
+                                    )),
+                              ),
+                              labelText: 'Hours per day',
+                            ),
+                            obscureText: false,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter hours';
+                              }
+                              return null;
+                            },
+                          ),
                           const SizedBox(
                             height: 20,
                           ),
@@ -365,7 +392,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                             height: 5,
                           ),
                           SizedBox(
-                            height: size.height / 4,
+                            height: size.height / 4.5,
                             child: GridView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               gridDelegate:

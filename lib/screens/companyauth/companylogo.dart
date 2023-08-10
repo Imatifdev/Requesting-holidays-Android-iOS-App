@@ -215,7 +215,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:holidays/screens/companyauth/companydashboard.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -227,9 +226,7 @@ import 'package:velocity_x/velocity_x.dart';
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'dart:convert';
 
 class CompanyLogo extends StatefulWidget {
   const CompanyLogo({Key? key}) : super(key: key);
@@ -355,34 +352,27 @@ class _CompanyLogoState extends State<CompanyLogo> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenheight = MediaQuery.of(context).size.height;
     double fontSize;
-    double title;
-    double heading;
 
     // Adjust the font size based on the screen width
     if (screenWidth < 320) {
       fontSize = 14.0;
-      title = 22;
-      heading = 30; // Small screen (e.g., iPhone 4S)
+// Small screen (e.g., iPhone 4S)
     } else if (screenWidth < 375) {
       fontSize = 16.0;
-      title = 25;
 
-      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+// Medium screen (e.g., iPhone 6, 7, 8)
     } else if (screenWidth < 414) {
       fontSize = 18.0;
-      title = 27;
 
-      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+// Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else if (screenWidth < 600) {
       fontSize = 20.0;
-      title = 30;
 
-      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+// Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else {
       fontSize = 22.0;
-      title = 34;
 
-      heading = 30; // Extra large screen or unknown device
+// Extra large screen or unknown device
     }
 
     Size size = MediaQuery.of(context).size;
@@ -524,7 +514,7 @@ class _CompanyLogoState extends State<CompanyLogo> {
                     height: size.height / 4,
                     width: 400,
                     decoration: BoxDecoration(
-                      color: backgroundColor,
+                      
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: pickedImage != null
@@ -538,7 +528,7 @@ class _CompanyLogoState extends State<CompanyLogo> {
                             child: Text(
                               pickedImageName != null
                                   ? pickedImageName!
-                                  : "Select Image",
+                                  : "",
                               textAlign: TextAlign.center,
                             ),
                           ),
