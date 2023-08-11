@@ -291,6 +291,23 @@ class _CompanyLoginPageState extends State<CompanyLoginPage> {
                   //   ),
                   // ),
                   const SizedBox(height: 16.0),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EmpLoginPage()),
+                      );
+                    },
+                    child: const Text(
+                      'Login as Employee',
+                      style: TextStyle(
+                          decorationColor: Colors.red,
+                          decoration: TextDecoration.underline,
+                          color: Colors.red,
+                          fontStyle: FontStyle.italic),
+                    ),
+                  ),
                 ],
               ),
             ).pSymmetric(h: 10),

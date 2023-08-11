@@ -360,7 +360,7 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                                                 ),
                                                 TextButton(
                                                   onPressed: () {
-                                                    Navigator.of(context)
+                                                   final result =  Navigator.of(context)
                                                         .push(MaterialPageRoute(
                                                       builder: (context) =>
                                                           EditEmployee(
@@ -375,12 +375,16 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                                                     ))
                                                         .then((value) {
                                                       setState(() {
+                                                        Navigator.of(context).pop();
                                                         getEmployees(
                                                             token,
                                                             companyId
                                                                 .toString());
                                                       });
                                                     });
+                                                    if(result == "hoho"){
+                                                      Navigator.of(context).pop();
+                                                    }
                                                   },
                                                   child: Text(
                                                     'Edit ',

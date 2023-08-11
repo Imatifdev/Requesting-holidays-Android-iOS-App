@@ -12,9 +12,7 @@ import '../../widget/constants.dart';
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'dart:convert';
 
 class CompanyFinancialYearScreen extends StatefulWidget {
   @override
@@ -46,39 +44,40 @@ class _CompanyFinancialYearScreenState
       );
 
   String financialYear = '';
-  int? selectedYear;
+  String? selectedYear;
   bool isFinancialYearSelected = false;
 
   void _openDropdown() {
+    
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: Text('Select Financial Year'),
-          content: DropdownButton<int>(
-            hint: Text("Select Year"),
+          title: const Text('Select Financial Year'),
+          content: DropdownButton<String>(
+            hint: const Text("Select Year"),
             value: selectedYear,
-            onChanged: (int? newValue) {
+            onChanged: (String? newValue) {
               setState(() {
-                selectedYear = newValue;
-                final startDate = DateTime(selectedYear!, 4, 1);
-                final endDate = DateTime(selectedYear! + 1, 3, 31);
-                final formattedStartDate = formatDate(startDate);
-                final formattedEndDate = formatDate(endDate);
-                financialYear = '$formattedStartDate to $formattedEndDate';
+                // selectedYear = newValue;
+                // final startDate = DateTime(selectedYear!, 4, 1);
+                // final endDate = DateTime(selectedYear! + 1, 3, 31);
+                // final formattedStartDate = formatDate(startDate);
+                // final formattedEndDate = formatDate(endDate);
+                financialYear = newValue as String;
                 isFinancialYearSelected = true;
               });
               Navigator.of(context).pop();
             },
-            items: [
+            items: const [
               DropdownMenuItem(
-                value: 2022,
+                value: "01-04 31-03",
                 child: Text('01st-apr to 31st-march'),
               ),
               DropdownMenuItem(
-                value: 2023,
+                value: "01-01 31-12",
                 child: Text('01st-jan to 31st-dec'),
               ),
             ],
@@ -86,6 +85,7 @@ class _CompanyFinancialYearScreenState
         );
       },
     );
+    showChangeFinancialYearDialog(context);
   }
 
   void _clearFinancialYear() {
@@ -102,10 +102,43 @@ class _CompanyFinancialYearScreenState
     return '$day-$month';
   }
 
+  void showChangeFinancialYearDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Change Financial Year'),
+          content: const Text('Are you sure you want to change the financial year?'),
+          actions: [
+            TextButton(
+               onPressed: () {
+                // Navigate to CompanyDashboard with push and replaceUntil
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CompanyDashBoard()),
+                  (Route<dynamic> route) => false,
+                );
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Close the dialog and pop the current screen
+                Navigator.pop(context);
+              },
+              child: const Text('Confirm'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> newcallApi(String token, String id, String financialYear) async {
     // Define the base URL and endpoint
-    final baseUrl = 'https://jporter.ezeelogix.com/public/api/';
-    final endpoint = 'company-create-financial-year';
+    const baseUrl = 'https://jporter.ezeelogix.com/public/api/';
+    const endpoint = 'company-create-financial-year';
 
     // Prepare the request body
     final requestBody = {
@@ -189,7 +222,7 @@ class _CompanyFinancialYearScreenState
         backgroundColor: backgroundColor,
         elevation: 0,
         leading: IconButton(
-            icon: Icon(CupertinoIcons.left_chevron),
+            icon: const Icon(CupertinoIcons.left_chevron),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -200,10 +233,10 @@ class _CompanyFinancialYearScreenState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
-            Text(
+            const Text(
               "Create Financial Year",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ).pOnly(left: 20),
@@ -211,8 +244,8 @@ class _CompanyFinancialYearScreenState
             Text(user.startfinancialyear + user.endfinancialyear),
             Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
                   child: Icon(Icons.calendar_month),
                 ),
                 Expanded(
@@ -232,7 +265,7 @@ class _CompanyFinancialYearScreenState
                           isFinancialYearSelected
                               ? 'Remove Financial Year'
                               : 'Pick Financial Year',
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ),
                     ),
@@ -240,13 +273,13 @@ class _CompanyFinancialYearScreenState
                 ),
               ],
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             if (isFinancialYearSelected)
               Text(
                 'Selected Financial Year: $financialYear',
-                style: TextStyle(fontSize: 14.0),
+                style: const TextStyle(fontSize: 14.0),
               ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             Container(
               height: 40,
               width: 90,
@@ -264,7 +297,7 @@ class _CompanyFinancialYearScreenState
                         );
                       }
                     : _showErrorMessage,
-                child: Center(
+                child: const Center(
                   child: Text(
                     'Create',
                     style: TextStyle(fontSize: 13, color: Colors.white),

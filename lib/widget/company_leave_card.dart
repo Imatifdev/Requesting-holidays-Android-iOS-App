@@ -234,22 +234,20 @@ class CompanyLeaveRequestCard extends StatelessWidget {
                       )
                     ],
                   ),
+                  Text(leave.employee.firstName + " " + leave.employee.lastName, style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),),
                   Row(
                     children: [
                       Text(
                         '${leave.startDate} to ',
                         style:
-                            TextStyle(fontSize: fontSize, color: Colors.black),
+                            TextStyle(fontSize: fontSize, color: red),
                       ),
                       Text(
-                        '${leave.endDate}',
+                        leave.endDate,
                         style:
-                            TextStyle(fontSize: fontSize, color: Colors.black),
+                            TextStyle(fontSize: fontSize, color: red),
                       ),
                     ],
-                  ),
-                  const SizedBox(
-                    height: 10,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -257,7 +255,7 @@ class CompanyLeaveRequestCard extends StatelessWidget {
                       Text(
                         leave.leaveType,
                         style: TextStyle(
-                            fontSize: fontSize, fontWeight: FontWeight.bold),
+                            fontSize: fontSize),
                       ),
                       Container(
                         height: 30,

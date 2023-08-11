@@ -21,6 +21,7 @@ class StripeScreen extends StatefulWidget {
 }
 
 class _StripeScreenState extends State<StripeScreen> {
+  bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
   String cardNumber = '';
   String expiryDate = '';
@@ -35,6 +36,38 @@ class _StripeScreenState extends State<StripeScreen> {
       width: 2.0,
     ),
   );
+
+  void showPaymentConfirmationDialog(BuildContext context, String token, String companyId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Payment'),
+          content: const Text('Do you want to continue payment for the plan?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Call the specific function on confirming
+                sendStripeApiRequest(token, companyId.toString());
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text('Confirm'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CompanyDashBoard()),
+                  (Route<dynamic> route) => false,
+                );
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Future<int> cancelSubscription(String token, String id) async {
     // Define the base URL and endpoint
@@ -128,16 +161,19 @@ class _StripeScreenState extends State<StripeScreen> {
 
   Future<void> sendStripeApiRequest(String token, String id) async {
     // Define the base URL and endpoint
+    setState(() {
+      isLoading = true;
+    });
     const baseUrl = 'https://jporter.ezeelogix.com/public/api/';
     const endpoint = 'payment';
 
     // Prepare the request body
     final requestBody = {
       'company_id': id,
-      'card_number': "4242 4242 4242 4242",
-      'card_expiry': "02/25",
-      'card_cvc': "424",
-      'name': "Abdullah Ayaz",
+      'card_number': cardNumber,
+      'card_expiry': expiryDate,
+      'card_cvc': cvvCode,
+      'name': cardHolderName,
     };
 
     // Prepare the request headers
@@ -157,7 +193,10 @@ class _StripeScreenState extends State<StripeScreen> {
       if (response.statusCode == 200) {
         // Request successful
         final responseData = json.encode(response.body);
-        print("responseeee" + responseData);
+        print("responseeee $responseData");
+        setState(() {
+      isLoading = false;
+    });
         Fluttertoast.showToast(
           msg: "You have Subscribed this Plan Successfuly",
           toastLength: Toast.LENGTH_SHORT,
@@ -168,7 +207,7 @@ class _StripeScreenState extends State<StripeScreen> {
           fontSize: 16.0,
         );
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (ctx) => CompanyDashBoard()));
+            context, MaterialPageRoute(builder: (ctx) => const CompanyDashBoard()));
 
         // Create and return the ShowEmployees object
         // List<dynamic> requestedLeaves = responseData["data"]['employee'];
@@ -180,6 +219,9 @@ class _StripeScreenState extends State<StripeScreen> {
         final responseData = json.decode(response.body);
         print("responseeee" + responseData);
         print('Request failed with status: ${response.statusCode}');
+        setState(() {
+      isLoading = false;
+    });
         Fluttertoast.showToast(
           msg: "Your Package is already Subscribed",
           toastLength: Toast.LENGTH_SHORT,
@@ -190,11 +232,14 @@ class _StripeScreenState extends State<StripeScreen> {
           fontSize: 16.0,
         );
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (ctx) => CompanyDashBoard()));
+            context, MaterialPageRoute(builder: (ctx) => const CompanyDashBoard()));
       }
     } catch (error) {
       // An error occurred
       print('Error: $error');
+      setState(() {
+      isLoading = false;
+    });
     }
   }
 
@@ -219,18 +264,30 @@ class _StripeScreenState extends State<StripeScreen> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(children: [
-              const Align(
-                  child: Text(
-                "Subsrcibe to Plan",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              )),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: (){
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(Icons.arrow_back_ios_new_rounded, color: red) ,
+                  ),
+                  const Text(
+                    "Subsrcibe to Plan",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
               const SizedBox(height: 10),
               CreditCardWidget(
                 glassmorphismConfig: Glassmorphism(
                     blurX: 2.0,
                     blurY: 2.0,
                     gradient:
-                        const LinearGradient(colors: [Colors.red, Colors.red])),
+                        LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [red, red, Colors.red.withOpacity(0.7) , red])),
                 cardNumber: cardNumber,
                 expiryDate: expiryDate,
                 cardHolderName: cardHolderName,
@@ -501,8 +558,7 @@ class _StripeScreenState extends State<StripeScreen> {
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (ctx) => WelcomeScreen()));
                   if (_formKey.currentState!.validate()) {
-                    print(companyId);
-                    sendStripeApiRequest(token!, companyId.toString());
+                    showPaymentConfirmationDialog(context, token!, companyId.toString());
                   }
                 },
                 child: Container(
@@ -510,9 +566,11 @@ class _StripeScreenState extends State<StripeScreen> {
                       color: red, borderRadius: BorderRadius.circular(10)),
                   height: size.height / 15,
                   width: size.width - 100,
-                  child: const Center(
-                    child: Text(
-                      "Pay",
+                  child: Center(
+                    child: 
+                    isLoading? const CircularProgressIndicator(color: Colors.white) :
+                    const Text(
+                      "Subscribe",
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                   ),

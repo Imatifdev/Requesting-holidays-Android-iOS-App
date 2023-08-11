@@ -534,20 +534,23 @@ class _AllApplicationsState extends State<AllApplications> {
           // }
           _leaveRequestsStreamController.add(pendingLeaves);
         });
-        PopupLoader.hide();
+        setState(() {
+      state = StateEnum.fetched;
+    });
       } else {
         print(response.statusCode);
         // Error occurred
         print('Error: ${response.reasonPhrase}');
         // Handle error scenario
+        setState(() {
+      state = StateEnum.fetched;
+    });
       }
     } catch (e) {
       print('Error: $e');
-      PopupLoader.hide();
-    }
-    setState(() {
       state = StateEnum.fetched;
-    });
+    
+    }
   }
 
   void _changeLeaveStatus(String token, int companyId, int status,
@@ -731,7 +734,7 @@ class _AllApplicationsState extends State<AllApplications> {
                                               ],
                                             ),
                                             Text(
-                                              leave.employee.firstName,
+                                              "${leave.employee.firstName} ${leave.employee.lastName}",
                                               style: TextStyle(
                                                   fontSize: title,
                                                   color: Colors.black,
@@ -915,6 +918,7 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
   List<CompanyLeaveRequest> approvedLeaves = [];
   List<Employee> empstatus = [];
   int check = 0;
+  StateEnum state = StateEnum.notFetched;
 
   Future<void> _getApprovedLeaves(String token, String id) async {
     final String requestLeaveUrl =
@@ -951,6 +955,9 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
       print('Error: ${response.reasonPhrase}');
       // Handle error scenario
     }
+    setState(() {
+      state = StateEnum.fetched;
+    });
   }
 
   @override
@@ -1027,6 +1034,7 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
             ).centered().pSymmetric(h: 30),
           ).centered().pOnly(left: 20, right: 20, top: 20, bottom: 10),
         ),
+        state == StateEnum.fetched?
         approvedLeaves.isNotEmpty
             ? Expanded(
                 child: ListView.builder(
@@ -1044,15 +1052,32 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
                 ),
               )
             : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 300,
-                  ),
-                  Center(child: CircularProgressIndicator()),
-                ],
-              ),
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 200,
+                        ),
+                        Center(
+                            child: Column(
+                          children: [
+                            Icon(
+                              CupertinoIcons.check_mark_circled,
+                              size: 50,
+                              color: red,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "You currently have no approved leave requests ",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ],
+                        )),
+                      ],
+                    ): Center(child: CircularProgressIndicator(),)
       ],
     );
   }
@@ -1066,6 +1091,7 @@ class RejectedApplications extends StatefulWidget {
 }
 
 class _RejectedApplicationsState extends State<RejectedApplications> {
+  StateEnum state = StateEnum.notFetched;
   List<CompanyLeaveRequest> leaves = [];
   List<CompanyLeaveRequest> rejectedLeaves = [];
   int check = 0;
@@ -1105,6 +1131,9 @@ class _RejectedApplicationsState extends State<RejectedApplications> {
       print('Error: ${response.reasonPhrase}');
       // Handle error scenario
     }
+    setState(() {
+      state = StateEnum.fetched;
+    });
   }
 
   @override
@@ -1181,6 +1210,7 @@ class _RejectedApplicationsState extends State<RejectedApplications> {
             ).centered().pSymmetric(h: 30),
           ).centered().pOnly(left: 20, right: 20, top: 20, bottom: 10),
         ),
+        state == StateEnum.fetched? 
         rejectedLeaves.isNotEmpty
             ? Expanded(
                 child: ListView.builder(
@@ -1198,15 +1228,32 @@ class _RejectedApplicationsState extends State<RejectedApplications> {
                 ),
               )
             : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 300,
-                  ),
-                  Center(child: CircularProgressIndicator()),
-                ],
-              ),
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 200,
+                        ),
+                        Center(
+                            child: Column(
+                          children: [
+                            Icon(
+                              CupertinoIcons.check_mark_circled,
+                              size: 50,
+                              color: red,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "You currently have no approved leave requests ",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ],
+                        )),
+                      ],
+                    ) : Center(child: CircularProgressIndicator(),)
       ],
     );
   }
