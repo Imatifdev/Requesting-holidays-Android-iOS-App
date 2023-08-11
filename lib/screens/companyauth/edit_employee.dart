@@ -147,29 +147,29 @@ class _EditEmployeeState extends State<EditEmployee> {
 
     // Adjust the font size based on the screen width
     if (screenWidth < 320) {
-     // fontSize = 11.0;
+      // fontSize = 11.0;
       title = 16;
-     // heading = 10; // Small screen (e.g., iPhone 4S)
+      // heading = 10; // Small screen (e.g., iPhone 4S)
     } else if (screenWidth < 375) {
-    //  fontSize = 12.0;
+      //  fontSize = 12.0;
       title = 20;
 
-     // heading = 12; // Medium screen (e.g., iPhone 6, 7, 8)
+      // heading = 12; // Medium screen (e.g., iPhone 6, 7, 8)
     } else if (screenWidth < 414) {
       //fontSize = 15.0;
       title = 22;
 
-     // heading = 14; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+      // heading = 14; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else if (screenWidth < 600) {
-    //  fontSize = 19.0;
+      //  fontSize = 19.0;
       title = 26;
 
-    //  heading = 18; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+      //  heading = 18; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else {
-     // fontSize = 22.0;
+      // fontSize = 22.0;
       title = 19;
 
-    //  heading = 30; // Extra large screen or unknown device
+      //  heading = 30; // Extra large screen or unknown device
     }
 
     Size size = MediaQuery.of(context).size;
@@ -392,7 +392,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                             height: 5,
                           ),
                           SizedBox(
-                            height: size.height / 4.5,
+                            height: size.height / 4,
                             child: GridView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               gridDelegate:

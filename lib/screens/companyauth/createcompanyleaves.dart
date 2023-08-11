@@ -126,6 +126,18 @@ class _CreateCompanyLeaveState extends State<CreateCompanyLeave> {
     final companyId = user!.id;
 
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: backgroundColor,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              CupertinoIcons.left_chevron,
+              color: Colors.black,
+            )),
+      ),
       resizeToAvoidBottomInset: false,
       backgroundColor: backgroundColor,
       body: Center(

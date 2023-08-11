@@ -103,24 +103,15 @@ class _CompanyProfileViewState extends State<CompanyProfileView> {
     final user = companyViewModel.user;
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: backgroundColor,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              CupertinoIcons.left_chevron,
-              color: Colors.black,
-            )),
-      ),
       backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(
+                height: screenheight * 0.08,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(children: [

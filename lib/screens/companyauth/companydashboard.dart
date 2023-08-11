@@ -30,7 +30,7 @@ import 'createcompanyleaves.dart';
 import 'createfinancialyear.dart';
 import 'getcompanyleaves.dart';
 
-enum StateEnum{ fetching, fetched, notFetched }
+enum StateEnum { fetching, fetched, notFetched }
 
 class CompanyDashBoard extends StatefulWidget {
   const CompanyDashBoard({super.key});
@@ -124,9 +124,9 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
       print(response.statusCode);
       // Error occurred
       print('Error: ${response.reasonPhrase}');
-    //   setState(() {
-    //   state = StateEnum.notFetched;
-    // });
+      //   setState(() {
+      //   state = StateEnum.notFetched;
+      // });
       // Handle error scenario
     }
   }
@@ -303,6 +303,23 @@ class _CompanyDashBoardState extends State<CompanyDashBoard> {
                 context,
                 MaterialPageRoute(
                     builder: (ctx) => CompanyFinancialYearScreen()));
+          },
+        ),
+        Divider(
+          color: Colors.grey,
+          thickness: 0.5,
+        ).pSymmetric(h: 20),
+        ListTile(
+          leading: Icon(Icons.create),
+          title: Text(
+            'Create Leave',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+          trailing: Icon(CupertinoIcons.right_chevron),
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (ctx) => CreateCompanyLeave()));
           },
         ),
         Divider(
@@ -490,7 +507,6 @@ class _AllApplicationsState extends State<AllApplications> {
   Timer? _apiTimer;
 
   Future<void> _getallLeaveRequest(String token, String id) async {
-    
     try {
       setState(() {
         leaves = [];
@@ -535,21 +551,20 @@ class _AllApplicationsState extends State<AllApplications> {
           _leaveRequestsStreamController.add(pendingLeaves);
         });
         setState(() {
-      state = StateEnum.fetched;
-    });
+          state = StateEnum.fetched;
+        });
       } else {
         print(response.statusCode);
         // Error occurred
         print('Error: ${response.reasonPhrase}');
         // Handle error scenario
         setState(() {
-      state = StateEnum.fetched;
-    });
+          state = StateEnum.fetched;
+        });
       }
     } catch (e) {
       print('Error: $e');
       state = StateEnum.fetched;
-    
     }
   }
 
@@ -611,7 +626,7 @@ class _AllApplicationsState extends State<AllApplications> {
       if (check == 0) {
         startApiTimer(token!, user.id.toString());
         // _getSubscriptionStatus(token, user.id.toString());
-        
+
         check = 1;
       }
     });
@@ -678,215 +693,236 @@ class _AllApplicationsState extends State<AllApplications> {
         StreamBuilder(
           builder: (context, snapshot) {
             return Container(
-              child: 
-              state == StateEnum.fetched?
-              newLeaves.isNotEmpty
-                  ? Expanded(
-                      child: ListView.builder(
-                        itemCount: newLeaves.length,
-                        //reverse: true,
-                        itemBuilder: (context, index) {
-                          // String fromDate =
-                          // DateFormat('EEE, MMM d, yyyy').format(leave.startDate);
-                          // String toDate =
-                          // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
-                          CompanyLeaveRequest leave = newLeaves[index];
-                          return Padding(
-                            padding: const EdgeInsets.all(13.0),
-                            child: InkWell(
-                              onTap: () {},
-                              child: Card(
-                                elevation: 5,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                        width: 1,
-                                        color: Colors.grey,
-                                      )),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  leave.totalRequestLeave > 1
-                                                      ? '${leave.totalRequestLeave} days Application '
-                                                      : '${leave.totalRequestLeave} day Application ',
-                                                  style: TextStyle(
-                                                      fontSize: title,
-                                                      color: Colors.grey,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              "${leave.employee.firstName} ${leave.employee.lastName}",
-                                              style: TextStyle(
-                                                  fontSize: title,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  'From: ${leave.startDate}',
-                                                  style: TextStyle(
-                                                      fontSize: fontSize,
-                                                      color: Colors.black),
-                                                ),
-                                                Text(
-                                                  'To: ${leave.endDate}',
-                                                  style: TextStyle(
-                                                      fontSize: fontSize,
-                                                      color: Colors.black),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  'Type: ${leave.leaveType}',
-                                                  style: TextStyle(
-                                                    fontSize: fontSize,
+                child: state == StateEnum.fetched
+                    ? newLeaves.isNotEmpty
+                        ? Expanded(
+                            child: ListView.builder(
+                              itemCount: newLeaves.length,
+                              //reverse: true,
+                              itemBuilder: (context, index) {
+                                // String fromDate =
+                                // DateFormat('EEE, MMM d, yyyy').format(leave.startDate);
+                                // String toDate =
+                                // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
+                                CompanyLeaveRequest leave = newLeaves[index];
+                                return Padding(
+                                  padding: const EdgeInsets.all(13.0),
+                                  child: InkWell(
+                                    onTap: () {},
+                                    child: Card(
+                                      elevation: 5,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0)),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            border: Border.all(
+                                              width: 1,
+                                              color: Colors.grey,
+                                            )),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        leave.totalRequestLeave >
+                                                                1
+                                                            ? '${leave.totalRequestLeave} days Application '
+                                                            : '${leave.totalRequestLeave} day Application ',
+                                                        style: TextStyle(
+                                                            fontSize: title,
+                                                            color: Colors.grey,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                                  Text(
+                                                    "${leave.employee.firstName} ${leave.employee.lastName}",
+                                                    style: TextStyle(
+                                                        fontSize: title,
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        'From: ${leave.startDate}',
+                                                        style: TextStyle(
+                                                            fontSize: fontSize,
+                                                            color:
+                                                                Colors.black),
+                                                      ),
+                                                      Text(
+                                                        'To: ${leave.endDate}',
+                                                        style: TextStyle(
+                                                            fontSize: fontSize,
+                                                            color:
+                                                                Colors.black),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        'Type: ${leave.leaveType}',
+                                                        style: TextStyle(
+                                                          fontSize: fontSize,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  InkWell(
+                                                    onTap: () {
+                                                      _changeLeaveStatus(token!,
+                                                          companyId, 1, leave);
+                                                      setState(() {
+                                                        pendingLeaves
+                                                            .removeWhere(
+                                                                (leavez) =>
+                                                                    leavez.id ==
+                                                                    leave.id);
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      height:
+                                                          screenheight / 26.5,
+                                                      width: screenWidth / 4.5,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors
+                                                              .green.shade100,
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.green),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5)),
+                                                      child: Center(
+                                                          child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(0),
+                                                        child: Text("Approve",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .green,
+                                                                fontSize:
+                                                                    heading)),
+                                                      )),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 30,
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      _changeLeaveStatus(token!,
+                                                          companyId, 2, leave);
+                                                      setState(() {
+                                                        pendingLeaves
+                                                            .removeWhere(
+                                                                (leavez) =>
+                                                                    leavez.id ==
+                                                                    leave.id);
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      height:
+                                                          screenheight / 26.5,
+                                                      width: screenWidth / 4.5,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors
+                                                              .red.shade100,
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.red),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5)),
+                                                      child: Center(
+                                                          child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(0),
+                                                        child: Text("Reject",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.red,
+                                                                fontSize:
+                                                                    heading)),
+                                                      )),
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                _changeLeaveStatus(token!,
-                                                    companyId, 1, leave);
-                                                setState(() {
-                                                  pendingLeaves.removeWhere(
-                                                      (leavez) =>
-                                                          leavez.id ==
-                                                          leave.id);
-                                                });
-                                              },
-                                              child: Container(
-                                                height: screenheight / 26.5,
-                                                width: screenWidth / 4.5,
-                                                decoration: BoxDecoration(
-                                                    color:
-                                                        Colors.green.shade100,
-                                                    border: Border.all(
-                                                        color: Colors.green),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
-                                                child: Center(
-                                                    child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(0),
-                                                  child: Text("Approve",
-                                                      style: TextStyle(
-                                                          color: Colors.green,
-                                                          fontSize: heading)),
-                                                )),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 30,
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                _changeLeaveStatus(token!,
-                                                    companyId, 2, leave);
-                                                setState(() {
-                                                  pendingLeaves.removeWhere(
-                                                      (leavez) =>
-                                                          leavez.id ==
-                                                          leave.id);
-                                                });
-                                              },
-                                              child: Container(
-                                                height: screenheight / 26.5,
-                                                width: screenWidth / 4.5,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.red.shade100,
-                                                    border: Border.all(
-                                                        color: Colors.red),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
-                                                child: Center(
-                                                    child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(0),
-                                                  child: Text("Reject",
-                                                      style: TextStyle(
-                                                          color: Colors.red,
-                                                          fontSize: heading)),
-                                                )),
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      ],
+                                      ),
                                     ),
                                   ),
-                                ),
+                                );
+                              },
+                            ),
+                          )
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 200,
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                    )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 200,
-                        ),
-                        Center(
-                            child: Column(
-                          children: [
-                            Icon(
-                              CupertinoIcons.check_mark_circled,
-                              size: 50,
-                              color: red,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "You currently have no pending leave requests ",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ),
-                          ],
-                        )),
-                      ],
-                    ) : Center(
-                      child: CircularProgressIndicator(),
-                    )
-            );
+                              Center(
+                                  child: Column(
+                                children: [
+                                  Icon(
+                                    CupertinoIcons.check_mark_circled,
+                                    size: 50,
+                                    color: red,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "You currently have no pending leave requests ",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                ],
+                              )),
+                            ],
+                          )
+                    : Center(
+                        child: CircularProgressIndicator(),
+                      ));
           },
           stream: _leaveRequestsStreamController.stream,
         ),
@@ -1034,50 +1070,53 @@ class _ApprovedApplicationsState extends State<ApprovedApplications> {
             ).centered().pSymmetric(h: 30),
           ).centered().pOnly(left: 20, right: 20, top: 20, bottom: 10),
         ),
-        state == StateEnum.fetched?
-        approvedLeaves.isNotEmpty
-            ? Expanded(
-                child: ListView.builder(
-                  itemCount: approvedLeaves.length,
-                  itemBuilder: (context, index) {
-                    // String fromDate =
-                    // DateFormat('EEE, MMM d, yyyy').format(leave.startDate);
-                    // String toDate =
-                    // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
-                    CompanyLeaveRequest leave = approvedLeaves[index];
-                    return CompanyLeaveRequestCard(
-                      leave: leave,
-                    );
-                  },
-                ),
+        state == StateEnum.fetched
+            ? approvedLeaves.isNotEmpty
+                ? Expanded(
+                    child: ListView.builder(
+                      itemCount: approvedLeaves.length,
+                      itemBuilder: (context, index) {
+                        // String fromDate =
+                        // DateFormat('EEE, MMM d, yyyy').format(leave.startDate);
+                        // String toDate =
+                        // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
+                        CompanyLeaveRequest leave = approvedLeaves[index];
+                        return CompanyLeaveRequestCard(
+                          leave: leave,
+                        );
+                      },
+                    ),
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 200,
+                      ),
+                      Center(
+                          child: Column(
+                        children: [
+                          Icon(
+                            CupertinoIcons.check_mark_circled,
+                            size: 50,
+                            color: red,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "You currently have no approved leave requests ",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      )),
+                    ],
+                  )
+            : Center(
+                child: CircularProgressIndicator(),
               )
-            : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 200,
-                        ),
-                        Center(
-                            child: Column(
-                          children: [
-                            Icon(
-                              CupertinoIcons.check_mark_circled,
-                              size: 50,
-                              color: red,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "You currently have no approved leave requests ",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ),
-                          ],
-                        )),
-                      ],
-                    ): Center(child: CircularProgressIndicator(),)
       ],
     );
   }
@@ -1210,50 +1249,53 @@ class _RejectedApplicationsState extends State<RejectedApplications> {
             ).centered().pSymmetric(h: 30),
           ).centered().pOnly(left: 20, right: 20, top: 20, bottom: 10),
         ),
-        state == StateEnum.fetched? 
-        rejectedLeaves.isNotEmpty
-            ? Expanded(
-                child: ListView.builder(
-                  itemCount: rejectedLeaves.length,
-                  itemBuilder: (context, index) {
-                    CompanyLeaveRequest leave = rejectedLeaves[index];
-                    // String fromDate =
-                    // DateFormat('EEE, MMM d, yyyy').format(leave.startDate);
-                    // String toDate =
-                    // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
-                    return CompanyLeaveRequestCard(
-                      leave: leave,
-                    );
-                  },
-                ),
+        state == StateEnum.fetched
+            ? rejectedLeaves.isNotEmpty
+                ? Expanded(
+                    child: ListView.builder(
+                      itemCount: rejectedLeaves.length,
+                      itemBuilder: (context, index) {
+                        CompanyLeaveRequest leave = rejectedLeaves[index];
+                        // String fromDate =
+                        // DateFormat('EEE, MMM d, yyyy').format(leave.startDate);
+                        // String toDate =
+                        // DateFormat('EEE, MMM d, yyyy').format(leave.toDate);
+                        return CompanyLeaveRequestCard(
+                          leave: leave,
+                        );
+                      },
+                    ),
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 200,
+                      ),
+                      Center(
+                          child: Column(
+                        children: [
+                          Icon(
+                            CupertinoIcons.check_mark_circled,
+                            size: 50,
+                            color: red,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "You currently have no approved leave requests ",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      )),
+                    ],
+                  )
+            : Center(
+                child: CircularProgressIndicator(),
               )
-            : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 200,
-                        ),
-                        Center(
-                            child: Column(
-                          children: [
-                            Icon(
-                              CupertinoIcons.check_mark_circled,
-                              size: 50,
-                              color: red,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "You currently have no approved leave requests ",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ),
-                          ],
-                        )),
-                      ],
-                    ) : Center(child: CircularProgressIndicator(),)
       ],
     );
   }
