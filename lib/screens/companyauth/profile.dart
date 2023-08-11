@@ -66,43 +66,54 @@ class _CompanyProfileViewState extends State<CompanyProfileView> {
     final screenheight = MediaQuery.of(context).size.height;
     double fontSize;
     double title;
-    double heading;
     double iconsize = 10;
     // Adjust the font size based on the screen width
     if (screenWidth < 320) {
       fontSize = 13.0;
       title = 18;
       iconsize = 20;
-      heading = 30; // Small screen (e.g., iPhone 4S)
+// Small screen (e.g., iPhone 4S)
     } else if (screenWidth < 375) {
       fontSize = 15.0;
       title = 24;
 
       iconsize = 23;
-      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+// Medium screen (e.g., iPhone 6, 7, 8)
     } else if (screenWidth < 414) {
       fontSize = 17.0;
       title = 26;
 
       iconsize = 27;
-      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+// Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else if (screenWidth < 600) {
       fontSize = 19.0;
       title = 30;
 
       iconsize = 30;
-      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+// Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else {
       fontSize = 22.0;
       title = 40;
 
-      heading = 30; // Extra large screen or unknown device
+// Extra large screen or unknown device
     }
 
     final companyViewModel = Provider.of<CompanyViewModel>(context);
     final user = companyViewModel.user;
 
     return Scaffold(
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   backgroundColor: backgroundColor,
+      //   leading: IconButton(
+      //       onPressed: () {
+      //         Navigator.pop(context);
+      //       },
+      //       icon: Icon(
+      //         CupertinoIcons.left_chevron,
+      //         color: Colors.black,
+      //       )),
+      // ),
       backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Column(

@@ -28,7 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final screenheight = MediaQuery.of(context).size.height;
     double fontSize;
     double title;
-    double heading;
     double para;
     double iconsize = 30;
 
@@ -37,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
       fontSize = 13.0;
       title = 17;
       iconsize = 40;
-      heading = 30;
       para = 12; // Small screen (e.g., iPhone 4S)
     } else if (screenWidth < 375) {
       fontSize = 15.0;
@@ -46,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       iconsize = 50; // Small screen (e.g., iPhone 4S)
 
-      heading = 24; // Medium screen (e.g., iPhone 6, 7, 8)
+// Medium screen (e.g., iPhone 6, 7, 8)
     } else if (screenWidth < 414) {
       fontSize = 17.0;
       title = 21;
@@ -54,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       iconsize = 60; // Small screen (e.g., iPhone 4S)
 
-      heading = 28; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+// Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else if (screenWidth < 600) {
       fontSize = 19.0;
       title = 23;
@@ -62,13 +60,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
       iconsize = 70; // Small screen (e.g., iPhone 4S)
 
-      heading = 30; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+// Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else {
       fontSize = 22.0;
       title = 40;
       para = 17; // Small screen (e.g., iPhone 4S)
 
-      heading = 30; // Extra large screen or unknown device
+// Extra large screen or unknown device
     }
 
     return SafeArea(
@@ -124,10 +122,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               padding: EdgeInsets.all(8.0),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.only(left: 8.0),
+                                    padding: EdgeInsets.only(left: 0.0),
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -153,13 +151,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ],
                                     ),
                                   ),
-                                  Expanded(
-                                    child: Image.asset(
-                                      "assets/images/holiday.png",
-                                      color: Colors.white,
-                                      width: screenWidth / 3,
-                                      height: screenheight / 8,
-                                    ),
+                                  Image.asset(
+                                    "assets/images/holiday.png",
+                                    color: Colors.white,
+                                    width: screenWidth / 3,
+                                    height: screenheight / 8,
                                   ),
                                 ],
                               ),

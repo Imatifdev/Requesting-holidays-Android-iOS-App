@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:holidays/screens/companyauth/companydashboard.dart';
-import 'package:holidays/screens/companyauth/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -24,8 +23,8 @@ class CompanyViewModel extends ChangeNotifier {
 
   Future<void> performLogin(
       String email, String password, BuildContext context) async {
-    final String apiUrl = 'https://jporter.ezeelogix.com/public/api/login';
-    final String imgurl = "https://jporter.ezeelogix.com/public/upload/logo/";
+    const String apiUrl = 'https://jporter.ezeelogix.com/public/api/login';
+    const String imgurl = "https://jporter.ezeelogix.com/public/upload/logo/";
 
     PopupLoader.show();
 
@@ -39,7 +38,7 @@ class CompanyViewModel extends ChangeNotifier {
       if (jsonData['status'] == 'Success') {
         final userJson = jsonData['data']['user'];
         final token = jsonData['data']['token'];
-        final logoUrl = jsonData['data']['user']['logo'];
+        //final logoUrl = jsonData['data']['user']['logo'];
 
         _user = CompanyUser.fromJson(userJson);
         _token = token;

@@ -286,6 +286,7 @@ class LeaveRequestCard extends StatelessWidget {
                                         fontSize: heading)),
                               )),
                             ),
+                            if (leave.leaveCurrentStatus != 'Rejected')
                             IconButton(onPressed: (){}, icon: Icon(Icons.delete_rounded, color: red,) )
                         ],
                       ),
