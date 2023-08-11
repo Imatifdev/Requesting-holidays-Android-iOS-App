@@ -49,6 +49,15 @@ class _EditEmployeeState extends State<EditEmployee> {
     _hours.text = "20";
 
     super.initState();
+    selectedDays = {
+      0: widget.emp.days.sunday == 1,
+      1: widget.emp.days.monday == 1,
+      2: widget.emp.days.tuesday == 1,
+      3: widget.emp.days.wednesday == 1,
+      4: widget.emp.days.thursday == 1,
+      5: widget.emp.days.friday == 1,
+      6: widget.emp.days.saturday == 1,
+    };
   }
 
   getConnectivity() =>
@@ -221,7 +230,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                         children: [
                           TextFormField(
                             controller: _nameFirst,
-                           // initialValue: widget.first_name ,
+                            // initialValue: widget.first_name ,
                             decoration: InputDecoration(
                               prefixIcon: Padding(
                                 padding: const EdgeInsets.only(right: 5),
@@ -475,10 +484,10 @@ class _EditEmployeeState extends State<EditEmployee> {
               style: const TextStyle(fontSize: 12),
             ),
             Checkbox(
-              value: dayValues[index] == 1,
+              value: selectedDays[index] ?? false,
               onChanged: (bool? value) {
                 setState(() {
-                  dayValues[index] = value! ? 1 : 0;
+                  selectedDays[index] = value!;
                 });
               },
             ),
