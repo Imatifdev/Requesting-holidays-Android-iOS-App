@@ -41,6 +41,13 @@ class _EditEmployeeState extends State<EditEmployee> {
   @override
   void initState() {
     getConnectivity();
+    _nameFirst.text = widget.first_name;
+    _nameLast.text = widget.last_name;
+    _phone.text = widget.mobile;
+    _email.text = widget.email;
+    _totalLeaves.text = widget.emp.leaveQuota.toString();
+    _hours.text = "20";
+
     super.initState();
   }
 
@@ -214,6 +221,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                         children: [
                           TextFormField(
                             controller: _nameFirst,
+                           // initialValue: widget.first_name ,
                             decoration: InputDecoration(
                               prefixIcon: Padding(
                                 padding: const EdgeInsets.only(right: 5),
