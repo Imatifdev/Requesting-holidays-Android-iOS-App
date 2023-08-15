@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
@@ -44,6 +46,20 @@ class _MyFormState extends State<MyForm> {
         },
       );
 
+    void _generateRandomPassword() {
+    const int length = 12; // Length of the generated password
+    const String charset =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#%^&*()';
+    Random random = Random();
+
+    String password = List.generate(length, (index) {
+      return charset[random.nextInt(charset.length)];
+    }).join();
+
+    passwordController.text = password;
+    confirmPasswordController.text = password;
+  }  
+
   TextEditingController companyIDController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -53,7 +69,10 @@ class _MyFormState extends State<MyForm> {
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController totalLeavesController = TextEditingController();
   Map<int, bool> selectedDays = {};
+  bool _generatePassword = false;
   List<int> dayValues = List<int>.filled(7, 0);
+  bool passObs = true;
+  bool conPassObs = true;
 
   bool mondayChecked = false;
   bool tuesdayChecked = false;
@@ -125,34 +144,27 @@ class _MyFormState extends State<MyForm> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenheight = MediaQuery.of(context).size.height;
     double fontSize;
-    double title;
-    double heading;
 
     // Adjust the font size based on the screen width
     if (screenWidth < 320) {
       fontSize = 11.0;
-      title = 16;
-      heading = 10; // Small screen (e.g., iPhone 4S)
+// Small screen (e.g., iPhone 4S)
     } else if (screenWidth < 375) {
       fontSize = 12.0;
-      title = 20;
 
-      heading = 12; // Medium screen (e.g., iPhone 6, 7, 8)
+// Medium screen (e.g., iPhone 6, 7, 8)
     } else if (screenWidth < 414) {
       fontSize = 15.0;
-      title = 22;
 
-      heading = 14; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+// Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else if (screenWidth < 600) {
       fontSize = 19.0;
-      title = 26;
 
-      heading = 18; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+// Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
     } else {
       fontSize = 22.0;
-      title = 19;
 
-      heading = 30; // Extra large screen or unknown device
+// Extra large screen or unknown device
     }
 
     final comViewModel = Provider.of<CompanyViewModel>(context);
@@ -246,7 +258,7 @@ class _MyFormState extends State<MyForm> {
                   obscureText: false,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Please enter your first name';
+                      return 'Please enter your email';
                     }
                     return null;
                   },
@@ -273,7 +285,7 @@ class _MyFormState extends State<MyForm> {
                   obscureText: false,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Please enter your first name';
+                      return 'Please enter your phone';
                     }
                     return null;
                   },
@@ -281,6 +293,13 @@ class _MyFormState extends State<MyForm> {
                 TextFormField(
                   controller: passwordController,
                   decoration: InputDecoration(
+                    suffixIcon:  InkWell(
+                      onTap: (){
+                        setState(() {
+                          passObs = !passObs;
+                        });
+                      },
+                      child: passObs? Icon(Icons.visibility) : Icon(Icons.visibility_off)),
                     prefixIcon: Padding(
                       padding: const EdgeInsets.only(right: 5),
                       child: Container(
@@ -297,17 +316,46 @@ class _MyFormState extends State<MyForm> {
                     ),
                     labelText: 'Password',
                   ),
-                  obscureText: false,
+                  obscureText: passObs,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Please enter your first name';
+                      return 'Please enter your password';
                     }
                     return null;
                   },
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                    Text("Generate Random password", style: TextStyle(color: red),),
+                    GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _generatePassword = !_generatePassword;
+                        if (_generatePassword) {
+                          _generateRandomPassword();
+                        }
+                      });
+                    },
+                    child: Icon(
+                      _generatePassword ? Icons.check_box : Icons.check_box_outline_blank,
+                      color: _generatePassword ? red : Colors.grey,
+                    ),
+                  ),
+                  ],),
+                ),
                 TextFormField(
                   controller: confirmPasswordController,
                   decoration: InputDecoration(
+                    suffixIcon:  InkWell(
+                      onTap: (){
+                        setState(() {
+                          conPassObs = !conPassObs;
+                        });
+                      },
+                      child: conPassObs? Icon(Icons.visibility) : Icon(Icons.visibility_off)),
                     prefixIcon: Padding(
                       padding: const EdgeInsets.only(right: 5),
                       child: Container(
@@ -324,10 +372,10 @@ class _MyFormState extends State<MyForm> {
                     ),
                     labelText: 'Confirm Password',
                   ),
-                  obscureText: false,
+                  obscureText: conPassObs,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Please enter your first name';
+                      return 'Please confirm your password';
                     }
                     return null;
                   },
