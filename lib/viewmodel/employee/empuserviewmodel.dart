@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../../models/emp/empusermodel.dart';
+import '../../screens/companyauth/otp.dart';
 import '../../widget/popuploader.dart';
 
 class EmpViewModel extends ChangeNotifier {
@@ -179,7 +180,10 @@ class EmpViewModel extends ChangeNotifier {
 
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => EmpHome()),
+          MaterialPageRoute(
+              builder: (context) => CompanyOtpScreen(
+                    email: email,
+                  )),
         );
       } else {
         print(jsonData);
@@ -193,9 +197,16 @@ class EmpViewModel extends ChangeNotifier {
           textColor: Colors.white,
           fontSize: 16.0,
         );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => EmpOtpScreen(
+                    email: email,
+                  )),
+        );
         print('Login failed');
         print(response);
-
+        print(response.body);
         print(jsonData['status_code' == 401]);
       }
     } else {
