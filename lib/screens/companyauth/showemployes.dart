@@ -293,7 +293,7 @@ class _ShowEmployeeState extends State<ShowEmployee> {
                 children: [
                   CircleAvatar(
                     backgroundColor:
-                        emp.isVerified == '0' ? Colors.green : Colors.red,
+                        emp.isVerified == '1' ? Colors.green : Colors.red,
                     radius: 5,
                   ),
                   SizedBox(

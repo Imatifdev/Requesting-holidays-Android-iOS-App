@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:holidays/models/stripe_service.dart';
@@ -37,7 +38,8 @@ class _StripeScreenState extends State<StripeScreen> {
     ),
   );
 
-  void showPaymentConfirmationDialog(BuildContext context, String token, String companyId) {
+  void showPaymentConfirmationDialog(
+      BuildContext context, String token, String companyId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -57,7 +59,8 @@ class _StripeScreenState extends State<StripeScreen> {
               onPressed: () {
                 Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => const CompanyDashBoard()),
+                  MaterialPageRoute(
+                      builder: (context) => const CompanyDashBoard()),
                   (Route<dynamic> route) => false,
                 );
               },
@@ -97,6 +100,9 @@ class _StripeScreenState extends State<StripeScreen> {
         // Request successful
         final responseData = json.decode(response.body);
         print(responseData);
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (ctx) => const CompanyDashBoard()));
+
         // Create and return the ShowEmployees object
         // List<dynamic> requestedLeaves = responseData["data"]['employee'];
         // setState(() {
@@ -105,6 +111,15 @@ class _StripeScreenState extends State<StripeScreen> {
       } else {
         // Request failed
         print('Request failed with status: ${response.statusCode}');
+        Fluttertoast.showToast(
+          msg: "You request to subscribe this Plan failed",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
       }
     } catch (error) {
       // An error occurred
@@ -192,23 +207,45 @@ class _StripeScreenState extends State<StripeScreen> {
 
       if (response.statusCode == 200) {
         // Request successful
-        final responseData = json.encode(response.body);
-        print("responseeee $responseData");
+        // final responseData = json.encode(response.body);
+        // print("responseeee $responseData");
         setState(() {
-      isLoading = false;
-    });
-        Fluttertoast.showToast(
-          msg: "You have Subscribed this Plan Successfuly",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (ctx) => const CompanyDashBoard()));
+          isLoading = false;
+        });
+        // Fluttertoast.showToast(
+        //   msg: "You have Subscribed this Plan Successfuly",
+        //   toastLength: Toast.LENGTH_SHORT,
+        //   gravity: ToastGravity.BOTTOM,
+        //   timeInSecForIosWeb: 1,
+        //   backgroundColor: Colors.green,
+        //   textColor: Colors.white,
+        //   fontSize: 16.0,
+        // );
+        // Navigator.pushReplacement(context,
+        //     MaterialPageRoute(builder: (ctx) => const CompanyDashBoard()));
 
+        showDialogBox() => showCupertinoDialog<String>(
+              context: context,
+              builder: (BuildContext context) => CupertinoAlertDialog(
+                title: const Text('No Connection'),
+                content: const Text(
+                    'Your Package is already Subscribed.Do you really want to cancel your subscription?'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () async {
+                      Navigator.pop(context, 'Back');
+                    },
+                    child: const Text('Back'),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      cancelSubscription(token, id);
+                    },
+                    child: const Text('Yes'),
+                  ),
+                ],
+              ),
+            );
         // Create and return the ShowEmployees object
         // List<dynamic> requestedLeaves = responseData["data"]['employee'];
         // setState(() {
@@ -220,26 +257,55 @@ class _StripeScreenState extends State<StripeScreen> {
         print("responseeee" + responseData);
         print('Request failed with status: ${response.statusCode}');
         setState(() {
-      isLoading = false;
-    });
-        Fluttertoast.showToast(
-          msg: "Your Package is already Subscribed",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (ctx) => const CompanyDashBoard()));
+          isLoading = false;
+        });
+
+        // Fluttertoast.showToast(
+        //   msg: "Your Package is already Subscribed",
+        //   toastLength: Toast.LENGTH_SHORT,
+        //   gravity: ToastGravity.BOTTOM,
+        //   timeInSecForIosWeb: 1,
+        //   backgroundColor: Colors.red,
+        //   textColor: Colors.white,
+        //   fontSize: 16.0,
+        // );
       }
     } catch (error) {
       // An error occurred
       print('Error: $error');
       setState(() {
-      isLoading = false;
+        isLoading = false;
+      });
+    }
+  }
+
+  bool currentStatus = false;
+
+  Future<void> _getSubscriptionStatus(String token, String id) async {
+    final String requestLeaveUrl =
+        'https://jporter.ezeelogix.com/public/api/check-subscription-status';
+
+    final response = await http.post(Uri.parse(requestLeaveUrl), headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    }, body: {
+      'company_id': id,
     });
+    if (response.statusCode == 200) {
+      // Leave request successful
+      final jsonData = json.decode(response.body);
+      //print(jsonData);
+      // Handle success scenario
+      bool status = jsonData["data"]["status"];
+      print("status: $status");
+      setState(() {
+        currentStatus = status;
+      });
+    } else {
+      print(response.statusCode);
+      // Error occurred
+      print('Error: ${response.reasonPhrase}');
+      // Handle error scenario
     }
   }
 
@@ -267,10 +333,11 @@ class _StripeScreenState extends State<StripeScreen> {
               Row(
                 children: [
                   IconButton(
-                    onPressed: (){
+                    onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    icon: const Icon(Icons.arrow_back_ios_new_rounded, color: red) ,
+                    icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                        color: red),
                   ),
                   const Text(
                     "Subsrcibe to Plan",
@@ -283,11 +350,10 @@ class _StripeScreenState extends State<StripeScreen> {
                 glassmorphismConfig: Glassmorphism(
                     blurX: 2.0,
                     blurY: 2.0,
-                    gradient:
-                        LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [red, red, Colors.red.withOpacity(0.7) , red])),
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [red, red, Colors.red.withOpacity(0.7), red])),
                 cardNumber: cardNumber,
                 expiryDate: expiryDate,
                 cardHolderName: cardHolderName,
@@ -558,7 +624,8 @@ class _StripeScreenState extends State<StripeScreen> {
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (ctx) => WelcomeScreen()));
                   if (_formKey.currentState!.validate()) {
-                    showPaymentConfirmationDialog(context, token!, companyId.toString());
+                    showPaymentConfirmationDialog(
+                        context, token!, companyId.toString());
                   }
                 },
                 child: Container(
@@ -567,12 +634,12 @@ class _StripeScreenState extends State<StripeScreen> {
                   height: size.height / 15,
                   width: size.width - 100,
                   child: Center(
-                    child: 
-                    isLoading? const CircularProgressIndicator(color: Colors.white) :
-                    const Text(
-                      "Subscribe",
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
+                    child: isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text(
+                            "Subscribe",
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
                   ),
                 ),
               ),

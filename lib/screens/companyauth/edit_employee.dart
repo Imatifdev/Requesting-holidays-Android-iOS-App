@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:holidays/screens/companyauth/showemployes.dart';
 import 'package:provider/provider.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:http/http.dart' as http;
@@ -200,7 +201,8 @@ class _EditEmployeeState extends State<EditEmployee> {
           backgroundColor: appbar,
           leading: IconButton(
               onPressed: () {
-                Navigator.pop(context, "hoho");
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (ctx) => ShowEmployee()));
               },
               icon: const Icon(
                 CupertinoIcons.left_chevron,
