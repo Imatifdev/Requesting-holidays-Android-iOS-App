@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:holidays/models/emp/empusermodel.dart';
 import 'package:holidays/screens/empauth/pending_leaves.dart';
 import 'package:holidays/screens/empauth/rejected_leaves_screen.dart';
 import 'package:provider/provider.dart';
@@ -218,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           const Text("You remaining Leaves",
                               style: TextStyle(color: red)),
-                          const Text("20",
+                          Text(user.remainingLeaveQuota.toString() ,
                               style: TextStyle(
                                   color: red,
                                   fontSize: 20,

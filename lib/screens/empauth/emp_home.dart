@@ -43,15 +43,6 @@ class _EmpHomeState extends State<EmpHome> with SingleTickerProviderStateMixin {
             Icon(Icons.person_pin, size: 30, color: Colors.white),
           ],
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(builder: (ctx) => const RequestLeave()),
-        //     );
-        //   },
-        //   child: const Icon(Icons.add),
-        // ),
         body: _screens[_currentIndex]);
   }
 }
