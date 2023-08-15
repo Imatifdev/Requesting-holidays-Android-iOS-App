@@ -161,6 +161,7 @@ class _ViewEmployeeState extends State<ViewEmployee> {
                     detailCard(context, "Phone Number", widget.employee.phone),
                     detailCard(context, "Verified Status",
                         getStatus(widget.employee.isVerified)),
+                    detailCard(context, "Remaining Leaves", widget.employee.remainingLeaveQuota.toString()),    
                     const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
