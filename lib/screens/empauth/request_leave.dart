@@ -36,9 +36,43 @@ class _RequestLeaveState extends State<RequestLeave> {
           DateTime.now().year, DateTime.now().month, DateTime.now().day + 1));
   int totalLeaveCount = 0;
 
+  // void _selectDateRange(BuildContext context) async {
+  //   _firstDate = DateTime(2022, 11, 22);
+  //   _lastDate = DateTime(2023, 11, 23);
+  //   final dateRange = await showDateRangePicker(
+  //     context: context,
+  //     firstDate: _firstDate,
+  //     lastDate: _lastDate,
+  //     initialDateRange: _selectedDateRange,
+  //     builder: (BuildContext context, Widget? child) {
+  //       return Theme(
+  //         data: ThemeData.light().copyWith(
+  //           colorScheme: const ColorScheme.light(
+  //             primary: Colors.red,
+  //           ),
+  //         ),
+  //         child: child!,
+  //       );
+  //     },
+  //   );
+  //   if (dateRange != null) {
+  //     setState(() {
+  //       startDateFormatted = DateFormat('dd-MM-yyyy').format(dateRange.start);
+  //       print(startDateFormatted);
+  //       _firstDate = dateRange.start;
+  //       endDateFormatted = DateFormat('dd-MM-yyyy').format(dateRange.end);
+  //       print(endDateFormatted);
+  //       _lastDate = dateRange.end;
+  //       var diff = dateRange.end.difference(dateRange.start);
+  //       totalLeaveCount = diff.inDays + 1;
+  //     });
+  //   }
+  // }
   void _selectDateRange(BuildContext context) async {
-    _firstDate = DateTime(2022, 11, 22);
-    _lastDate = DateTime(2023, 11, 23);
+    final currentDate = DateTime.now();
+    _firstDate = currentDate;
+    _lastDate = currentDate.add(const Duration(days: 365));
+
     final dateRange = await showDateRangePicker(
       context: context,
       firstDate: _firstDate,
@@ -94,7 +128,7 @@ class _RequestLeaveState extends State<RequestLeave> {
       'start_date': startDateFormatted,
       'end_date': endDateFormatted,
       'total_leave_count': totalLeaveCount,
-      'comment': comment == ""? "No comments":comment,
+      'comment': comment == "" ? "No comments" : comment,
     });
     if (response.statusCode == 200) {
       print("responseee: ${response.body}");
@@ -290,7 +324,7 @@ class _RequestLeaveState extends State<RequestLeave> {
                                 child: InkWell(
                                   onTap: () {
                                     //if (endDateFormatted == "") {
-                                      _selectDateRange(context);
+                                    _selectDateRange(context);
                                     //}
                                   },
                                   child: Container(
