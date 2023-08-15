@@ -82,7 +82,6 @@ class _EditEmployeeState extends State<EditEmployee> {
   final TextEditingController _totalLeaves = TextEditingController();
   final TextEditingController _hours = TextEditingController();
   Map<int, bool> selectedDays = {};
-  List<int> dayValues = List<int>.filled(7, 0);
   bool obsCheck = false;
   bool obsCheck1 = false;
   String errMsg = "";
@@ -108,13 +107,13 @@ class _EditEmployeeState extends State<EditEmployee> {
       "password": _password.text,
       "password_confirmation": _confirmPassword.text,
       "total_leaves": _totalLeaves.text,
-      "monday": dayValues[0].toString(),
-      "tuesday": dayValues[1].toString(),
-      "wednesday": dayValues[2].toString(),
-      "thursday": dayValues[3].toString(),
-      "friday": dayValues[4].toString(),
-      "saturday": dayValues[5].toString(),
-      "sunday": dayValues[6].toString(),
+      "sunday": selectedDays[0]== true? "1":"0",
+      "monday": selectedDays[1]== true? "1":"0",
+      "tuesday": selectedDays[2]== true? "1":"0",
+      "wednesday": selectedDays[3]== true? "1":"0",
+      "thursday": selectedDays[4]== true? "1":"0",
+      "friday": selectedDays[5]== true? "1":"0",
+      "saturday": selectedDays[6]== true? "1":"0",
     });
     if (response.statusCode == 200) {
       // Leave request successful
@@ -438,11 +437,10 @@ class _EditEmployeeState extends State<EditEmployee> {
                   child: Center(
                     child: ElevatedButton(
                         onPressed: () {
-                          print(dayValues.contains(1));
                           if (_formKey.currentState!.validate() &&
-                              dayValues.contains(1)) {
+                              selectedDays.values.contains(true)) {
                             editEmployeeInfo(token!, companyId.toString());
-                          } else if (!dayValues.contains(1)) {
+                          } else if (!selectedDays.values.contains(true)) {
                             setState(() {
                               errMsg = "Please select working days";
                             });

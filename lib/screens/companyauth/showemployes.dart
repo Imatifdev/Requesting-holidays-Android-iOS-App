@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:holidays/screens/companyauth/companydashboard.dart';
 import 'package:holidays/screens/companyauth/edit_employee.dart';
 import 'package:holidays/screens/companyauth/view_employee_screen.dart';
 import 'package:holidays/viewmodel/company/compuserviewmodel.dart';
@@ -197,7 +198,7 @@ class _ShowEmployeeState extends State<ShowEmployee> {
         backgroundColor: appbar,
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => CompanyDashBoard(),), (route) => false);
             },
             icon: Icon(
               CupertinoIcons.left_chevron,
