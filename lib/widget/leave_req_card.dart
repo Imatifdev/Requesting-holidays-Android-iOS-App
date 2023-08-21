@@ -2,10 +2,13 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/leave.dart';
+import '../viewmodel/employee/empuserviewmodel.dart';
 import 'constants.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:http/http.dart' as http;
 
 class LeaveRequestCard extends StatelessWidget {
   final LeaveRequest leave;
@@ -152,6 +155,30 @@ class LeaveRequestCard extends StatelessWidget {
             ));
   }
 
+  Future<void> deleterequestLeave(String leaveid, String token) async {
+    final String apiUrl =
+        "https://jporter.ezeelogix.com/public/api/employee-delete-requested-leave";
+
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+      },
+      body: {
+        'job_id': leaveid, // Change to your desired parameter values
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Successful API call, handle the response here
+      print('API Response: ${response.body}');
+    } else {
+      // Handle API error
+      print('API Error: ${response.statusCode}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -187,6 +214,10 @@ class LeaveRequestCard extends StatelessWidget {
 
       heading = 15; // Extra large screen or unknown device
     }
+    final empViewModel = Provider.of<EmpViewModel>(context);
+    final token = empViewModel.token;
+    final user = empViewModel.user;
+
     return Padding(
       padding: EdgeInsets.all(5.0),
       child: InkWell(
@@ -248,7 +279,8 @@ class LeaveRequestCard extends StatelessWidget {
                                         color: Colors.red, fontSize: 12)),
                               )),
                             ),
-                          if (leave.leaveCurrentStatus == 'Approved' || leave.leaveCurrentStatus == 'Accepted')
+                          if (leave.leaveCurrentStatus == 'Approved' ||
+                              leave.leaveCurrentStatus == 'Accepted')
                             Container(
                               height: screenheight / 26.5,
                               width: screenWidth / 4.5,
@@ -286,8 +318,6 @@ class LeaveRequestCard extends StatelessWidget {
                                         fontSize: heading)),
                               )),
                             ),
-                            if (leave.leaveCurrentStatus != 'Rejected')
-                            IconButton(onPressed: (){}, icon: Icon(Icons.delete_rounded, color: red,) )
                         ],
                       ),
                       Row(
@@ -359,17 +389,62 @@ class LeaveRequestCard extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             ),
                           //   Text(leave.leaveType),
-                          Container(
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.grey.shade300),
-                            child: Center(
-                                child: Icon(
-                              CupertinoIcons.right_chevron,
-                              size: 15,
-                            )),
+                          Row(
+                            children: [
+                              if (leave.leaveCurrentStatus == 'Pending')
+                                IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          title: Text('Confirm Delete'),
+                                          content: Text(
+                                              'Are you sure you want to delete this leave request?'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text('Cancel'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                deleterequestLeave(
+                                                  leave.id.toString(),
+                                                  token.toString(),
+                                                );
+                                              },
+                                              child: Text('Delete'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: red,
+                                  ),
+                                ),
+                              Container(
+                                height: 30,
+                                width: 30,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.grey.shade300),
+                                child: Center(
+                                  child: Icon(
+                                    CupertinoIcons.right_chevron,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),
+                            ],
                           )
                         ],
                       ),

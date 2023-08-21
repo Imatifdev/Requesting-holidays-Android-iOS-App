@@ -117,6 +117,30 @@ class _LeaveScreenState extends State<LeaveScreen>
     }
   }
 
+  Future<void> deleterequestLeave(String leaveid, String token) async {
+    final String apiUrl =
+        "https://jporter.ezeelogix.com/public/api/employee-delete-requested-leave";
+
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+      },
+      body: {
+        'job_id': leaveid, // Change to your desired parameter values
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Successful API call, handle the response here
+      print('API Response: ${response.body}');
+    } else {
+      // Handle API error
+      print('API Error: ${response.statusCode}');
+    }
+  }
+
   Future<void> _getallrejectedLeaveRequest(String token, String id) async {
     // final empViewModel = Provider.of<EmpViewModel>(context);
     // final user = empViewModel.user;

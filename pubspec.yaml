@@ -72,6 +72,7 @@ dev_dependencies:
   flutter_date_pickers: ^0.4.2
   google_fonts: ^5.0.0
   shared_preferences: ^2.1.2
+  bloc: ^8.1.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

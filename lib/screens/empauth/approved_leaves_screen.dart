@@ -76,7 +76,7 @@ class _ApprovedLeavesScreenState extends State<ApprovedLeavesScreen> {
               },
             )
           : const Center(
-              child: CircularProgressIndicator() ,
+              child: CircularProgressIndicator(),
             ),
     );
   }

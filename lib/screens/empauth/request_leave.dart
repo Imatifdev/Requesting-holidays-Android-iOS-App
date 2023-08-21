@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar_carousel/classes/marked_date.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -10,6 +11,7 @@ import '../../viewmodel/employee/empuserviewmodel.dart';
 import '../../widget/constants.dart';
 import 'dashboard.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 
 class RequestLeave extends StatefulWidget {
   const RequestLeave({super.key});
@@ -36,38 +38,6 @@ class _RequestLeaveState extends State<RequestLeave> {
           DateTime.now().year, DateTime.now().month, DateTime.now().day + 1));
   int totalLeaveCount = 0;
 
-  // void _selectDateRange(BuildContext context) async {
-  //   _firstDate = DateTime(2022, 11, 22);
-  //   _lastDate = DateTime(2023, 11, 23);
-  //   final dateRange = await showDateRangePicker(
-  //     context: context,
-  //     firstDate: _firstDate,
-  //     lastDate: _lastDate,
-  //     initialDateRange: _selectedDateRange,
-  //     builder: (BuildContext context, Widget? child) {
-  //       return Theme(
-  //         data: ThemeData.light().copyWith(
-  //           colorScheme: const ColorScheme.light(
-  //             primary: Colors.red,
-  //           ),
-  //         ),
-  //         child: child!,
-  //       );
-  //     },
-  //   );
-  //   if (dateRange != null) {
-  //     setState(() {
-  //       startDateFormatted = DateFormat('dd-MM-yyyy').format(dateRange.start);
-  //       print(startDateFormatted);
-  //       _firstDate = dateRange.start;
-  //       endDateFormatted = DateFormat('dd-MM-yyyy').format(dateRange.end);
-  //       print(endDateFormatted);
-  //       _lastDate = dateRange.end;
-  //       var diff = dateRange.end.difference(dateRange.start);
-  //       totalLeaveCount = diff.inDays + 1;
-  //     });
-  //   }
-  // }
   void _selectDateRange(BuildContext context) async {
     final currentDate = DateTime.now();
     _firstDate = currentDate;
@@ -101,6 +71,7 @@ class _RequestLeaveState extends State<RequestLeave> {
         totalLeaveCount = diff.inDays + 1;
       });
     }
+    MarkedDate(date: DateTime(2023, 8, 31), color: Colors.green);
   }
 
   Future<void> _submitLeaveRequest(
@@ -189,18 +160,6 @@ class _RequestLeaveState extends State<RequestLeave> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: appbar,
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   backgroundColor: appbar,
-      //   leading: IconButton(
-      //       onPressed: () {
-      //         Navigator.of(context).pop();
-      //       },
-      //       icon: const Icon(
-      //         CupertinoIcons.left_chevron,
-      //         color: Colors.black,
-      //       )),
-      // ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: SizedBox(
@@ -335,14 +294,6 @@ class _RequestLeaveState extends State<RequestLeave> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        // Text(
-                                        //   endDateFormatted == ""
-                                        //       ? "Calender"
-                                        //       : "Selected Dates:",
-                                        //   style: TextStyle(
-                                        //       color: Colors.red,
-                                        //       fontSize: title),
-                                        // ),
                                         Text(
                                           endDateFormatted == ""
                                               ? "Select Leaves"
@@ -386,12 +337,6 @@ class _RequestLeaveState extends State<RequestLeave> {
                                 height: screenheight / 14,
                                 width: screenWidth - 123,
                                 child: TextFormField(
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'Please enter your cause for leave';
-                                  //   }
-                                  //   return null;
-                                  // },
                                   controller: causeController,
                                   decoration: InputDecoration(
                                     enabledBorder: const UnderlineInputBorder(
@@ -417,14 +362,6 @@ class _RequestLeaveState extends State<RequestLeave> {
                             ],
                           ),
                           const SizedBox(height: 30),
-                          // Center(
-                          //   child: ElevatedButton(
-                          //     style:
-                          //         ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                          //     onPressed: () => _selectDateRange(context),
-                          //     child: const Text('Select Date'),
-                          //   ),
-                          // ),
                           InkWell(
                             onTap: () async {
                               if (_formKey.currentState!.validate() &&
@@ -476,51 +413,6 @@ class _RequestLeaveState extends State<RequestLeave> {
                                         )),
                             ),
                           ),
-
-                          // SizedBox(
-                          //   width: MediaQuery.of(context).size.width - 50,
-                          //   height: 50,
-                          //   child: ElevatedButton(
-                          //       style: ElevatedButton.styleFrom(
-                          //         shape: RoundedRectangleBorder(
-                          //             borderRadius: BorderRadius.circular(10)),
-                          //       ),
-                          //       onPressed: () async {
-                          //         if (_formKey.currentState!.validate() &&
-                          //             _firstDate != DateTime(2022, 11, 22) &&
-                          //             _lastDate != DateTime(2022, 11, 23) &&
-                          //             selectedLeaveType != null) {
-                          //           // print(startDateFormatted);
-                          //           //print(totalLeaveCount);
-                          //           setState(() {
-                          //             errMsg = "";
-                          //             errMsg2 = "";
-                          //           });
-                          //           await _submitLeaveRequest(
-                          //             token!,
-                          //             selectedLeaveType!,
-                          //             startDateFormatted,
-                          //             endDateFormatted,
-                          //             user!.id.toString(),
-                          //             totalLeaveCount.toString(),
-                          //             causeController.text.trim(),
-                          //           );
-                          //         } else if (selectedLeaveType == null) {
-                          //           setState(() {
-                          //             errMsg2 = "Please select a type";
-                          //           });
-                          //         } else {
-                          //           setState(() {
-                          //             errMsg = "please select leave dates";
-                          //           });
-                          //         }
-                          //       },
-                          //       child: isLoading
-                          //           ? const CircularProgressIndicator(
-                          //               color: Colors.white,
-                          //             )
-                          //           : const Text("Apply")),
-                          // ),
                         ],
                       ),
                     ),
